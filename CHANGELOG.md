@@ -3,7 +3,6 @@
 - [x] Syntax highlighting
 - [x] Commenting blocks of code
 - [x] Brace matching
-- [ ] Snippets
 - [ ] Outline Code
 - [ ] Go to Definition
 - [ ] Show References
@@ -22,7 +21,7 @@ on the official Visual Studio Code extension gallery.
 
 ## 1.0
 
-**2016-09-01**
+**2016-09-02**
 
   - [x] Syntax highlighting
   - [x] Commenting blocks of code

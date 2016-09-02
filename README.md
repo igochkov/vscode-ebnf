@@ -24,4 +24,4 @@ Check out the [contribution guidelines](CONTRIBUTING.md)
 if you want to contribute to this project.
 
 ## License
-[Apache 2.0](LICENSE)
+[MIT](LICENSE)
