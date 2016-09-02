@@ -1,0 +1,25 @@
+{
+    "name": "vscode-ebnf",
+    "displayName": "EBNF Tools",
+    "description": "EBNF Tools for Visual Studio Code",
+    "version": "1.0.0",
+    "publisher": "Ivaylo Gochkov",
+    "engines": { "vscode": "^1.0.0" },
+    "license": "MIT",
+    "categories": [ "Languages" ],
+    "keywords": [ "ebnf", "bnf" ],
+    "preview": false,
+    "contributes": {
+        "languages": [{
+            "id": "ebnf",
+            "aliases": [ "EBNF", "Extended Backus–Naur Form" ],
+            "extensions": [".ebnf"],
+            "configuration": "./language-configuration.json"
+        }],
+        "grammars": [{
+            "language": "ebnf",
+            "scopeName": "source.ebnf",
+            "path": "./syntaxes/ebnf.tmLanguage"
+        }]
+    }
+}
