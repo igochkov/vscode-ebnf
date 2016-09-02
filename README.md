@@ -20,8 +20,7 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 ![Brace matching](./images/brace-matching.gif)
 
 ## Contribute
-Check out the [contribution guidelines](CONTRIBUTING.md)
-if you want to contribute to this project.
+Check out the [contribution guidelines](CONTRIBUTING.md) if you want to contribute to this project.
 
 ## License
 [MIT](LICENSE)
