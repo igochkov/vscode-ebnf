@@ -9,6 +9,10 @@
     "license": "MIT",
     "categories": [ "Languages" ],
     "keywords": [ "ebnf", "bnf" ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/igochkov/vscode-ebnf.git"
+    },
     "contributes": {
         "languages": [{
             "id": "ebnf",
