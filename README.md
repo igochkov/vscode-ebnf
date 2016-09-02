@@ -1,4 +1,6 @@
 # EBNF Tools for Visual Studio Code
+[![Version](http://vsmarketplacebadge.apphb.com/version/igochkov.vscode-ebnf.svg)](https://marketplace.visualstudio.com/items?itemName=igochkov.vscode-ebnf)
+[![Installs](http://vsmarketplacebadge.apphb.com/installs/igochkov.vscode-ebnf.svg)](https://marketplace.visualstudio.com/items?itemName=igochkov.vscode-ebnf)
 
 The EBNF Tools adds language support for the [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form) syntax notation to Visual Studio Code. 
 
