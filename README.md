@@ -8,17 +8,17 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 
 ## Features
 
-- Syntax highlighting
+- Syntax highlighting (colorization)
 - Commenting blocks of code
-- Brace matching
+- Bracket matching
 
-### Syntax highlighting
+### Syntax highlighting (colorization)
 ![Syntax highlighting](./images/syntax-highlighting.png)
 
 ### Commenting blocks of code
 ![Commenting blocks of code](./images/commenting-block.gif)
 
-### Brace matching
+### Bracket matching
 ![Brace matching](./images/brace-matching.gif)
 
 ## Contribute

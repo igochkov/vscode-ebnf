@@ -1,13 +1,13 @@
 # Roadmap
 
-- [x] Syntax highlighting
+- [x] Syntax highlighting (colorization)
 - [x] Commenting blocks of code
-- [x] Brace matching
-- [ ] Outline Code
-- [ ] Go to Definition
-- [ ] Show References
-- [ ] Rename Symbol
-- [ ] Format Code
+- [x] [Bracket matching (Ctrl+Shift+\)](https://code.visualstudio.com/docs/editor/editingevolved#_bracket-matching)
+- [ ] [Folding (Ctrl+Shift+\[)](https://code.visualstudio.com/docs/editor/editingevolved#_folding)
+- [ ] [Go to Definition (F12)](https://code.visualstudio.com/docs/editor/editingevolved#_go-to-definition)
+- [ ] [Find All References (Shift+F12) / Peek Definition (Alt+F12)](https://code.visualstudio.com/docs/editor/editingevolved#_peek)
+- [ ] [Rename symbol (F2)](https://code.visualstudio.com/docs/editor/editingevolved#_rename-symbol)
+- [ ] Formating (Shift+Alt+F)
 - [ ] Commands (Compile to tmLanguage)
 - [ ] IntelliSense - List Members
 - [ ] IntelliSense - Complete Word
@@ -23,6 +23,6 @@ on the official Visual Studio Code extension gallery.
 
 **2016-09-02**
 
-  - [x] Syntax highlighting
+  - [x] Syntax highlighting (colorization)
   - [x] Commenting blocks of code
-  - [x] Brace matching
+  - [x] Bracket matching
