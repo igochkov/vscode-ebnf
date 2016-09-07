@@ -40,7 +40,7 @@
                 "extensions": [
                     ".ebnf"
                 ],
-                "configuration": "./language-configuration.json"
+                "configuration": "./src/language-configuration.json"
             }
         ],
         "grammars": [
