@@ -77,7 +77,7 @@
         <key>name</key>
         <string>constant.string.ebnf</string>
         <key>match</key>
-        <string>(\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\&lt;\&gt;\*\-\?;\. :\+_%@#\&amp;\$\\\^~"])+\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\&lt;\&gt;\*\-\?;\. :\+_%@#\&amp;\$\\\^~\'])+\")</string>
+        <string>(\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\&lt;\&gt;\*\-\?;\. :\+_%@#\&amp;\$\\\^~"])*\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\&lt;\&gt;\*\-\?;\. :\+_%@#\&amp;\$\\\^~\'])*\")</string>
       </dict>
       <key>special-sequence</key>
       <dict>

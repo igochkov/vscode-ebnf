@@ -38,7 +38,7 @@ repository:
 
     terminal-string:
         name: constant.string.ebnf
-        match: (\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~"])+\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~\'])+\")
+        match: (\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~"])*\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~\'])*\")
 
     special-sequence:
         comment: The meaning of a <special sequence> is not defined in the standard metalanguage.
