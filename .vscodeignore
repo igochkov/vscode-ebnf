@@ -1,2 +1,9 @@
 .vscode/**
 test/**
+
+syntaxes/README.md
+syntaxes/ebnf.YAML-tmLanguage
+
+CHANGELOG.md
+CONTRIBUTING.md
+ISSUE_TEMPLATE.md
