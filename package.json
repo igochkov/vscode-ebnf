@@ -9,7 +9,7 @@
         "name": "Ivaylo Gochkov",
         "url": "https://github.com/igochkov"
     },
-    "icon": "./images/icon.png",
+    "icon": "images/icon.png",
     "engines": {
         "vscode": "^1.0.0"
     },
@@ -41,14 +41,14 @@
                 "extensions": [
                     ".ebnf"
                 ],
-                "configuration": "./src/language-configuration.json"
+                "configuration": "src/language-configuration.json"
             }
         ],
         "grammars": [
             {
                 "language": "ebnf",
                 "scopeName": "source.ebnf",
-                "path": "./syntaxes/ebnf.json"
+                "path": "syntaxes/ebnf.json"
             }
         ]
     }
