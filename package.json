@@ -48,7 +48,7 @@
             {
                 "language": "ebnf",
                 "scopeName": "source.ebnf",
-                "path": "./syntaxes/ebnf.tmLanguage"
+                "path": "./syntaxes/ebnf.json"
             }
         ]
     }

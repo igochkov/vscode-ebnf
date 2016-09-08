@@ -1,0 +1,226 @@
+{
+  "name": "EBNF",
+  "scopeName": "source.ebnf",
+  "fileTypes": [
+    "ebnf"
+  ],
+  "uuid": "18f41b05-a72e-43ad-b5a5-508ce8fbafbc",
+  "patterns": [
+    {
+      "include": "#syntax"
+    }
+  ],
+  "repository": {
+    "concatenate-symbol": {
+      "name": "keyword.operator.concatenate.ebnf",
+      "match": ","
+    },
+    "defining-symbol": {
+      "name": "keyword.operator.define.ebnf",
+      "match": "="
+    },
+    "definition-separator-symbol": {
+      "name": "keyword.operator.separator.ebnf",
+      "match": "(\\||/|!)"
+    },
+    "except-symbol": {
+      "name": "keyword.operator.except.ebnf",
+      "match": "\\-"
+    },
+    "repetition-symbol": {
+      "name": "keyword.operator.repeat.ebnf",
+      "match": "\\*"
+    },
+    "integer": {
+      "name": "constant.numeric.ebnf",
+      "match": "[0-9]+"
+    },
+    "meta-identifier": {
+      "comment": "A <meta identifier> is the name of a syntactic element of the language being defined",
+      "name": "entity.name.function.ebnf",
+      "match": "((?:[a-zA-Z])(?:[a-zA-Z0-9])*)"
+    },
+    "terminal-string": {
+      "name": "constant.string.ebnf",
+      "match": "(\\'([a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-\\?;\\. :\\+_%@#\\&\\$\\\\\\^~\"])*\\')|(\\\"([a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-\\?;\\. :\\+_%@#\\&\\$\\\\\\^~\\'])*\\\")"
+    },
+    "special-sequence": {
+      "comment": "The meaning of a <special sequence> is not defined in the standard metalanguage.",
+      "name": "constant.string.ebnf",
+      "match": "(\\?[a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-;\\. :\\+_%@#\\&\\$\\\\\\^~\\'\\\"]\\?)"
+    },
+    "syntax": {
+      "name": "meta.syntax.ebnf",
+      "patterns": [
+        {
+          "include": "#comment-block"
+        },
+        {
+          "include": "#syntax-rule"
+        }
+      ]
+    },
+    "comment-block": {
+      "comment": "A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>",
+      "name": "comment.ebnf",
+      "begin": "\\(\\*",
+      "end": "\\*\\)"
+    },
+    "syntax-rule": {
+      "comment": "A <syntax rule> defines the sequences of symbols represented by a <meta identifier>",
+      "name": "meta.syntax.rule.ebnf",
+      "begin": "((?:[a-zA-Z])(?:\\w*))(?:\\s)*(=)*(?:\\s)*",
+      "beginCaptures": {
+        "1": {
+          "name": "keyword.syntax.rule.ebnf"
+        },
+        "2": {
+          "name": "keyword.operator.assignment.ebnf"
+        }
+      },
+      "end": ";",
+      "patterns": [
+        {
+          "include": "#definitions-list"
+        }
+      ]
+    },
+    "definitions-list": {
+      "comment": "| separates alternative <single definitions>",
+      "name": "meta.definitions.list.ebnf",
+      "patterns": [
+        {
+          "include": "#single-definition"
+        },
+        {
+          "include": "#definition-separator-symbol"
+        }
+      ]
+    },
+    "single-definition": {
+      "comment": ", separates successive <terms>",
+      "name": "meta.definitions.single.ebnf",
+      "patterns": [
+        {
+          "include": "#term"
+        },
+        {
+          "include": "#concatenate-symbol"
+        }
+      ]
+    },
+    "term": {
+      "comment": "A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception>",
+      "name": "meta.term.ebnf",
+      "patterns": [
+        {
+          "include": "#factor"
+        },
+        {
+          "include": "#except-symbol"
+        }
+      ]
+    },
+    "factor": {
+      "comment": "The <integer> specifies the number of repetitions of the <primary>",
+      "name": "meta.factor.ebnf",
+      "patterns": [
+        {
+          "include": "#integer"
+        },
+        {
+          "include": "#primary"
+        },
+        {
+          "include": "#repetition-symbol"
+        }
+      ]
+    },
+    "primary": {
+      "name": "meta.primary.ebnf",
+      "patterns": [
+        {
+          "include": "#optional-sequence"
+        },
+        {
+          "include": "#repeated-sequence"
+        },
+        {
+          "include": "#special-sequence"
+        },
+        {
+          "include": "#grouped-sequence"
+        },
+        {
+          "include": "#meta-identifier"
+        },
+        {
+          "include": "#terminal-string"
+        }
+      ]
+    },
+    "optional-sequence": {
+      "comment": "The brackets [ and ] enclose symbols which are optional",
+      "name": "meta.sequence.optional.ebnf",
+      "begin": "\\[",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.brace.square.ebnf"
+        }
+      },
+      "end": "\\]",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.square.ebnf"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#definitions-list"
+        }
+      ]
+    },
+    "repeated-sequence": {
+      "comment": "The brackets { and } enclose symbols which may be repeated any number of times",
+      "name": "meta.sequence.repeated.ebnf",
+      "begin": "\\{",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.brace.curly.ebnf"
+        }
+      },
+      "end": "\\}",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.curly.ebnf"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#definitions-list"
+        }
+      ]
+    },
+    "grouped-sequence": {
+      "comment": "The brackets ( and ) allow any <definitions list> to be a <primary>",
+      "name": "meta.sequence.grouped.ebnf",
+      "begin": "\\(",
+      "beginCaptures": {
+        "1": {
+          "name": "meta.brace.round.ebnf"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "1": {
+          "name": "meta.brace.round.ebnf"
+        }
+      },
+      "patterns": [
+        {
+          "include": "#definitions-list"
+        }
+      ]
+    }
+  }
+}
