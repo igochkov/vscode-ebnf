@@ -41,7 +41,7 @@
                 "extensions": [
                     ".ebnf"
                 ],
-                "configuration": "src/language-configuration.json"
+                "configuration": "language-configuration.json"
             }
         ],
         "grammars": [
