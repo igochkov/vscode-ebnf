@@ -5,7 +5,6 @@
     "version": "1.0.3",
     "publisher": "igochkov",
     "author": {
-        "email": "igochkov@gmail.com",
         "name": "Ivaylo Gochkov",
         "url": "https://github.com/igochkov"
     },
@@ -27,8 +26,7 @@
     },
     "homepage": "https://github.com/igochkov/vscode-ebnf",
     "bugs": {
-        "url": "https://github.com/igochkov/vscode-ebnf/issues",
-        "email": "igochkov@gmail.com"
+        "url": "https://github.com/igochkov/vscode-ebnf/issues"
     },
     "contributes": {
         "languages": [
@@ -41,7 +39,7 @@
                 "extensions": [
                     ".ebnf"
                 ],
-                "configuration": "language-configuration.json"
+                "configuration": "ebnf.configuration.json"
             }
         ],
         "grammars": [
