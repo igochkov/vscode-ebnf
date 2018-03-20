@@ -6,4 +6,4 @@ To contribute to the langauge colorization:
 - Apply changes to the `ebnf.YAML-tmLanguage` file
 - Convert the modified `ebnf.YAML-tmLanguage` to JSON by running command `Convert to JSON-tmLanguage file` and save the result as `ebnf.json`
 
-> Note: In case the convert command results in empty file either the YAML syntax is incorrect or the `ebnf.json` already exists and has to be manually deleted first
+> Note: In case the convert command results in empty file either the YAML syntax is incorrect or the `ebnf.json` already exists and has to be manually deleted first.
