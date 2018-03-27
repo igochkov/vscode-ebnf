@@ -13,13 +13,13 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 - Bracket matching
 
 ### Syntax highlighting (colorization)
-![Syntax highlighting](http://blog.gochkov.com/vscode-ebnf/syntax-highlighting.png)
+![Syntax highlighting](https://blog.gochkov.com/vscode-ebnf/syntax-highlighting.png)
 
 ### Commenting blocks of code
-![Commenting blocks of code](http://blog.gochkov.com/vscode-ebnf/commenting-block.gif)
+![Commenting blocks of code](https://blog.gochkov.com/vscode-ebnf/commenting-block.gif)
 
 ### Bracket matching
-![Brace matching](http://blog.gochkov.com/vscode-ebnf/brace-matching.gif)
+![Brace matching](https://blog.gochkov.com/vscode-ebnf/brace-matching.gif)
 
 ## Contribute
 Check out the [contribution guidelines](CONTRIBUTING.md) if you want to contribute to this project.
