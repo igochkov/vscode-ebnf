@@ -49,5 +49,13 @@
                 "path": "syntaxes/ebnf.json"
             }
         ]
+    },
+    "dependencies": {
+        "@types/vscode": "^1.79.1",
+        "antlr4ts": "^0.5.0-alpha.4"
+    },
+    "main": "./out/main.js",
+    "scripts": {
+        "vscode:prepublish": "tsc -b"
     }
 }
