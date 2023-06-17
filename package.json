@@ -60,9 +60,8 @@
     "main": "./dist/extension.js",
     "scripts": {
         "vscode:prepublish": "npm run package",
-        "webpack": "webpack --mode production",
-        "webpack-dev": "webpack --mode development",
-        "package": "webpack --mode production --devtool hidden-source-map"
+        "webpack": "webpack --mode development",
+        "package": "webpack --mode production --devtool hidden-nosources-source-map"
     },
     "devDependencies": {
         "ts-loader": "^9.4.3",
