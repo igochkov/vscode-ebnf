@@ -2,7 +2,7 @@
     "name": "vscode-ebnf",
     "displayName": "EBNF Tools",
     "description": "EBNF Tools for Visual Studio Code",
-    "version": "1.0.3",
+    "version": "1.1.0",
     "publisher": "igochkov",
     "author": {
         "name": "Ivaylo Gochkov",
@@ -10,11 +10,12 @@
     },
     "icon": "images/icon.png",
     "engines": {
-        "vscode": "^1.0.0"
+        "vscode": "^1.75.0"
     },
     "license": "MIT",
     "categories": [
-        "Programming Languages"
+        "Programming Languages",
+        "Language Packs"
     ],
     "keywords": [
         "ebnf",
