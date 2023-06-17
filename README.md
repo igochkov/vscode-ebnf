@@ -24,3 +24,6 @@ Check out the [contribution guidelines](https://raw.githubusercontent.com/igochk
 
 ## License
 [MIT](LICENSE)
+
+---
+Temporal: Ownership proof github repo.
