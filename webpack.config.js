@@ -8,7 +8,7 @@ const webpack = require('webpack');
 /**@type {import('webpack').Configuration}*/
 const config = {
   target: 'webworker',
-  entry: './client/main.ts',
+  entry: './src/main.ts',
   output: {
     path: path.resolve(__dirname, 'out'),
     filename: 'main.js',

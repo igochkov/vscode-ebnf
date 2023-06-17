@@ -5,7 +5,7 @@
 .vscode/**
 test/**
 docs/**
-client/**
+src/**
 node_modules/**
 
 syntaxes/README.md
