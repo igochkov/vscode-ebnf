@@ -9,6 +9,7 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 - Syntax highlighting (colorization)
 - Commenting blocks of code
 - Bracket matching
+- Rename symbol
 
 ### Syntax highlighting (colorization)
 ![Syntax highlighting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/syntax-highlighting.png)
