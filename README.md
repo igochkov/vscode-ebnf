@@ -20,7 +20,7 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 ![Brace matching](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/brace-matching.gif)
 
 ### Rename symbol
-![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/rename-symbol.png) 
+![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/rename-symbol.gif) 
 
 ## Contribute
 Check out the [contribution guidelines](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/CONTRIBUTING.md) if you want to contribute to this project.
