@@ -2,12 +2,12 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "tsc",
+            "label": "webpack",
             "type": "shell",
-            "command": "tsc",
+            "command": "npm",
             "args": [
-                "-p",
-                "${workspaceFolder}/tsconfig.json"
+                "run",
+                "webpack"
             ],
             "group": {
                 "kind": "build",

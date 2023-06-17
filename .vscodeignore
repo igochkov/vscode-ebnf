@@ -1,6 +1,12 @@
+**/*.ts
+**/tsconfig.json
+!file.ts
+
 .vscode/**
 test/**
 docs/**
+client/**
+node_modules/**
 
 syntaxes/README.md
 syntaxes/ebnf.YAML-tmLanguage
