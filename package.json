@@ -40,14 +40,14 @@
                 "extensions": [
                     ".ebnf"
                 ],
-                "configuration": "ebnf.configuration.json"
+                "configuration": "syntaxes/ebnf.configuration.json"
             }
         ],
         "grammars": [
             {
                 "language": "ebnf",
                 "scopeName": "source.ebnf",
-                "path": "syntaxes/ebnf.json"
+                "path": "syntaxes/ebnf.tmLanguage.json"
             }
         ]
     },
