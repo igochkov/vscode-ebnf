@@ -3,7 +3,7 @@
       "target": "ES6",
       "module": "commonjs",
       "esModuleInterop": true,
-      "outDir": "./dist",
+      "outDir": "./out",
       "sourceMap": true
     },
     "exclude": [

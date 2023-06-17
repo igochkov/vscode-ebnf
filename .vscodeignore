@@ -1,12 +1,11 @@
-**/*.ts
-**/tsconfig.json
-!file.ts
-
-.vscode/**
-test/**
-docs/**
-src/**
-node_modules/**
+.vscode
+node_modules
+test/
+docs/
+src/
+out/
+tsconfig.json
+webpack.config.js
 
 syntaxes/README.md
 syntaxes/ebnf.YAML-tmLanguage
