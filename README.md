@@ -19,11 +19,11 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 ### Bracket matching
 ![Brace matching](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/brace-matching.gif)
 
+### Rename symbol
+![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/rename-symbol.png) 
+
 ## Contribute
 Check out the [contribution guidelines](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/CONTRIBUTING.md) if you want to contribute to this project.
 
 ## License
 [MIT](LICENSE)
-
----
-Temporal: Ownership proof github repo.
