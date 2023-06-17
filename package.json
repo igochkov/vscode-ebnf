@@ -57,7 +57,7 @@
         "assert": "^2.0.0",
         "util": "^0.12.5"
     },
-    "main": "./out/main.js",
+    "main": "./out/extension.js",
     "scripts": {
         "vscode:prepublish": "npm run package",
         "webpack": "webpack --mode development",

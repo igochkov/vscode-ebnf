@@ -8,10 +8,10 @@ const webpack = require('webpack');
 /**@type {import('webpack').Configuration}*/
 const config = {
   target: 'webworker',
-  entry: './src/main.ts',
+  entry: './src/extension.ts',
   output: {
     path: path.resolve(__dirname, 'out'),
-    filename: 'main.js',
+    filename: 'extension.js',
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: '../[resource-path]'
   },
