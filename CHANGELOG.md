@@ -26,7 +26,7 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
 ### Version 1.2
-**Released on 2023-06-19**
+**PEnding Release**
 
 - Added support for syntax highlighting in Markdown fenced code blocks.
 
