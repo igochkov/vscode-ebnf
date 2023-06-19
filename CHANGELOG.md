@@ -1,7 +1,3 @@
-Of course! Here's how I would revise your CHANGELOG.md to look more professional, while keeping the same information:
-
----
-
 # EBNF Tools Changelog and Roadmap
 
 This document outlines the changes made in each released version of the EBNF Tools extension for Visual Studio Code, as well as our roadmap for future features.
