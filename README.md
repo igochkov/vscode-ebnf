@@ -16,7 +16,7 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 ![Syntax highlighting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/syntax-highlighting.png)
 
 ### Syntax highlighting in Markdown fenced code blocks
-![Syntax highlighting in Markdown fenced code blocks](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/fenced-code-blocks.png)
+![Syntax highlighting in Markdown fenced code blocks](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/fenced-code-blocks.gif)
 
 ### Commenting blocks of code
 ![Commenting blocks of code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/commenting-block.gif)
