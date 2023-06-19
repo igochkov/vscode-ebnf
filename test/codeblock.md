@@ -1,0 +1,69 @@
+``` ebnf
+(*
+This example defines Extended BNF informally. Many of the syntax rules include
+a comment to explain their meaning; inside a comment a meta identifier is enclosed in angle
+brackets < and > to avoid confusion with similar English words. The non-terminal symbols
+<letter>, <decimal digit> and <character> are not defined. The position of <comments> is
+stated in a comment but not formally defined.
+*)
+
+syntax = syntax_rule, {syntax_rule};
+
+(* A <syntax rule> defines the sequences of symbols represented by a <meta identifier> *)
+syntax_rule 
+= meta_identifier, '=', definitions_list, ';';
+
+(* | separates alternative <single definitions> *)
+definitions_list
+= singledefinition, {'|', singledefinition};
+
+(* , separates successive <terms> *)
+singledefinition = term, {',', term};
+
+(* A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception> *)
+term = factor, ['-', exception];
+
+(* A <factor> may be used as an <exception> if it could be replaced by a <factor> containing no <meta identifiers> *)
+exception = factor;
+
+(* The <integer> specifies the number of repetitions of the <primary> *)
+factor = [integer, '*'], primary;
+
+primary
+= optionalsequence | repeatedsequence | specialsequence 
+| groupedsequence | meta_identifier | terminalstring;
+
+(* The brackets [ and ] enclose symbols which are optional *)
+optionalsequence = '[', definitions_list, ']';
+
+(* The brackets { and } enclose symbols which may be repeated any number of times *)
+repeatedsequence = '{', definitions_list, '}';
+
+(* The brackets ( and ) allow any <definitions list> to be a <primary> *)
+groupedsequence = '(', definitions_list, ')';
+
+(* A <terminal string> represents the <characters> between the quote symbols *)
+terminalstring
+= "'", character - "'", {character - "'"}, "'"
+| '"', character - '"', {character - '"'}, '"';
+
+(* A <meta identifier> is the name of a syntactic element of the language being defined *)
+meta_identifier = letter, {letter | decimaldigit};
+
+integer = decimaldigit, {decimaldigit};
+
+(* The meaning of a <special sequence> is not defined in the standard metalanguage. *)
+specialsequence = '?', {character - '?'}, '?';
+
+(* A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence> *)
+comment = '*', {commentsymbol}, '*';
+
+commentsymbol
+= comment | terminalstring | specialsequence | character;
+
+letter = ? lowercase and uppercase letters ? ;
+
+decimaldigit = ? digits from 0 to 9 ? ;
+
+character = ? any character ?;
+```

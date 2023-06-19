@@ -35,7 +35,7 @@
                 "id": "ebnf",
                 "aliases": [
                     "EBNF",
-                    "Extended Backus–Naur Form"
+                    "Extended Backus-Naur Form"
                 ],
                 "extensions": [
                     ".ebnf"
@@ -48,6 +48,16 @@
                 "language": "ebnf",
                 "scopeName": "source.ebnf",
                 "path": "syntaxes/ebnf.tmLanguage.json"
+            },
+            {
+                "scopeName": "markdown.ebnf.codeblock",
+                "path": "./syntaxes/codeblock.json",
+                "injectTo": [
+                    "text.html.markdown"
+                ],
+                "embeddedLanguages": {
+                    "meta.embedded.block.ebnf": "ebnf"
+                }
             }
         ]
     },
