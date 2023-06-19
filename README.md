@@ -1,34 +1,37 @@
 # EBNF Tools for Visual Studio Code
 
-The EBNF Tools adds language support for the [EBNF](https://en.wikipedia.org/wiki/Extended_Backus%E2%80%93Naur_Form) syntax notation to Visual Studio Code. 
+EBNF Tools is a Visual Studio Code extension that adds robust language support for the Extended Backus-Naur Form (EBNF) syntax notation. This tool is designed to enhance your EBNF development workflow, offering features such as syntax highlighting, bracket matching, symbol renaming, and more.
 
-See the [changelog](CHANGELOG.md) for changes and roadmap.
+For updates and future improvements, see the [changelog](https://github.com/igochkov/vscode-ebnf/blob/master/CHANGELOG.md).
 
 ## Features
 
-- Syntax highlighting (colorization)
-- Syntax highlighting in Markdown fenced code blocks
-- Commenting blocks of code
-- Bracket matching
-- Rename symbol
+The EBNF Tools extension currently offers the following features:
 
-### Syntax highlighting (colorization)
+- **Syntax highlighting (colorization)**: Adds color to your EBNF syntax, making it easier to read and understand your code.
+
 ![Syntax highlighting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/syntax-highlighting.png)
 
-### Syntax highlighting in Markdown fenced code blocks
+- **Syntax highlighting in Markdown fenced code blocks**: Allows you to include EBNF code in your Markdown files with the same colorization as in your .ebnf files.
+
 ![Syntax highlighting in Markdown fenced code blocks](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/fenced-code-blocks.gif)
 
-### Commenting blocks of code
+- **Commenting blocks of code**: Quickly comment out blocks of EBNF code.
+
 ![Commenting blocks of code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/commenting-block.gif)
 
-### Bracket matching
-![Brace matching](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/brace-matching.gif)
+- **Bracket matching**: Easily match brackets and braces in your EBNF code.
 
-### Rename symbol
-![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/rename-symbol.gif) 
+![Bracket matching](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/brace-matching.gif)
 
-## Contribute
-Check out the [contribution guidelines](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/CONTRIBUTING.md) if you want to contribute to this project.
+- **Rename symbol**: Rename symbols throughout your EBNF code.
+
+![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/rename-symbol.gif)
+
+## Contributing
+
+We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/master/CONTRIBUTING.md).
 
 ## License
-[MIT](LICENSE)
+
+This project is licensed under the terms of the [MIT](LICENSE) license.
