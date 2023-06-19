@@ -7,12 +7,16 @@ See the [changelog](CHANGELOG.md) for changes and roadmap.
 ## Features
 
 - Syntax highlighting (colorization)
+- Syntax highlighting in Markdown fenced code blocks
 - Commenting blocks of code
 - Bracket matching
 - Rename symbol
 
 ### Syntax highlighting (colorization)
 ![Syntax highlighting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/syntax-highlighting.png)
+
+### Syntax highlighting in Markdown fenced code blocks
+![Syntax highlighting in Markdown fenced code blocks](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/fenced-code-blocks.png)
 
 ### Commenting blocks of code
 ![Commenting blocks of code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/master/docs/commenting-block.gif)
