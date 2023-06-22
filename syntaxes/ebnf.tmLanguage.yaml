@@ -64,7 +64,7 @@ repository:
         beginCaptures: 
             '1': { name: keyword.syntax.rule.ebnf }
             '2': { name: keyword.operator.assignment.ebnf }
-        end: ';'
+        end: '[;\.]'
         patterns:
             - include: '#definitions-list'
 

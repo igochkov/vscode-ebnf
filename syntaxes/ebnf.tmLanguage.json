@@ -78,7 +78,7 @@
           "name": "keyword.operator.assignment.ebnf"
         }
       },
-      "end": ";",
+      "end": "[;\\.]",
       "patterns": [
         {
           "include": "#definitions-list"

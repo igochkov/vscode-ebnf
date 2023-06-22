@@ -32,6 +32,7 @@ primary
 = optionalsequence | repeatedsequence | specialsequence 
 | groupedsequence | meta_identifier | terminalstring;
 
+(* region Sequences *)
 (* The brackets [ and ] enclose symbols which are optional *)
 optionalsequence = '[', definitions_list, ']';
 
@@ -40,6 +41,7 @@ repeatedsequence = '{', definitions_list, '}';
 
 (* The brackets ( and ) allow any <definitions list> to be a <primary> *)
 groupedsequence = '(', definitions_list, ')';
+(* endregion *)
 
 (* A <terminal string> represents the <characters> between the quote symbols *)
 terminalstring

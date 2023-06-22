@@ -12,7 +12,7 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Bracket matching**: Aids in matching brackets in your EBNF code.
 - [x] **Rename symbol**: Allows renaming of symbols throughout your EBNF code.
 - [x] **Go to Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
-- [ ] **Code folding**: Hide sections of your EBNF code for easier reading and navigation.
+- [x] **Code folding (by markers)**: Hide sections of your EBNF code for easier reading and navigation.
 - [ ] **Find All References / Peek Definition**: Find every reference to a specific symbol in your EBNF code.
 - [ ] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **Commands (Compile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
@@ -29,6 +29,7 @@ The change log lists the updates for each version that has been released on the 
 **Released on 2023-06-22**
 
 - _Go to definition_ feature implemented.
+- _Code folding (by markers)_ feature implemented.
 - Added support for syntax highlighting in _Markdown fenced code blocks_. Big thanks to [Brendan Doney](https://github.com/brdoney) for providing *[codeblock.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/codeblock.json)*
 
 ### Version 1.1
