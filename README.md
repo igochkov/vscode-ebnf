@@ -28,6 +28,10 @@ The EBNF Tools extension currently offers the following features:
 
 ![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/rename-symbol.gif)
 
+- **Go to Definition and Peek Definition**: Quickly navigate to the definition of a symbol in your EBNF.
+
+![Go to Definition](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/go-to-definition.gif)
+
 ## Contributing
 
 We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md).

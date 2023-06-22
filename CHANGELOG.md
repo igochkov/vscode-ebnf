@@ -11,8 +11,8 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Commenting blocks of code**: Allows you to quickly comment out blocks of EBNF code.
 - [x] **Bracket matching**: Aids in matching brackets in your EBNF code.
 - [x] **Rename symbol**: Allows renaming of symbols throughout your EBNF code.
+- [x] **Go to Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
 - [ ] **Code folding**: Hide sections of your EBNF code for easier reading and navigation.
-- [ ] **Go to Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
 - [ ] **Find All References / Peek Definition**: Find every reference to a specific symbol in your EBNF code.
 - [ ] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **Commands (Compile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
@@ -26,17 +26,18 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
 ### Version 1.2
-**Pending Release**
+**Released on 2023-06-22**
 
-- Added support for syntax highlighting in Markdown fenced code blocks.
+- _Go to definition_ feature implemented.
+- Added support for syntax highlighting in _Markdown fenced code blocks_. Big thanks to [Brendan Doney](https://github.com/brdoney) for providing *[codeblock.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/codeblock.json)*
 
 ### Version 1.1
 **Released on 2023-06-17**
 
-- Introduced the Rename symbol feature.
+- _Rename symbol_ feature implemented.
 - Fixed broken links to images.
 
 ### Version 1.0
 **Released on 2016-09-02**
 
-- Released initial version of the EBNF Tools extension, featuring syntax highlighting, code commenting, and bracket matching.
+- Initial version of the EBNF Tools extension, featuring _syntax highlighting_, _code commenting_, and _bracket matching_.
