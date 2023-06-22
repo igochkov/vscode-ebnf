@@ -29,6 +29,9 @@
     "bugs": {
         "url": "https://github.com/igochkov/vscode-ebnf/issues"
     },
+    "sponsor": {
+        "url": "https://github.com/sponsors/igochkov"
+    },
     "contributes": {
         "languages": [
             {
