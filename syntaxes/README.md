@@ -1,4 +1,4 @@
-The file [ebnf.tmLanguage.json](https://github.com/igochkov/vscode-ebnf/blob/master/syntaxes/ebnf.tmLanguage.json) is generated from [ebnf.tmLanguage.yaml](https://github.com/igochkov/vscode-ebnf/blob/master/syntaxes/ebnf.tmLanguage.yaml).
+The file [ebnf.tmLanguage.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/ebnf.tmLanguage.json) is generated from [ebnf.tmLanguage.yaml](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/ebnf.tmLanguage.yaml).
 
 To contribute to the langauge colorization:
 
