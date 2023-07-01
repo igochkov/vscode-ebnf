@@ -36,6 +36,10 @@ The EBNF Tools extension currently offers the following features:
 
 ![Code folding (by markers)](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/folding.gif)
 
+- **Find All References**: Find every reference to a specific symbol in your EBNF code.
+
+![Find All References](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/references.gif)
+
 ## Contributing
 
 We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md).

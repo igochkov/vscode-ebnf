@@ -11,9 +11,9 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Commenting blocks of code**: Allows you to quickly comment out blocks of EBNF code.
 - [x] **Bracket matching**: Aids in matching brackets in your EBNF code.
 - [x] **Rename symbol**: Allows renaming of symbols throughout your EBNF code.
-- [x] **Go to Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
+- [x] **Go to Definition / Peek Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
 - [x] **Code folding (by markers)**: Hide sections of your EBNF code for easier reading and navigation.
-- [ ] **Find All References / Peek Definition**: Find every reference to a specific symbol in your EBNF code.
+- [x] **Find All References**: Find every reference to a specific symbol in your EBNF code.
 - [ ] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **Commands (Compile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
 - [ ] **IntelliSense - List Members**: Get a list of members for a given symbol.
@@ -25,17 +25,22 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
+### Version 1.3
+**Pending Release**
+
+- _Find All References_
+
 ### Version 1.2
 **Released on 2023-06-22**
 
-- _Go to definition_ feature implemented.
-- _Code folding (by markers)_ feature implemented.
+- _Go to definition_
+- _Code folding (by markers)_
 - Added support for syntax highlighting in _Markdown fenced code blocks_. Big thanks to [Brendan Doney](https://github.com/brdoney) for providing *[codeblock.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/codeblock.json)*
 
 ### Version 1.1
 **Released on 2023-06-17**
 
-- _Rename symbol_ feature implemented.
+- _Rename symbol_
 - Fixed broken links to images.
 
 ### Version 1.0
