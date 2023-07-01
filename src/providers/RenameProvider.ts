@@ -1,34 +1,26 @@
-import { TextDocument, Position, CancellationToken, Range, ProviderResult, WorkspaceEdit, RenameProvider, TextEdit } from 'vscode'
-import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener'
-
-import { EBNFLexer } from '../parser/EBNFLexer';
-import { EBNFParser } from '../parser/EBNFParser';
+import * as vscode from "vscode";
 import { ISymbolInfo } from '../ISymbolInfo';
-import { IdentifierListener } from '../listeners/IdentifierListener';
+import { ParserContext } from "../ParserContext";
 
-export class EBNFRenameProvider implements RenameProvider {
+export class EBNFRenameProvider implements vscode.RenameProvider
+{
     public provideRenameEdits(
-        document: TextDocument,
-        position: Position,
+        document: vscode.TextDocument,
+        position: vscode.Position,
         newName: string,
-        _: CancellationToken): ProviderResult<WorkspaceEdit> {
-
-        const content = document.getText();
-        const inputStream = CharStreams.fromString(content);
-        const lexer = new EBNFLexer(inputStream);
-        const tokenStream = new CommonTokenStream(lexer);
-        const parser = new EBNFParser(tokenStream);
-        const listener = new IdentifierListener();
-        parser.addParseListener(listener as ParseTreeListener);
-
-        parser.syntax();
+        _: vscode.CancellationToken): vscode.ProviderResult<vscode.WorkspaceEdit>
+    {
+        if (!ParserContext.listener)
+        {
+            ParserContext.parse(document);
+        }
 
         var result: ISymbolInfo[] = [];
-        for (var symbol of listener.symbols) {
+        for (var symbol of ParserContext.listener.symbols)
+        {
             result.push({
                 name: symbol.text,
-                range: new Range(
+                range: new vscode.Range(
                     symbol.line - 1,
                     symbol.charPositionInLine,
                     symbol.line - 1,
@@ -40,14 +32,15 @@ export class EBNFRenameProvider implements RenameProvider {
         var currentSymbol: ISymbolInfo
             = result.find(symbol => symbol.range.contains(position));
 
-        var edits: TextEdit[] = [];
-        if (currentSymbol !== undefined) {
+        var edits: vscode.TextEdit[] = [];
+        if (currentSymbol !== undefined)
+        {
             edits
                 = result.filter(symbol => symbol.name == currentSymbol.name)
-                    .map(symbol => new TextEdit(symbol.range, newName));
+                    .map(symbol => new vscode.TextEdit(symbol.range, newName));
         }
 
-        var workspaceEdit = new WorkspaceEdit();
+        var workspaceEdit = new vscode.WorkspaceEdit();
         workspaceEdit.set(document.uri, edits);
         return workspaceEdit;
     }

@@ -1,11 +1,5 @@
 import * as vscode from "vscode";
-import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
-
-import { EBNFLexer } from '../parser/EBNFLexer';
-import { EBNFParser } from '../parser/EBNFParser';
-import { ISymbolInfo } from '../ISymbolInfo';
-import { IdentifierListener } from '../listeners/IdentifierListener';
+import { ParserContext } from "../ParserContext";
 
 export class EBNFReferenceProvider implements vscode.ReferenceProvider
 {
@@ -19,18 +13,13 @@ export class EBNFReferenceProvider implements vscode.ReferenceProvider
             return;
         }
 
-        const content = document.getText();
-        const inputStream = CharStreams.fromString(content);
-        const lexer = new EBNFLexer(inputStream);
-        const tokenStream = new CommonTokenStream(lexer);
-        const parser = new EBNFParser(tokenStream);
-        const listener = new IdentifierListener();
-        parser.addParseListener(listener as ParseTreeListener);
-
-        parser.syntax();
+        if (!ParserContext.listener)
+        {
+            ParserContext.parse(document);
+        }
 
         var result: vscode.Location[]
-            = listener.symbols.filter(symbol => symbol.text == text)
+            = ParserContext.listener.symbols.filter(symbol => symbol.text === text)
                 .map(ref => new vscode.Location(document.uri,
                     new vscode.Range(
                         ref.line - 1,

@@ -1,38 +1,20 @@
-import { DocumentFilter, languages, workspace, TextDocumentChangeEvent, ExtensionContext, TextDocument } from 'vscode';
+import * as vscode from 'vscode';
 import { EBNFRenameProvider } from './providers/RenameProvider';
 import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
-import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
+import { EBNFReferenceProvider } from './providers/ReferenceProvider';
+import { ParserContext } from './ParserContext';
 
-export function activate(ctx: ExtensionContext): void
+export function activate(context: vscode.ExtensionContext) 
 {
-    const EbnfSelector: DocumentFilter = { language: 'ebnf', scheme: 'file' };
+    const EbnfSelector: vscode.DocumentFilter = { language: 'ebnf', scheme: 'file' };
 
-    ctx.subscriptions.push(languages.registerRenameProvider(EbnfSelector, new EBNFRenameProvider()));
-    ctx.subscriptions.push(languages.registerDefinitionProvider(EbnfSelector, new EBNFDefinitionProvider()));
-    ctx.subscriptions.push(languages.registerReferenceProvider(EbnfSelector, new EBNFReferenceProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(EbnfSelector, new EBNFRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerDefinitionProvider(EbnfSelector, new EBNFDefinitionProvider()));
+    context.subscriptions.push(vscode.languages.registerReferenceProvider(EbnfSelector, new EBNFReferenceProvider()));
 
-    // workspace.onDidOpenTextDocument(OnDocumentOpen);
-    // workspace.onDidChangeTextDocument(OnDocumentChange);
-    // workspace.onDidCloseTextDocument(OnDocumentClose);
+    context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(ParserContext.OnDocumentOpen));
+    context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(ParserContext.OnDocumentChange));
+    context.subscriptions.push(vscode.workspace.onDidCloseTextDocument(ParserContext.OnDocumentClose));
 }
 
-// function OnDocumentOpen(document: TextDocument)
-// {
-//     // TODO: Not implemented yet
-//     // if the file is ebnf
-//     // parse and cache AST 
-// }
-
-// function OnDocumentChange(event: TextDocumentChangeEvent)
-// {
-//     // TODO: Not implemented yet
-//     // if changes and file is ebnf
-//     // re-parse
-// }
-
-// function OnDocumentClose(document: TextDocument)
-// {
-//     // TODO: Not implemented yet
-//     // if the file is ebnf
-//     // remove from cache
-// }
+export function deactivate() { }
