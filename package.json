@@ -15,7 +15,8 @@
     "license": "MIT",
     "categories": [
         "Programming Languages",
-        "Education"
+        "Education", 
+        "Formatters"
     ],
     "keywords": [
         "ebnf",
@@ -62,8 +63,18 @@
                     "meta.embedded.block.ebnf": "ebnf"
                 }
             }
-        ]
-    },
+        ],
+        "configuration": {
+            "title": "EBNF",
+            "properties": {
+                "ebnf.format.enable" : {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Enable/disable default EBNF formatter."
+                }
+            }
+        }
+    }, 
     "dependencies": {
         "@types/vscode": "^1.79.1",
         "antlr4ts": "^0.5.0-alpha.4",
