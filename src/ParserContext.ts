@@ -7,22 +7,24 @@ import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
 
 export class ParserContext {
+    public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
+    public static ebnfConfigurationName: string = "EBNF";
     public static listener: ASTListener;
 
     public static OnDocumentOpen(document: vscode.TextDocument) {
-        if (ParserContext.isEBNFFile) {
+        if (ParserContext.isEBNFFile(document)) {
             ParserContext.parse(document);
         }
     }
 
     public static OnDocumentChange(event: vscode.TextDocumentChangeEvent) {
-        if (ParserContext.isEBNFFile) {
+        if (ParserContext.isEBNFFile(event.document)) {
             ParserContext.listener = undefined;
         }
     }
 
     public static OnDocumentClose(document: vscode.TextDocument) {
-        if (ParserContext.isEBNFFile) {
+        if (ParserContext.isEBNFFile(document)) {
             ParserContext.listener = undefined;
         }
     }
@@ -32,7 +34,8 @@ export class ParserContext {
             return false;
         }
 
-        return (document.languageId === "ebnf" && document.uri.scheme === "file");
+        return (document.languageId === ParserContext.ebnfSelector.language
+             && document.uri.scheme === ParserContext.ebnfSelector.scheme);
     }
 
     public static parse(document: vscode.TextDocument): void {

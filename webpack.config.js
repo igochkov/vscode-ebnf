@@ -15,12 +15,12 @@ const config = {
     libraryTarget: 'commonjs2',
     devtoolModuleFilenameTemplate: '../[resource-path]'
   },
-  devtool: 'source-map',
+  devtool: false,
   externals: {
     vscode: 'commonjs vscode'
   },
   resolve: {
-    mainFields: ['browser', 'module', 'main'],
+    mainFields: ['main'],
     extensions: ['.ts', '.js']
   },
   module: {
