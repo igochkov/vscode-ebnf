@@ -148,14 +148,11 @@
         "package": "webpack --mode production --devtool hidden-nosources-source-map"
     },
     "devDependencies": {
-        "ts-loader": "^9.4.3",
-        "webpack": "^5.87.0",
+        "ts-loader": "^9.4.4",
+        "webpack": "^5.88.1",
         "webpack-cli": "^5.1.4",
-        "@types/node": "^20.3.1",
+        "@types/node": "^20.3.3",
         "@types/vscode": "^1.79.1",
         "antlr4ts-cli": "^0.5.0-alpha.4"
-    },
-    "extensionDependencies": [
-        "mike-lischke.vscode-antlr4"
-    ]
+    }
 }

@@ -2,16 +2,29 @@
     "version": "0.1.0",
     "configurations": [
         {
-            "name": "Launch Extension",
+            "name": "Development",
             "type": "extensionHost",
             "request": "launch",
             "runtimeExecutable": "${execPath}",
             "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
             "sourceMaps": true,
             "outFiles": [
+                "${workspaceRoot}/out/**/*.js"
+            ],
+            "preLaunchTask": "Compile extension",
+            "trace": false
+        },
+        {
+            "name": "Production",
+            "type": "extensionHost",
+            "request": "launch",
+            "runtimeExecutable": "${execPath}",
+            "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
+            "sourceMaps": false,
+            "outFiles": [
                 "${workspaceRoot}/dist/**/*.js"
             ],
-            "preLaunchTask": "compile",
+            "preLaunchTask": "Package Extension",
             "trace": false
         }
     ]
