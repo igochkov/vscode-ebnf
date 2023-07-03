@@ -24,6 +24,8 @@ import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
 import * as Utils from "antlr4ts/misc/Utils";
 
 import { EBNFParserListener } from "./EBNFParserListener";
+import { EBNFParserVisitor } from "./EBNFParserVisitor";
+
 
 export class EBNFParser extends Parser {
 	public static readonly IDENTIFIER = 1;
@@ -781,6 +783,14 @@ export class SyntaxContext extends ParserRuleContext {
 			listener.exitSyntax(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitSyntax) {
+			return visitor.visitSyntax(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -806,6 +816,14 @@ export class SyntaxRuleContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitSyntaxRule) {
 			listener.exitSyntaxRule(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitSyntaxRule) {
+			return visitor.visitSyntaxRule(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -847,6 +865,14 @@ export class DefinitionsListContext extends ParserRuleContext {
 			listener.exitDefinitionsList(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitDefinitionsList) {
+			return visitor.visitDefinitionsList(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -886,6 +912,14 @@ export class SingleDefinitionContext extends ParserRuleContext {
 			listener.exitSingleDefinition(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitSingleDefinition) {
+			return visitor.visitSingleDefinition(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -914,6 +948,14 @@ export class TermContext extends ParserRuleContext {
 			listener.exitTerm(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitTerm) {
+			return visitor.visitTerm(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -936,6 +978,14 @@ export class ExceptionRuleContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitExceptionRule) {
 			listener.exitExceptionRule(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitExceptionRule) {
+			return visitor.visitExceptionRule(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -962,6 +1012,14 @@ export class FactorContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitFactor) {
 			listener.exitFactor(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitFactor) {
+			return visitor.visitFactor(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -1004,6 +1062,14 @@ export class PrimaryContext extends ParserRuleContext {
 			listener.exitPrimary(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitPrimary) {
+			return visitor.visitPrimary(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -1023,6 +1089,14 @@ export class EmptyContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitEmpty) {
 			listener.exitEmpty(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitEmpty) {
+			return visitor.visitEmpty(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -1051,6 +1125,14 @@ export class OptionalSequenceContext extends ParserRuleContext {
 			listener.exitOptionalSequence(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitOptionalSequence) {
+			return visitor.visitOptionalSequence(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -1077,6 +1159,14 @@ export class RepeatedSequenceContext extends ParserRuleContext {
 			listener.exitRepeatedSequence(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitRepeatedSequence) {
+			return visitor.visitRepeatedSequence(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -1101,6 +1191,14 @@ export class GroupedSequenceContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitGroupedSequence) {
 			listener.exitGroupedSequence(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitGroupedSequence) {
+			return visitor.visitGroupedSequence(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }
@@ -1142,6 +1240,14 @@ export class TerminalStringContext extends ParserRuleContext {
 			listener.exitTerminalString(this);
 		}
 	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitTerminalString) {
+			return visitor.visitTerminalString(this);
+		} else {
+			return visitor.visitChildren(this);
+		}
+	}
 }
 
 
@@ -1170,6 +1276,14 @@ export class SpecialSequenceContext extends ParserRuleContext {
 	public exitRule(listener: EBNFParserListener): void {
 		if (listener.exitSpecialSequence) {
 			listener.exitSpecialSequence(this);
+		}
+	}
+	// @Override
+	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
+		if (visitor.visitSpecialSequence) {
+			return visitor.visitSpecialSequence(this);
+		} else {
+			return visitor.visitChildren(this);
 		}
 	}
 }

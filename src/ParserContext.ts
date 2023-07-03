@@ -6,46 +6,36 @@ import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
 
-export class ParserContext
-{
+export class ParserContext {
     public static listener: ASTListener;
 
-    public static OnDocumentOpen(document: vscode.TextDocument)
-    {
-        if (ParserContext.isEBNFFile)
-        {
+    public static OnDocumentOpen(document: vscode.TextDocument) {
+        if (ParserContext.isEBNFFile) {
             ParserContext.parse(document);
         }
     }
 
-    public static OnDocumentChange(event: vscode.TextDocumentChangeEvent)
-    {
-        if (ParserContext.isEBNFFile)
-        {
+    public static OnDocumentChange(event: vscode.TextDocumentChangeEvent) {
+        if (ParserContext.isEBNFFile) {
             ParserContext.listener = undefined;
         }
     }
 
-    public static OnDocumentClose(document: vscode.TextDocument)
-    {
-        if (ParserContext.isEBNFFile)
-        {
+    public static OnDocumentClose(document: vscode.TextDocument) {
+        if (ParserContext.isEBNFFile) {
             ParserContext.listener = undefined;
         }
     }
 
-    private static isEBNFFile(document: vscode.TextDocument): boolean
-    {
-        if (!document)
-        {
+    private static isEBNFFile(document: vscode.TextDocument): boolean {
+        if (!document) {
             return false;
         }
 
         return (document.languageId === "ebnf" && document.uri.scheme === "file");
     }
 
-    public static parse(document: vscode.TextDocument): void
-    {
+    public static parse(document: vscode.TextDocument): void {
         const content = document.getText();
         const inputStream = CharStreams.fromString(content);
         const lexer = new EBNFLexer(inputStream);

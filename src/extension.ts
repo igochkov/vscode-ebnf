@@ -8,8 +8,7 @@ import { EBNFFormattingProvider } from './providers/FormattingProvider';
 const ebnfSelector: vscode.DocumentFilter = { language: 'ebnf', scheme: 'file' };
 let formattingRegistrations: vscode.Disposable;
 
-export function activate(context: vscode.ExtensionContext) 
-{
+export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerRenameProvider(ebnfSelector, new EBNFRenameProvider()));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(ebnfSelector, new EBNFDefinitionProvider()));
     context.subscriptions.push(vscode.languages.registerReferenceProvider(ebnfSelector, new EBNFReferenceProvider()));
@@ -18,10 +17,9 @@ export function activate(context: vscode.ExtensionContext)
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(ParserContext.OnDocumentChange));
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument(ParserContext.OnDocumentClose));
 
-    const settings = vscode.workspace.getConfiguration(ebnfSelector.language);
+    const settings = vscode.workspace.getConfiguration("EBNF");
 
-    if (settings.format.enable)
-    {
+    if (settings.format.enable) {
         formattingRegistrations = registerFormatting();
     }
 
@@ -30,24 +28,20 @@ export function activate(context: vscode.ExtensionContext)
 
 export function deactivate() { }
 
-function handleSettingChange(event: vscode.ConfigurationChangeEvent)
-{
-    if (event.affectsConfiguration(ebnfSelector.language))
-    {
-        const settings = vscode.workspace.getConfiguration(ebnfSelector.language);
+function handleSettingChange(event: vscode.ConfigurationChangeEvent) {
+    if (event.affectsConfiguration(ebnfSelector.language)) {
+        const settings = vscode.workspace.getConfiguration("EBNF");
 
-        if (settings.format.enable)
-        {
+        if (settings.format.enable) {
             formattingRegistrations = registerFormatting();
         }
-        else { 
+        else {
             formattingRegistrations.dispose();
         }
     }
 }
 
-function registerFormatting(): vscode.Disposable
-{
+function registerFormatting(): vscode.Disposable {
     const formattingProvider = new EBNFFormattingProvider();
 
     return vscode.Disposable.from(

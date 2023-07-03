@@ -1,7 +1,6 @@
 import { Range } from 'vscode';
 
-export interface ISymbolInfo
-{
+export interface ISymbolInfo {
     name: string;
     range: Range;
 }

@@ -67,10 +67,71 @@
         "configuration": {
             "title": "EBNF",
             "properties": {
-                "ebnf.format.enable" : {
+                "EBNF.format.enable" : {
                     "type": "boolean",
                     "default": true,
-                    "description": "Enable/disable default EBNF formatter."
+                    "description": "Enable/disable default EBNF formatter.",
+                    "order": 0
+                },
+                "EBNF.format.definingSymbolOnNewLine" : {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Place defining symbol `\"=\"` on new line.",
+                    "order": 1
+                },
+                "EBNF.format.indentDefiningSymbol" : {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Indent defining symbol `\"=\"` when on new line.\n\n`#editor.tabSize#` and `#editor.insertSpaces#` can be configured in the **Commonly Used** section.",
+                    "order": 2                   
+                },
+                "EBNF.format.terminatorSymbolOnNewLine" : {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Place terminator symbol (`\";\"` or `\".\"`) on new line.",
+                    "order": 3
+                },
+                "EBNF.format.definitionSeparatorSymbolOnNewLine" : {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Place definition separator symbol (`\"|\"`, `\"/\"` or `\"!\"`)  on new line.",
+                    "order": 4
+                },
+                "EBNF.format.insertSpaceBeforeConcatenateSymbol" : {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Insert space before concatenate symbol `\",\"`.",
+                    "order": 5
+                },
+                "EBNF.format.insertSpaceAtSequenceSymbols" : {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Insert space at sequence symbols (`\"{\"`, `\"}\"`, `\"(\"`, `\")\"`, `\"[\"`, `\"]\"`).",
+                    "order": 6
+                },
+                "EBNF.format.defaultDefinitionSeparatorSymbol" : {
+                    "type": "string",
+                    "default": "|",
+                    "enum": ["|", "/", "!"],
+                    "order": 10
+                },
+                "EBNF.format.defaultOptionSymbols" : {
+                    "type": "string",
+                    "default": "[ ]",
+                    "enum": ["[ ]", "(/ /)"],
+                    "order": 11
+                },
+                "EBNF.format.defaultRepeatSymbols" : {
+                    "type": "string",
+                    "default": "{ }",
+                    "enum": ["{ }", "(: :)"],
+                    "order": 12
+                },
+                "EBNF.format.defaultTerminatorSymbol" : {
+                    "type": "string",
+                    "default": ";",
+                    "enum": [";", "."],
+                    "order": 13
                 }
             }
         }

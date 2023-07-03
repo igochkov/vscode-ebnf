@@ -1,20 +1,16 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
 
-export class EBNFReferenceProvider implements vscode.ReferenceProvider
-{
-    public provideReferences(document: vscode.TextDocument, position: vscode.Position, context: vscode.ReferenceContext, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location[]>
-    {
+export class EBNFReferenceProvider implements vscode.ReferenceProvider {
+    public provideReferences(document: vscode.TextDocument, position: vscode.Position, context: vscode.ReferenceContext, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location[]> {
         const range = document.getWordRangeAtPosition(position);
         const text = document.getText(range);
 
-        if (!text)
-        {
+        if (!text) {
             return;
         }
 
-        if (!ParserContext.listener)
-        {
+        if (!ParserContext.listener) {
             ParserContext.parse(document);
         }
 
