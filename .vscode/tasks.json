@@ -2,7 +2,7 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "compile",
+            "label": "Compile extension",
             "type": "shell",
             "command": "tsc",
             "args": [
@@ -18,6 +18,28 @@
                 "panel": "shared",
                 "focus": true
             }
+        },
+        {
+          "label": "Build ANTLR4 Grammar",
+          "type": "shell",
+          "command": "antlr4ts",
+          "args": [
+            "-visitor",
+            "-listener",
+            "-o",
+            "src/parser",
+            "grammar/EBNFLexer.g4",
+            "grammar/EBNFParser.g4"
+          ],
+          "group": {
+            "kind": "build",
+            "isDefault": true
+          },
+          "presentation": {
+            "reveal": "always",
+            "panel": "shared",
+            "focus": true
+          }
         }
     ]
 }
