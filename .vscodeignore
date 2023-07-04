@@ -1,6 +1,8 @@
 .vscode
 .gitignore
 node_modules
+grammar/
+examples/
 test/
 docs/
 src/
