@@ -14,10 +14,10 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Go to Definition / Peek Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
 - [x] **Code folding (by markers)**: Hide sections of your EBNF code for easier reading and navigation.
 - [x] **Find All References**: Find every reference to a specific symbol in your EBNF code.
-- [ ] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
-- [ ] **Commands (Compile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
+- [x] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **IntelliSense - List Members**: Get a list of members for a given symbol.
 - [ ] **IntelliSense - Complete Word**: Automatically complete words as you type them.
+- [ ] **Commands (Transpile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
 - [ ] **Railroad diagram generation**: Generate railroad diagrams from your EBNF code for visualization and documentation purposes.
 
 
@@ -26,9 +26,10 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
 ### Version 1.3
-**Pending Release**
+**Released on 2023-07-04**
 
 - _Find All References_
+- _Formatting_ and formatting settings
 
 ### Version 1.2
 **Released on 2023-06-22**

@@ -40,6 +40,10 @@ The EBNF Tools extension currently offers the following features:
 
 ![Find All References](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/references.gif)
 
+- **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
+
+![Formatting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/formatting.gif)
+
 ## Contributing
 
 We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md).
