@@ -1,4 +1,4 @@
-// Generated from grammar/EBNFParser.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from c:\Users\Ivo\Desktop\vscode-ebnf\grammar\EBNFParser.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -127,7 +127,7 @@ export class EBNFParser extends Parser {
 				this.state = 31;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			} while (_la === EBNFParser.IDENTIFIER);
+			} while (_la === EBNFParser.IDENTIFIER || _la === EBNFParser.COMMENT);
 			}
 		}
 		catch (re) {
@@ -148,16 +148,31 @@ export class EBNFParser extends Parser {
 	public syntaxRule(): SyntaxRuleContext {
 		let _localctx: SyntaxRuleContext = new SyntaxRuleContext(this._ctx, this.state);
 		this.enterRule(_localctx, 2, EBNFParser.RULE_syntaxRule);
+		let _la: number;
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 33;
-			this.match(EBNFParser.IDENTIFIER);
-			this.state = 34;
-			this.match(EBNFParser.DEFINING_SYMBOL);
-			this.state = 35;
-			this.definitionsList();
 			this.state = 36;
+			this._errHandler.sync(this);
+			_la = this._input.LA(1);
+			while (_la === EBNFParser.COMMENT) {
+				{
+				{
+				this.state = 33;
+				this.match(EBNFParser.COMMENT);
+				}
+				}
+				this.state = 38;
+				this._errHandler.sync(this);
+				_la = this._input.LA(1);
+			}
+			this.state = 39;
+			this.match(EBNFParser.IDENTIFIER);
+			this.state = 40;
+			this.match(EBNFParser.DEFINING_SYMBOL);
+			this.state = 41;
+			this.definitionsList();
+			this.state = 42;
 			this.match(EBNFParser.TERMINATOR_SYMBOL);
 			}
 		}
@@ -183,21 +198,21 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 38;
+			this.state = 44;
 			this.singleDefinition();
-			this.state = 43;
+			this.state = 49;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === EBNFParser.DEFINITION_SEPARATOR_SYMBOL) {
 				{
 				{
-				this.state = 39;
+				this.state = 45;
 				this.match(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
-				this.state = 40;
+				this.state = 46;
 				this.singleDefinition();
 				}
 				}
-				this.state = 45;
+				this.state = 51;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -225,21 +240,21 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 46;
+			this.state = 52;
 			this.term();
-			this.state = 51;
+			this.state = 57;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			while (_la === EBNFParser.CONCATENATE_SYMBOL) {
 				{
 				{
-				this.state = 47;
+				this.state = 53;
 				this.match(EBNFParser.CONCATENATE_SYMBOL);
-				this.state = 48;
+				this.state = 54;
 				this.term();
 				}
 				}
-				this.state = 53;
+				this.state = 59;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			}
@@ -267,16 +282,16 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 54;
+			this.state = 60;
 			this.factor();
-			this.state = 57;
+			this.state = 63;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === EBNFParser.EXCEPT_SYMBOL) {
 				{
-				this.state = 55;
+				this.state = 61;
 				this.match(EBNFParser.EXCEPT_SYMBOL);
-				this.state = 56;
+				this.state = 62;
 				this.exceptionRule();
 				}
 			}
@@ -304,7 +319,7 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 59;
+			this.state = 65;
 			this.factor();
 			}
 		}
@@ -330,19 +345,19 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 63;
+			this.state = 69;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			if (_la === EBNFParser.INTEGER) {
 				{
-				this.state = 61;
+				this.state = 67;
 				this.match(EBNFParser.INTEGER);
-				this.state = 62;
+				this.state = 68;
 				this.match(EBNFParser.REPETITION_SYMBOL);
 				}
 			}
 
-			this.state = 65;
+			this.state = 71;
 			this.primary();
 			}
 		}
@@ -365,50 +380,50 @@ export class EBNFParser extends Parser {
 		let _localctx: PrimaryContext = new PrimaryContext(this._ctx, this.state);
 		this.enterRule(_localctx, 14, EBNFParser.RULE_primary);
 		try {
-			this.state = 74;
+			this.state = 80;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case EBNFParser.START_OPTION_SYMBOL:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 67;
+				this.state = 73;
 				this.optionalSequence();
 				}
 				break;
 			case EBNFParser.START_REPEAT_SYMBOL:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 68;
+				this.state = 74;
 				this.repeatedSequence();
 				}
 				break;
-			case EBNFParser.SPECIAL_SEQUENCE_SYMBOL:
+			case EBNFParser.START_GROUP_SYMBOL:
 				this.enterOuterAlt(_localctx, 3);
 				{
-				this.state = 69;
-				this.specialSequence();
-				}
-				break;
-			case EBNFParser.START_GROUP_SYMBOL:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 70;
+				this.state = 75;
 				this.groupedSequence();
 				}
 				break;
 			case EBNFParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 5);
+				this.enterOuterAlt(_localctx, 4);
 				{
-				this.state = 71;
+				this.state = 76;
 				this.match(EBNFParser.IDENTIFIER);
 				}
 				break;
 			case EBNFParser.FIRST_QUOTE_SYMBOL:
 			case EBNFParser.SECOND_QUOTE_SYMBOL:
+				this.enterOuterAlt(_localctx, 5);
+				{
+				this.state = 77;
+				this.terminalString();
+				}
+				break;
+			case EBNFParser.SPECIAL_SEQUENCE_SYMBOL:
 				this.enterOuterAlt(_localctx, 6);
 				{
-				this.state = 72;
-				this.terminalString();
+				this.state = 78;
+				this.specialSequence();
 				}
 				break;
 			case EBNFParser.CONCATENATE_SYMBOL:
@@ -420,7 +435,7 @@ export class EBNFParser extends Parser {
 			case EBNFParser.TERMINATOR_SYMBOL:
 				this.enterOuterAlt(_localctx, 7);
 				{
-				this.state = 73;
+				this.state = 79;
 				this.empty();
 				}
 				break;
@@ -473,11 +488,11 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 78;
+			this.state = 84;
 			this.match(EBNFParser.START_OPTION_SYMBOL);
-			this.state = 79;
+			this.state = 85;
 			this.definitionsList();
-			this.state = 80;
+			this.state = 86;
 			this.match(EBNFParser.END_OPTION_SYMBOL);
 			}
 		}
@@ -502,11 +517,11 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 82;
+			this.state = 88;
 			this.match(EBNFParser.START_REPEAT_SYMBOL);
-			this.state = 83;
+			this.state = 89;
 			this.definitionsList();
-			this.state = 84;
+			this.state = 90;
 			this.match(EBNFParser.END_REPEAT_SYMBOL);
 			}
 		}
@@ -531,11 +546,11 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 86;
+			this.state = 92;
 			this.match(EBNFParser.START_GROUP_SYMBOL);
-			this.state = 87;
+			this.state = 93;
 			this.definitionsList();
-			this.state = 88;
+			this.state = 94;
 			this.match(EBNFParser.END_GROUP_SYMBOL);
 			}
 		}
@@ -559,21 +574,21 @@ export class EBNFParser extends Parser {
 		this.enterRule(_localctx, 24, EBNFParser.RULE_terminalString);
 		let _la: number;
 		try {
-			this.state = 104;
+			this.state = 110;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case EBNFParser.FIRST_QUOTE_SYMBOL:
 				this.enterOuterAlt(_localctx, 1);
 				{
-				this.state = 90;
+				this.state = 96;
 				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
-				this.state = 92;
+				this.state = 98;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				do {
 					{
 					{
-					this.state = 91;
+					this.state = 97;
 					_la = this._input.LA(1);
 					if (_la <= 0 || (_la === EBNFParser.FIRST_QUOTE_SYMBOL)) {
 					this._errHandler.recoverInline(this);
@@ -587,26 +602,26 @@ export class EBNFParser extends Parser {
 					}
 					}
 					}
-					this.state = 94;
+					this.state = 100;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-				this.state = 96;
+				this.state = 102;
 				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
 				}
 				break;
 			case EBNFParser.SECOND_QUOTE_SYMBOL:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 97;
+				this.state = 103;
 				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
-				this.state = 99;
+				this.state = 105;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 				do {
 					{
 					{
-					this.state = 98;
+					this.state = 104;
 					_la = this._input.LA(1);
 					if (_la <= 0 || (_la === EBNFParser.SECOND_QUOTE_SYMBOL)) {
 					this._errHandler.recoverInline(this);
@@ -620,11 +635,11 @@ export class EBNFParser extends Parser {
 					}
 					}
 					}
-					this.state = 101;
+					this.state = 107;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
 				} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-				this.state = 103;
+				this.state = 109;
 				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
 				}
 				break;
@@ -654,15 +669,15 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 106;
+			this.state = 112;
 			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
-			this.state = 108;
+			this.state = 114;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 107;
+				this.state = 113;
 				_la = this._input.LA(1);
 				if (_la <= 0 || (_la === EBNFParser.SPECIAL_SEQUENCE_SYMBOL)) {
 				this._errHandler.recoverInline(this);
@@ -676,11 +691,11 @@ export class EBNFParser extends Parser {
 				}
 				}
 				}
-				this.state = 110;
+				this.state = 116;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
 			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-			this.state = 112;
+			this.state = 118;
 			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
 			}
 		}
@@ -700,51 +715,54 @@ export class EBNFParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x15u\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x15{\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x06\x02 \n\x02\r\x02\x0E\x02!\x03\x03" +
-		"\x03\x03\x03\x03\x03\x03\x03\x03\x03\x04\x03\x04\x03\x04\x07\x04,\n\x04" +
-		"\f\x04\x0E\x04/\v\x04\x03\x05\x03\x05\x03\x05\x07\x054\n\x05\f\x05\x0E" +
-		"\x057\v\x05\x03\x06\x03\x06\x03\x06\x05\x06<\n\x06\x03\x07\x03\x07\x03" +
-		"\b\x03\b\x05\bB\n\b\x03\b\x03\b\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03" +
-		"\t\x05\tM\n\t\x03\n\x03\n\x03\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03" +
-		"\f\x03\r\x03\r\x03\r\x03\r\x03\x0E\x03\x0E\x06\x0E_\n\x0E\r\x0E\x0E\x0E" +
-		"`\x03\x0E\x03\x0E\x03\x0E\x06\x0Ef\n\x0E\r\x0E\x0E\x0Eg\x03\x0E\x05\x0E" +
-		"k\n\x0E\x03\x0F\x03\x0F\x06\x0Fo\n\x0F\r\x0F\x0E\x0Fp\x03\x0F\x03\x0F" +
-		"\x03\x0F\x02\x02\x02\x10\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E" +
-		"\x02\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x05\x03" +
-		"\x02\x11\x11\x03\x02\x12\x12\x03\x02\x13\x13\x02u\x02\x1F\x03\x02\x02" +
-		"\x02\x04#\x03\x02\x02\x02\x06(\x03\x02\x02\x02\b0\x03\x02\x02\x02\n8\x03" +
-		"\x02\x02\x02\f=\x03\x02\x02\x02\x0EA\x03\x02\x02\x02\x10L\x03\x02\x02" +
-		"\x02\x12N\x03\x02\x02\x02\x14P\x03\x02\x02\x02\x16T\x03\x02\x02\x02\x18" +
-		"X\x03\x02\x02\x02\x1Aj\x03\x02\x02\x02\x1Cl\x03\x02\x02\x02\x1E \x05\x04" +
-		"\x03\x02\x1F\x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x1F\x03\x02\x02\x02" +
-		"!\"\x03\x02\x02\x02\"\x03\x03\x02\x02\x02#$\x07\x03\x02\x02$%\x07\x06" +
-		"\x02\x02%&\x05\x06\x04\x02&\'\x07\x10\x02\x02\'\x05\x03\x02\x02\x02(-" +
-		"\x05\b\x05\x02)*\x07\x07\x02\x02*,\x05\b\x05\x02+)\x03\x02\x02\x02,/\x03" +
-		"\x02\x02\x02-+\x03\x02\x02\x02-.\x03\x02\x02\x02.\x07\x03\x02\x02\x02" +
-		"/-\x03\x02\x02\x0205\x05\n\x06\x0212\x07\x05\x02\x0224\x05\n\x06\x023" +
-		"1\x03\x02\x02\x0247\x03\x02\x02\x0253\x03\x02\x02\x0256\x03\x02\x02\x02" +
-		"6\t\x03\x02\x02\x0275\x03\x02\x02\x028;\x05\x0E\b\x029:\x07\x0E\x02\x02" +
-		":<\x05\f\x07\x02;9\x03\x02\x02\x02;<\x03\x02\x02\x02<\v\x03\x02\x02\x02" +
-		"=>\x05\x0E\b\x02>\r\x03\x02\x02\x02?@\x07\x04\x02\x02@B\x07\x0F\x02\x02" +
-		"A?\x03\x02\x02\x02AB\x03\x02\x02\x02BC\x03\x02\x02\x02CD\x05\x10\t\x02" +
-		"D\x0F\x03\x02\x02\x02EM\x05\x14\v\x02FM\x05\x16\f\x02GM\x05\x1C\x0F\x02" +
-		"HM\x05\x18\r\x02IM\x07\x03\x02\x02JM\x05\x1A\x0E\x02KM\x05\x12\n\x02L" +
-		"E\x03\x02\x02\x02LF\x03\x02\x02\x02LG\x03\x02\x02\x02LH\x03\x02\x02\x02" +
-		"LI\x03\x02\x02\x02LJ\x03\x02\x02\x02LK\x03\x02\x02\x02M\x11\x03\x02\x02" +
-		"\x02NO\x03\x02\x02\x02O\x13\x03\x02\x02\x02PQ\x07\n\x02\x02QR\x05\x06" +
-		"\x04\x02RS\x07\v\x02\x02S\x15\x03\x02\x02\x02TU\x07\f\x02\x02UV\x05\x06" +
-		"\x04\x02VW\x07\r\x02\x02W\x17\x03\x02\x02\x02XY\x07\b\x02\x02YZ\x05\x06" +
-		"\x04\x02Z[\x07\t\x02\x02[\x19\x03\x02\x02\x02\\^\x07\x11\x02\x02]_\n\x02" +
-		"\x02\x02^]\x03\x02\x02\x02_`\x03\x02\x02\x02`^\x03\x02\x02\x02`a\x03\x02" +
-		"\x02\x02ab\x03\x02\x02\x02bk\x07\x11\x02\x02ce\x07\x12\x02\x02df\n\x03" +
-		"\x02\x02ed\x03\x02\x02\x02fg\x03\x02\x02\x02ge\x03\x02\x02\x02gh\x03\x02" +
-		"\x02\x02hi\x03\x02\x02\x02ik\x07\x12\x02\x02j\\\x03\x02\x02\x02jc\x03" +
-		"\x02\x02\x02k\x1B\x03\x02\x02\x02ln\x07\x13\x02\x02mo\n\x04\x02\x02nm" +
-		"\x03\x02\x02\x02op\x03\x02\x02\x02pn\x03\x02\x02\x02pq\x03\x02\x02\x02" +
-		"qr\x03\x02\x02\x02rs\x07\x13\x02\x02s\x1D\x03\x02\x02\x02\f!-5;AL`gjp";
+		"\x07\x03%\n\x03\f\x03\x0E\x03(\v\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03" +
+		"\x03\x03\x04\x03\x04\x03\x04\x07\x042\n\x04\f\x04\x0E\x045\v\x04\x03\x05" +
+		"\x03\x05\x03\x05\x07\x05:\n\x05\f\x05\x0E\x05=\v\x05\x03\x06\x03\x06\x03" +
+		"\x06\x05\x06B\n\x06\x03\x07\x03\x07\x03\b\x03\b\x05\bH\n\b\x03\b\x03\b" +
+		"\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\tS\n\t\x03\n\x03\n\x03" +
+		"\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x03" +
+		"\x0E\x03\x0E\x06\x0Ee\n\x0E\r\x0E\x0E\x0Ef\x03\x0E\x03\x0E\x03\x0E\x06" +
+		"\x0El\n\x0E\r\x0E\x0E\x0Em\x03\x0E\x05\x0Eq\n\x0E\x03\x0F\x03\x0F\x06" +
+		"\x0Fu\n\x0F\r\x0F\x0E\x0Fv\x03\x0F\x03\x0F\x03\x0F\x02\x02\x02\x10\x02" +
+		"\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02" +
+		"\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x05\x03\x02\x11\x11\x03\x02\x12\x12" +
+		"\x03\x02\x13\x13\x02|\x02\x1F\x03\x02\x02\x02\x04&\x03\x02\x02\x02\x06" +
+		".\x03\x02\x02\x02\b6\x03\x02\x02\x02\n>\x03\x02\x02\x02\fC\x03\x02\x02" +
+		"\x02\x0EG\x03\x02\x02\x02\x10R\x03\x02\x02\x02\x12T\x03\x02\x02\x02\x14" +
+		"V\x03\x02\x02\x02\x16Z\x03\x02\x02\x02\x18^\x03\x02\x02\x02\x1Ap\x03\x02" +
+		"\x02\x02\x1Cr\x03\x02\x02\x02\x1E \x05\x04\x03\x02\x1F\x1E\x03\x02\x02" +
+		"\x02 !\x03\x02\x02\x02!\x1F\x03\x02\x02\x02!\"\x03\x02\x02\x02\"\x03\x03" +
+		"\x02\x02\x02#%\x07\x15\x02\x02$#\x03\x02\x02\x02%(\x03\x02\x02\x02&$\x03" +
+		"\x02\x02\x02&\'\x03\x02\x02\x02\')\x03\x02\x02\x02(&\x03\x02\x02\x02)" +
+		"*\x07\x03\x02\x02*+\x07\x06\x02\x02+,\x05\x06\x04\x02,-\x07\x10\x02\x02" +
+		"-\x05\x03\x02\x02\x02.3\x05\b\x05\x02/0\x07\x07\x02\x0202\x05\b\x05\x02" +
+		"1/\x03\x02\x02\x0225\x03\x02\x02\x0231\x03\x02\x02\x0234\x03\x02\x02\x02" +
+		"4\x07\x03\x02\x02\x0253\x03\x02\x02\x026;\x05\n\x06\x0278\x07\x05\x02" +
+		"\x028:\x05\n\x06\x0297\x03\x02\x02\x02:=\x03\x02\x02\x02;9\x03\x02\x02" +
+		"\x02;<\x03\x02\x02\x02<\t\x03\x02\x02\x02=;\x03\x02\x02\x02>A\x05\x0E" +
+		"\b\x02?@\x07\x0E\x02\x02@B\x05\f\x07\x02A?\x03\x02\x02\x02AB\x03\x02\x02" +
+		"\x02B\v\x03\x02\x02\x02CD\x05\x0E\b\x02D\r\x03\x02\x02\x02EF\x07\x04\x02" +
+		"\x02FH\x07\x0F\x02\x02GE\x03\x02\x02\x02GH\x03\x02\x02\x02HI\x03\x02\x02" +
+		"\x02IJ\x05\x10\t\x02J\x0F\x03\x02\x02\x02KS\x05\x14\v\x02LS\x05\x16\f" +
+		"\x02MS\x05\x18\r\x02NS\x07\x03\x02\x02OS\x05\x1A\x0E\x02PS\x05\x1C\x0F" +
+		"\x02QS\x05\x12\n\x02RK\x03\x02\x02\x02RL\x03\x02\x02\x02RM\x03\x02\x02" +
+		"\x02RN\x03\x02\x02\x02RO\x03\x02\x02\x02RP\x03\x02\x02\x02RQ\x03\x02\x02" +
+		"\x02S\x11\x03\x02\x02\x02TU\x03\x02\x02\x02U\x13\x03\x02\x02\x02VW\x07" +
+		"\n\x02\x02WX\x05\x06\x04\x02XY\x07\v\x02\x02Y\x15\x03\x02\x02\x02Z[\x07" +
+		"\f\x02\x02[\\\x05\x06\x04\x02\\]\x07\r\x02\x02]\x17\x03\x02\x02\x02^_" +
+		"\x07\b\x02\x02_`\x05\x06\x04\x02`a\x07\t\x02\x02a\x19\x03\x02\x02\x02" +
+		"bd\x07\x11\x02\x02ce\n\x02\x02\x02dc\x03\x02\x02\x02ef\x03\x02\x02\x02" +
+		"fd\x03\x02\x02\x02fg\x03\x02\x02\x02gh\x03\x02\x02\x02hq\x07\x11\x02\x02" +
+		"ik\x07\x12\x02\x02jl\n\x03\x02\x02kj\x03\x02\x02\x02lm\x03\x02\x02\x02" +
+		"mk\x03\x02\x02\x02mn\x03\x02\x02\x02no\x03\x02\x02\x02oq\x07\x12\x02\x02" +
+		"pb\x03\x02\x02\x02pi\x03\x02\x02\x02q\x1B\x03\x02\x02\x02rt\x07\x13\x02" +
+		"\x02su\n\x04\x02\x02ts\x03\x02\x02\x02uv\x03\x02\x02\x02vt\x03\x02\x02" +
+		"\x02vw\x03\x02\x02\x02wx\x03\x02\x02\x02xy\x07\x13\x02\x02y\x1D\x03\x02" +
+		"\x02\x02\r!&3;AGRfmpv";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!EBNFParser.__ATN) {
@@ -801,6 +819,15 @@ export class SyntaxRuleContext extends ParserRuleContext {
 		return this.getRuleContext(0, DefinitionsListContext);
 	}
 	public TERMINATOR_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.TERMINATOR_SYMBOL, 0); }
+	public COMMENT(): TerminalNode[];
+	public COMMENT(i: number): TerminalNode;
+	public COMMENT(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(EBNFParser.COMMENT);
+		} else {
+			return this.getToken(EBNFParser.COMMENT, i);
+		}
+	}
 	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
 		super(parent, invokingState);
 	}
@@ -1032,15 +1059,15 @@ export class PrimaryContext extends ParserRuleContext {
 	public repeatedSequence(): RepeatedSequenceContext | undefined {
 		return this.tryGetRuleContext(0, RepeatedSequenceContext);
 	}
-	public specialSequence(): SpecialSequenceContext | undefined {
-		return this.tryGetRuleContext(0, SpecialSequenceContext);
-	}
 	public groupedSequence(): GroupedSequenceContext | undefined {
 		return this.tryGetRuleContext(0, GroupedSequenceContext);
 	}
 	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(EBNFParser.IDENTIFIER, 0); }
 	public terminalString(): TerminalStringContext | undefined {
 		return this.tryGetRuleContext(0, TerminalStringContext);
+	}
+	public specialSequence(): SpecialSequenceContext | undefined {
+		return this.tryGetRuleContext(0, SpecialSequenceContext);
 	}
 	public empty(): EmptyContext | undefined {
 		return this.tryGetRuleContext(0, EmptyContext);
