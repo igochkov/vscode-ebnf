@@ -14,4 +14,4 @@ Now it just completely deleted all the \ inside the terms
 
 letter = "A" | "B" | "C" | "D" | "E" | "F";
 
-term = "\\", "\\\\\\", "\\", "\", "\", "\\\\;
+term = "\\", "\\\\\\", '\\', "\", '\', '\\\\';
