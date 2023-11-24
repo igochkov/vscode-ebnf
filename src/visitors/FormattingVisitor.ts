@@ -59,7 +59,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
 
         for (var def of ctx.singleDefinition()) {
             if (!first) {
-                result += this.options.definitionSeparatorSymbolOnNewLine ? "\n" : "";
+                result += this.options.definitionSeparatorSymbolOnNewLine ? "\n" : " ";
                 result += (this.options.definitionSeparatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
                 result += this.options.defaultDefinitionSeparatorSymbol; // ctx.DEFINITION_SEPARATOR_SYMBOL()[i].symbol.text;
                 result += " ";
