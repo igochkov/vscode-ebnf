@@ -60,6 +60,9 @@ SECOND_QUOTE_SYMBOL
 SPECIAL_SEQUENCE_SYMBOL
 	: '?';
 
+ESC_SEQ
+	: '\\"'|'\\\''|'\\’'|'\\\\';
+
 fragment START_COMMENT_SYMBOL
 	: '(*';
 fragment END_COMMENT_SYMBOL

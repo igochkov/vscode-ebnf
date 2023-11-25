@@ -1,4 +1,4 @@
-// Generated from c:\Users\Ivo\Desktop\vscode-ebnf\grammar\EBNFParser.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from grammar/EBNFParser.g4 by ANTLR 4.9.0-SNAPSHOT
 
 
 import { ATN } from "antlr4ts/atn/ATN";
@@ -45,8 +45,9 @@ export class EBNFParser extends Parser {
 	public static readonly FIRST_QUOTE_SYMBOL = 15;
 	public static readonly SECOND_QUOTE_SYMBOL = 16;
 	public static readonly SPECIAL_SEQUENCE_SYMBOL = 17;
-	public static readonly GAP_SEPARATOR = 18;
-	public static readonly COMMENT = 19;
+	public static readonly ESC_SEQ = 18;
+	public static readonly GAP_SEPARATOR = 19;
+	public static readonly COMMENT = 20;
 	public static readonly RULE_syntax = 0;
 	public static readonly RULE_syntaxRule = 1;
 	public static readonly RULE_definitionsList = 2;
@@ -78,7 +79,8 @@ export class EBNFParser extends Parser {
 		"DEFINITION_SEPARATOR_SYMBOL", "START_GROUP_SYMBOL", "END_GROUP_SYMBOL", 
 		"START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", "END_REPEAT_SYMBOL", 
 		"EXCEPT_SYMBOL", "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", "FIRST_QUOTE_SYMBOL", 
-		"SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "GAP_SEPARATOR", "COMMENT",
+		"SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "ESC_SEQ", "GAP_SEPARATOR", 
+		"COMMENT",
 	];
 	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(EBNFParser._LITERAL_NAMES, EBNFParser._SYMBOLIC_NAMES, []);
 
@@ -574,7 +576,7 @@ export class EBNFParser extends Parser {
 		this.enterRule(_localctx, 24, EBNFParser.RULE_terminalString);
 		let _la: number;
 		try {
-			this.state = 110;
+			this.state = 114;
 			this._errHandler.sync(this);
 			switch (this._input.LA(1)) {
 			case EBNFParser.FIRST_QUOTE_SYMBOL:
@@ -582,64 +584,90 @@ export class EBNFParser extends Parser {
 				{
 				this.state = 96;
 				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
-				this.state = 98;
+				this.state = 101;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				do {
+				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0)) {
 					{
-					{
-					this.state = 97;
-					_la = this._input.LA(1);
-					if (_la <= 0 || (_la === EBNFParser.FIRST_QUOTE_SYMBOL)) {
-					this._errHandler.recoverInline(this);
-					} else {
-						if (this._input.LA(1) === Token.EOF) {
-							this.matchedEOF = true;
-						}
+					this.state = 99;
+					this._errHandler.sync(this);
+					switch ( this.interpreter.adaptivePredict(this._input, 7, this._ctx) ) {
+					case 1:
+						{
+						this.state = 97;
+						_la = this._input.LA(1);
+						if (_la <= 0 || (_la === EBNFParser.FIRST_QUOTE_SYMBOL)) {
+						this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
 
-						this._errHandler.reportMatch(this);
-						this.consume();
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+						}
+						break;
+
+					case 2:
+						{
+						this.state = 98;
+						this.match(EBNFParser.ESC_SEQ);
+						}
+						break;
 					}
 					}
-					}
-					this.state = 100;
+					this.state = 103;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
-				} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-				this.state = 102;
+				}
+				this.state = 104;
 				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
 				}
 				break;
 			case EBNFParser.SECOND_QUOTE_SYMBOL:
 				this.enterOuterAlt(_localctx, 2);
 				{
-				this.state = 103;
-				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
 				this.state = 105;
+				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
+				this.state = 110;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-				do {
+				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0)) {
 					{
-					{
-					this.state = 104;
-					_la = this._input.LA(1);
-					if (_la <= 0 || (_la === EBNFParser.SECOND_QUOTE_SYMBOL)) {
-					this._errHandler.recoverInline(this);
-					} else {
-						if (this._input.LA(1) === Token.EOF) {
-							this.matchedEOF = true;
-						}
+					this.state = 108;
+					this._errHandler.sync(this);
+					switch ( this.interpreter.adaptivePredict(this._input, 9, this._ctx) ) {
+					case 1:
+						{
+						this.state = 106;
+						_la = this._input.LA(1);
+						if (_la <= 0 || (_la === EBNFParser.SECOND_QUOTE_SYMBOL)) {
+						this._errHandler.recoverInline(this);
+						} else {
+							if (this._input.LA(1) === Token.EOF) {
+								this.matchedEOF = true;
+							}
 
-						this._errHandler.reportMatch(this);
-						this.consume();
+							this._errHandler.reportMatch(this);
+							this.consume();
+						}
+						}
+						break;
+
+					case 2:
+						{
+						this.state = 107;
+						this.match(EBNFParser.ESC_SEQ);
+						}
+						break;
 					}
 					}
-					}
-					this.state = 107;
+					this.state = 112;
 					this._errHandler.sync(this);
 					_la = this._input.LA(1);
-				} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-				this.state = 109;
+				}
+				this.state = 113;
 				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
 				}
 				break;
@@ -669,15 +697,15 @@ export class EBNFParser extends Parser {
 		try {
 			this.enterOuterAlt(_localctx, 1);
 			{
-			this.state = 112;
+			this.state = 116;
 			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
-			this.state = 114;
+			this.state = 118;
 			this._errHandler.sync(this);
 			_la = this._input.LA(1);
 			do {
 				{
 				{
-				this.state = 113;
+				this.state = 117;
 				_la = this._input.LA(1);
 				if (_la <= 0 || (_la === EBNFParser.SPECIAL_SEQUENCE_SYMBOL)) {
 				this._errHandler.recoverInline(this);
@@ -691,11 +719,11 @@ export class EBNFParser extends Parser {
 				}
 				}
 				}
-				this.state = 116;
+				this.state = 120;
 				this._errHandler.sync(this);
 				_la = this._input.LA(1);
-			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-			this.state = 118;
+			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
+			this.state = 122;
 			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
 			}
 		}
@@ -715,7 +743,7 @@ export class EBNFParser extends Parser {
 	}
 
 	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x15{\x04\x02" +
+		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x16\x7F\x04\x02" +
 		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
 		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
 		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x06\x02 \n\x02\r\x02\x0E\x02!\x03\x03" +
@@ -725,44 +753,46 @@ export class EBNFParser extends Parser {
 		"\x06\x05\x06B\n\x06\x03\x07\x03\x07\x03\b\x03\b\x05\bH\n\b\x03\b\x03\b" +
 		"\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\tS\n\t\x03\n\x03\n\x03" +
 		"\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x03" +
-		"\x0E\x03\x0E\x06\x0Ee\n\x0E\r\x0E\x0E\x0Ef\x03\x0E\x03\x0E\x03\x0E\x06" +
-		"\x0El\n\x0E\r\x0E\x0E\x0Em\x03\x0E\x05\x0Eq\n\x0E\x03\x0F\x03\x0F\x06" +
-		"\x0Fu\n\x0F\r\x0F\x0E\x0Fv\x03\x0F\x03\x0F\x03\x0F\x02\x02\x02\x10\x02" +
-		"\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02\x10\x02\x12\x02\x14\x02" +
-		"\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x05\x03\x02\x11\x11\x03\x02\x12\x12" +
-		"\x03\x02\x13\x13\x02|\x02\x1F\x03\x02\x02\x02\x04&\x03\x02\x02\x02\x06" +
-		".\x03\x02\x02\x02\b6\x03\x02\x02\x02\n>\x03\x02\x02\x02\fC\x03\x02\x02" +
-		"\x02\x0EG\x03\x02\x02\x02\x10R\x03\x02\x02\x02\x12T\x03\x02\x02\x02\x14" +
-		"V\x03\x02\x02\x02\x16Z\x03\x02\x02\x02\x18^\x03\x02\x02\x02\x1Ap\x03\x02" +
-		"\x02\x02\x1Cr\x03\x02\x02\x02\x1E \x05\x04\x03\x02\x1F\x1E\x03\x02\x02" +
-		"\x02 !\x03\x02\x02\x02!\x1F\x03\x02\x02\x02!\"\x03\x02\x02\x02\"\x03\x03" +
-		"\x02\x02\x02#%\x07\x15\x02\x02$#\x03\x02\x02\x02%(\x03\x02\x02\x02&$\x03" +
-		"\x02\x02\x02&\'\x03\x02\x02\x02\')\x03\x02\x02\x02(&\x03\x02\x02\x02)" +
-		"*\x07\x03\x02\x02*+\x07\x06\x02\x02+,\x05\x06\x04\x02,-\x07\x10\x02\x02" +
-		"-\x05\x03\x02\x02\x02.3\x05\b\x05\x02/0\x07\x07\x02\x0202\x05\b\x05\x02" +
-		"1/\x03\x02\x02\x0225\x03\x02\x02\x0231\x03\x02\x02\x0234\x03\x02\x02\x02" +
-		"4\x07\x03\x02\x02\x0253\x03\x02\x02\x026;\x05\n\x06\x0278\x07\x05\x02" +
-		"\x028:\x05\n\x06\x0297\x03\x02\x02\x02:=\x03\x02\x02\x02;9\x03\x02\x02" +
-		"\x02;<\x03\x02\x02\x02<\t\x03\x02\x02\x02=;\x03\x02\x02\x02>A\x05\x0E" +
-		"\b\x02?@\x07\x0E\x02\x02@B\x05\f\x07\x02A?\x03\x02\x02\x02AB\x03\x02\x02" +
-		"\x02B\v\x03\x02\x02\x02CD\x05\x0E\b\x02D\r\x03\x02\x02\x02EF\x07\x04\x02" +
-		"\x02FH\x07\x0F\x02\x02GE\x03\x02\x02\x02GH\x03\x02\x02\x02HI\x03\x02\x02" +
-		"\x02IJ\x05\x10\t\x02J\x0F\x03\x02\x02\x02KS\x05\x14\v\x02LS\x05\x16\f" +
-		"\x02MS\x05\x18\r\x02NS\x07\x03\x02\x02OS\x05\x1A\x0E\x02PS\x05\x1C\x0F" +
-		"\x02QS\x05\x12\n\x02RK\x03\x02\x02\x02RL\x03\x02\x02\x02RM\x03\x02\x02" +
-		"\x02RN\x03\x02\x02\x02RO\x03\x02\x02\x02RP\x03\x02\x02\x02RQ\x03\x02\x02" +
-		"\x02S\x11\x03\x02\x02\x02TU\x03\x02\x02\x02U\x13\x03\x02\x02\x02VW\x07" +
-		"\n\x02\x02WX\x05\x06\x04\x02XY\x07\v\x02\x02Y\x15\x03\x02\x02\x02Z[\x07" +
-		"\f\x02\x02[\\\x05\x06\x04\x02\\]\x07\r\x02\x02]\x17\x03\x02\x02\x02^_" +
-		"\x07\b\x02\x02_`\x05\x06\x04\x02`a\x07\t\x02\x02a\x19\x03\x02\x02\x02" +
-		"bd\x07\x11\x02\x02ce\n\x02\x02\x02dc\x03\x02\x02\x02ef\x03\x02\x02\x02" +
-		"fd\x03\x02\x02\x02fg\x03\x02\x02\x02gh\x03\x02\x02\x02hq\x07\x11\x02\x02" +
-		"ik\x07\x12\x02\x02jl\n\x03\x02\x02kj\x03\x02\x02\x02lm\x03\x02\x02\x02" +
-		"mk\x03\x02\x02\x02mn\x03\x02\x02\x02no\x03\x02\x02\x02oq\x07\x12\x02\x02" +
-		"pb\x03\x02\x02\x02pi\x03\x02\x02\x02q\x1B\x03\x02\x02\x02rt\x07\x13\x02" +
-		"\x02su\n\x04\x02\x02ts\x03\x02\x02\x02uv\x03\x02\x02\x02vt\x03\x02\x02" +
-		"\x02vw\x03\x02\x02\x02wx\x03\x02\x02\x02xy\x07\x13\x02\x02y\x1D\x03\x02" +
-		"\x02\x02\r!&3;AGRfmpv";
+		"\x0E\x03\x0E\x03\x0E\x07\x0Ef\n\x0E\f\x0E\x0E\x0Ei\v\x0E\x03\x0E\x03\x0E" +
+		"\x03\x0E\x03\x0E\x07\x0Eo\n\x0E\f\x0E\x0E\x0Er\v\x0E\x03\x0E\x05\x0Eu" +
+		"\n\x0E\x03\x0F\x03\x0F\x06\x0Fy\n\x0F\r\x0F\x0E\x0Fz\x03\x0F\x03\x0F\x03" +
+		"\x0F\x02\x02\x02\x10\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02" +
+		"\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x05\x03\x02" +
+		"\x11\x11\x03\x02\x12\x12\x03\x02\x13\x13\x02\x82\x02\x1F\x03\x02\x02\x02" +
+		"\x04&\x03\x02\x02\x02\x06.\x03\x02\x02\x02\b6\x03\x02\x02\x02\n>\x03\x02" +
+		"\x02\x02\fC\x03\x02\x02\x02\x0EG\x03\x02\x02\x02\x10R\x03\x02\x02\x02" +
+		"\x12T\x03\x02\x02\x02\x14V\x03\x02\x02\x02\x16Z\x03\x02\x02\x02\x18^\x03" +
+		"\x02\x02\x02\x1At\x03\x02\x02\x02\x1Cv\x03\x02\x02\x02\x1E \x05\x04\x03" +
+		"\x02\x1F\x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x1F\x03\x02\x02\x02!\"" +
+		"\x03\x02\x02\x02\"\x03\x03\x02\x02\x02#%\x07\x16\x02\x02$#\x03\x02\x02" +
+		"\x02%(\x03\x02\x02\x02&$\x03\x02\x02\x02&\'\x03\x02\x02\x02\')\x03\x02" +
+		"\x02\x02(&\x03\x02\x02\x02)*\x07\x03\x02\x02*+\x07\x06\x02\x02+,\x05\x06" +
+		"\x04\x02,-\x07\x10\x02\x02-\x05\x03\x02\x02\x02.3\x05\b\x05\x02/0\x07" +
+		"\x07\x02\x0202\x05\b\x05\x021/\x03\x02\x02\x0225\x03\x02\x02\x0231\x03" +
+		"\x02\x02\x0234\x03\x02\x02\x024\x07\x03\x02\x02\x0253\x03\x02\x02\x02" +
+		"6;\x05\n\x06\x0278\x07\x05\x02\x028:\x05\n\x06\x0297\x03\x02\x02\x02:" +
+		"=\x03\x02\x02\x02;9\x03\x02\x02\x02;<\x03\x02\x02\x02<\t\x03\x02\x02\x02" +
+		"=;\x03\x02\x02\x02>A\x05\x0E\b\x02?@\x07\x0E\x02\x02@B\x05\f\x07\x02A" +
+		"?\x03\x02\x02\x02AB\x03\x02\x02\x02B\v\x03\x02\x02\x02CD\x05\x0E\b\x02" +
+		"D\r\x03\x02\x02\x02EF\x07\x04\x02\x02FH\x07\x0F\x02\x02GE\x03\x02\x02" +
+		"\x02GH\x03\x02\x02\x02HI\x03\x02\x02\x02IJ\x05\x10\t\x02J\x0F\x03\x02" +
+		"\x02\x02KS\x05\x14\v\x02LS\x05\x16\f\x02MS\x05\x18\r\x02NS\x07\x03\x02" +
+		"\x02OS\x05\x1A\x0E\x02PS\x05\x1C\x0F\x02QS\x05\x12\n\x02RK\x03\x02\x02" +
+		"\x02RL\x03\x02\x02\x02RM\x03\x02\x02\x02RN\x03\x02\x02\x02RO\x03\x02\x02" +
+		"\x02RP\x03\x02\x02\x02RQ\x03\x02\x02\x02S\x11\x03\x02\x02\x02TU\x03\x02" +
+		"\x02\x02U\x13\x03\x02\x02\x02VW\x07\n\x02\x02WX\x05\x06\x04\x02XY\x07" +
+		"\v\x02\x02Y\x15\x03\x02\x02\x02Z[\x07\f\x02\x02[\\\x05\x06\x04\x02\\]" +
+		"\x07\r\x02\x02]\x17\x03\x02\x02\x02^_\x07\b\x02\x02_`\x05\x06\x04\x02" +
+		"`a\x07\t\x02\x02a\x19\x03\x02\x02\x02bg\x07\x11\x02\x02cf\n\x02\x02\x02" +
+		"df\x07\x14\x02\x02ec\x03\x02\x02\x02ed\x03\x02\x02\x02fi\x03\x02\x02\x02" +
+		"ge\x03\x02\x02\x02gh\x03\x02\x02\x02hj\x03\x02\x02\x02ig\x03\x02\x02\x02" +
+		"ju\x07\x11\x02\x02kp\x07\x12\x02\x02lo\n\x03\x02\x02mo\x07\x14\x02\x02" +
+		"nl\x03\x02\x02\x02nm\x03\x02\x02\x02or\x03\x02\x02\x02pn\x03\x02\x02\x02" +
+		"pq\x03\x02\x02\x02qs\x03\x02\x02\x02rp\x03\x02\x02\x02su\x07\x12\x02\x02" +
+		"tb\x03\x02\x02\x02tk\x03\x02\x02\x02u\x1B\x03\x02\x02\x02vx\x07\x13\x02" +
+		"\x02wy\n\x04\x02\x02xw\x03\x02\x02\x02yz\x03\x02\x02\x02zx\x03\x02\x02" +
+		"\x02z{\x03\x02\x02\x02{|\x03\x02\x02\x02|}\x07\x13\x02\x02}\x1D\x03\x02" +
+		"\x02\x02\x0F!&3;AGRegnptz";
 	public static __ATN: ATN;
 	public static get _ATN(): ATN {
 		if (!EBNFParser.__ATN) {
@@ -1239,6 +1269,15 @@ export class TerminalStringContext extends ParserRuleContext {
 			return this.getTokens(EBNFParser.FIRST_QUOTE_SYMBOL);
 		} else {
 			return this.getToken(EBNFParser.FIRST_QUOTE_SYMBOL, i);
+		}
+	}
+	public ESC_SEQ(): TerminalNode[];
+	public ESC_SEQ(i: number): TerminalNode;
+	public ESC_SEQ(i?: number): TerminalNode | TerminalNode[] {
+		if (i === undefined) {
+			return this.getTokens(EBNFParser.ESC_SEQ);
+		} else {
+			return this.getToken(EBNFParser.ESC_SEQ, i);
 		}
 	}
 	public SECOND_QUOTE_SYMBOL(): TerminalNode[];

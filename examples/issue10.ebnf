@@ -1,0 +1,21 @@
+(*
+Steps to recreate
+Weird | Formatting
+Write letter = "A" | "B" | "C" | "D" | "E" | "F";
+Press Alt+Shift+F
+It now for some reason removed all the spaces before the |
+So now it would be letter = "A"| "B"| "C"| "D"| "E"| "F";
+
+Not being able to write "\"
+Write a term like "\\", "\\\\\\", '\\', "\", '\', '\\\\', it literally doesn't matter how many backslashes
+Press Alt+Shift+F
+Now it just completely deleted all the \ inside the terms
+---------------------------------
+
+Note: The example with the backslash is not entirely correct. Backslash is an escape character and must always be escaped in strings.
+Therefore "\" and '\' are invalid!
+*)
+
+letter = "A" | "B" | "C" | "D" | "E" | "F";
+
+term = "\\", "\\\\\\", '\\', "\\", '\\', '\\\\';
