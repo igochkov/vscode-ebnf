@@ -1,0 +1,29 @@
+(*
+Formatting code with partially invalid syntax causes code to be lost.
+
+Steps to recreate
+- Create a file with partially invalid syntax
+- Format the code
+
+Code after broken syntax is lost
+
+Current behavior
+All the code before the broken syntax is formatted properly, but everything after is deleted
+
+Expected behavior
+Formatting a file with invalid syntax should not do anything to the file.
+*)
+
+program
+    = { item };
+
+item
+    = fn-defn; (* invalid semicolumn *)
+    | fn-decl;
+
+fn-defn
+    = "typed-ident";
+
+param-list
+    = "void"
+    | { typed-ident, "," }, typed-ident;
