@@ -1,3 +1,14 @@
+(*
+Steps to recreate
+- Create an EBNF file which uses a string literal (see below)
+- Format it
+
+Current behavior
+Certain strings are emptied
+
+Expected behavior
+String contents should always be preserved
+*)
 register        = "%", letter. { letter | digit };
 immediate       = "$", ["0x"], digit, {digit};
 address         = [ "0x" ], digit, {digit};
