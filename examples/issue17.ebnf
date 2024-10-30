@@ -1,0 +1,6 @@
+(*
+I would expect strings in an EBNF specification to appear in the same color 
+as constant strings in code, e.g. in a Python program. In my Visual Studio theme 
+(Light Modern), this is red. But with this extension strings appear black.
+*)
+
