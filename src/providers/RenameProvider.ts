@@ -18,9 +18,9 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
                 name: symbol.text,
                 range: new vscode.Range(
                     symbol.line - 1,
-                    symbol.charPositionInLine,
+                    symbol.column,
                     symbol.line - 1,
-                    symbol.charPositionInLine + symbol.text.length
+                    symbol.column + symbol.text.length
                 )
             });
         }

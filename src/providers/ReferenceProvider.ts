@@ -19,9 +19,9 @@ export class EBNFReferenceProvider implements vscode.ReferenceProvider {
                 .map(ref => new vscode.Location(document.uri,
                     new vscode.Range(
                         ref.line - 1,
-                        ref.charPositionInLine,
+                        ref.column,
                         ref.line - 1,
-                        ref.charPositionInLine + ref.text.length
+                        ref.column + ref.text.length
                     )));
 
         return result;

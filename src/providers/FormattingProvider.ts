@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { EBNFLexer } from "../parser/EBNFLexer";
-import { CharStreams, CommonTokenStream } from "antlr4ts";
+import { CharStream, CommonTokenStream } from "antlr4ng/dist";
 import { EBNFParser } from "../parser/EBNFParser";
 import { FormattingVisitor } from "../visitors/FormattingVisitor";
 import { EBNFFormattingOptions } from "./EBNFFormattingOptions";
@@ -44,7 +44,7 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     }
 
     private format(content: string, options: vscode.FormattingOptions): string {
-        const inputStream = CharStreams.fromString(content);
+        const inputStream = CharStream.fromString(content);
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);

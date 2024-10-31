@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
-import { CharStreams, CommonTokenStream } from 'antlr4ts';
-import { ParseTreeListener } from 'antlr4ts/tree/ParseTreeListener';
+import { CharStream, CommonTokenStream } from 'antlr4ng/dist';
+import { ParseTreeListener } from 'antlr4ng/dist/tree/ParseTreeListener';
 
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
@@ -40,7 +40,7 @@ export class ParserContext {
 
     public static parse(document: vscode.TextDocument): void {
         const content = document.getText();
-        const inputStream = CharStreams.fromString(content);
+        const inputStream = CharStream.fromString(content);
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);
