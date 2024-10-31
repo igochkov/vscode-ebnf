@@ -1,5 +1,5 @@
-import { AbstractParseTreeVisitor } from 'antlr4ts/tree/AbstractParseTreeVisitor';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, TermContext, ExceptionRuleContext, FactorContext, PrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, TerminalStringContext, SpecialSequenceContext} from "../parser/EBNFParser";
+import { AbstractParseTreeVisitor } from 'antlr4ng/dist/tree/AbstractParseTreeVisitor';
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, TermContext, ExceptionRuleContext, FactorContext, PrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, TerminalStringContext, SpecialSequenceContext, CommentContext, Comment_symbolContext} from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -32,9 +32,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     public visitSyntaxRule(ctx: SyntaxRuleContext): string {
         var result: string = "";
 
-        if (ctx.COMMENT().length > 0) {
-            for (var cmt of ctx.COMMENT()) { 
-                result += cmt.symbol.text;
+        if (ctx.comment().length > 0) {
+            for (var cmt of ctx.comment()) { 
+                result += cmt.comment_symbol.toString();
                 result += "\n";
             }
         }
@@ -219,12 +219,12 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
 
         if (hasFqs > 0) {
             for (var child of ctx.children) {
-                result += child.text;
+                result += child.getText();
             }
         }
         else if (hasSqs > 0) {
             for (var child of ctx.children) {
-                result += child.text;
+                result += child.getText();
             }
         }
 
@@ -245,7 +245,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
                     result += " ";
                 }
 
-                result += child.text;
+                result += child.getText();
                 first = false;
             }
 
@@ -255,55 +255,55 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
-    // public visitComment(ctx: CommentContext): string {
-    //     var result: string = "";
+    public visitComment(ctx: CommentContext): string {
+        var result: string = "";
 
-    //     result += ctx.START_COMMENT_SYMBOL().symbol.text;
+        result += ctx.START_COMMENT_SYMBOL().symbol.text;
 
-    //     for (var cs of ctx.comment_symbol()) {
-    //         result += this.visit(cs);
-    //     }
+        for (var cs of ctx.comment_symbol()) {
+            result += this.visit(cs);
+        }
         
-    //     result += ctx.END_COMMENT_SYMBOL().symbol.text;
+        result += ctx.END_COMMENT_SYMBOL().symbol.text;
         
-    //     return result;
-    // }
+        return result;
+    }
 
-    // public visitComment_symbol(ctx: Comment_symbolContext): string {
-    //     var result: string = "";
+    public visitComment_symbol(ctx: Comment_symbolContext): string {
+        var result: string = "";
 
-    //     const cmt = ctx.comment();
-    //     const ts = ctx.terminalString();
-    //     const ss = ctx.specialSequence();
+        const cmt = ctx.comment();
+        const ts = ctx.terminalString();
+        const ss = ctx.specialSequence();
         
-    //     if (cmt) {
-    //         result += this.visit(cmt);
-    //     }
-    //     else if (ts) {
-    //         result += this.visit(ts);
-    //     }
-    //     else if (ss) {
-    //         result += this.visit(ss);
-    //     }
-    //     else { 
-    //         for (var chr of ctx.CHARACTER()) { 
-    //             result += chr.text;
-    //         }
-    //     }
+        if (cmt) {
+            result += this.visit(cmt);
+        }
+        else if (ts) {
+            result += this.visit(ts);
+        }
+        else if (ss) {
+            result += this.visit(ss);
+        }
+        // else { 
+        //     for (var chr of ctx.CHARACTER()) { 
+        //         result += chr.text;
+        //     }
+        // }
 
-    //     // var first: boolean = true;
+        // var first: boolean = true;
 
-    //     // for (var child of ctx.children) {
-    //     //     if (!first) {
-    //     //         result += " ";
-    //     //     }
+        // for (var child of ctx.children) {
+        //     if (!first) {
+        //         result += " ";
+        //     }
 
-    //     //     result += child.text;
-    //     //     first = false;
-    //     // }
+        //     result += child.text;
+        //     first = false;
+        // }
 
-    //     return result;
-    // }
+        return result;
+    }
 
     private indent(times: number = 1): string {
         var result = "";

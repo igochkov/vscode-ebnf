@@ -11,7 +11,7 @@ syntax
 	: syntaxRule+;
 
 syntaxRule
-	: COMMENT* IDENTIFIER DEFINING_SYMBOL definitionsList TERMINATOR_SYMBOL;
+	: comment* IDENTIFIER DEFINING_SYMBOL definitionsList TERMINATOR_SYMBOL;
 
 definitionsList
 	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL singleDefinition)*;
@@ -56,6 +56,15 @@ terminalString
 specialSequence
 	: SPECIAL_SEQUENCE_SYMBOL (~SPECIAL_SEQUENCE_SYMBOL)+ SPECIAL_SEQUENCE_SYMBOL; 
 
+comment
+	: START_COMMENT_SYMBOL comment_symbol* END_COMMENT_SYMBOL;
+
+comment_symbol
+	: comment
+	| terminalString
+	| specialSequence;
+	//| ~[(*')];
+	
 /*
  NOTE: Comment is defined in the lexer.
  As a result, the parser has difficulties parsing it's own
