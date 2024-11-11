@@ -1,4 +1,4 @@
-import { AbstractParseTreeVisitor } from 'antlr4ng/dist/tree/AbstractParseTreeVisitor';
+import { AbstractParseTreeVisitor } from 'antlr4ng';
 import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, TermContext, ExceptionRuleContext, FactorContext, PrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, TerminalStringContext, SpecialSequenceContext, CommentContext, Comment_symbolContext} from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';

@@ -1,6 +1,5 @@
 import * as vscode from "vscode";
-import { CharStream, CommonTokenStream } from 'antlr4ng/dist';
-import { ParseTreeListener } from 'antlr4ng/dist/tree/ParseTreeListener';
+import { CharStream, CommonTokenStream, ParseTreeListener } from 'antlr4ng';
 
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
