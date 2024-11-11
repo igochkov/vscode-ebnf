@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { EBNFLexer } from "../parser/EBNFLexer";
-import { CharStream, CommonTokenStream } from "antlr4ng/dist";
+import { CharStream, CommonTokenStream } from "antlr4ng";
 import { EBNFParser } from "../parser/EBNFParser";
 import { FormattingVisitor } from "../visitors/FormattingVisitor";
 import { EBNFFormattingOptions } from "./EBNFFormattingOptions";
