@@ -29,20 +29,20 @@ repository:
 
     integer:
         name: constant.numeric.ebnf
-        match: '[0-9]+'
+        match: '\b[0-9]+\b'
 
     meta-identifier:
         comment: A <meta identifier> is the name of a syntactic element of the language being defined
         name: entity.name.function.ebnf
-        match: '((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)'
+        match: '\b(?:[a-zA-Z][a-zA-Z0-9_-]*)\b'
 
     terminal-string:
-        name: constant.string.ebnf
+        name: string.quoted.single.ebnf
         match: (\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~"])*\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~\'])*\")
 
     special-sequence:
         comment: The meaning of a <special sequence> is not defined in the standard metalanguage.
-        name: constant.string.ebnf
+        name: string.quoted.other.ebnf
         match: (\?[a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-;\. :\+_%@#\&\$\\\^~\'\"]\?)
 
     syntax:
@@ -53,19 +53,28 @@ repository:
 
     comment-block:
         comment: A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>
-        name: comment.ebnf
+        name: comment.block.ebnf
         begin: '\(\*'
         end: '\*\)'
-    
+        patterns:
+            - include: '#comment-content'
+
+    comment-content:
+        patterns:
+            - include: '#comment-block'  # For nested comments
+            - name: comment.block.content.ebnf
+              match: '.'
+
     syntax-rule:
         comment: A <syntax rule> defines the sequences of symbols represented by a <meta identifier>
         name: meta.syntax.rule.ebnf
-        begin: '((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\s)*(=)*(?:\s)*'
-        beginCaptures: 
-            '1': { name: keyword.syntax.rule.ebnf }
+        begin: '^((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\s)*(=)*(?:\s)*'
+        beginCaptures:
+            '1': { name: keyword.other.syntax.rule.ebnf }
             '2': { name: keyword.operator.assignment.ebnf }
         end: '[;\.]'
         patterns:
+            - include: '#comment-block'
             - include: '#definitions-list'
 
     definitions-list:
@@ -88,44 +97,50 @@ repository:
         patterns:
             - include: '#factor'
             - include: '#except-symbol'
+            - include: '#exception-rule'
+
+    exception-rule:
+        name: meta.exception.ebnf
+        patterns:
+            - include: '#factor'
 
     factor:
-        comment: The <integer> specifies the number of repetitions of the <primary> 
+        comment: The <integer> specifies the number of repetitions of the <primary>
         name: meta.factor.ebnf
         patterns:
             - include: '#integer'
-            - include: '#primary'
             - include: '#repetition-symbol'
+            - include: '#primary'
 
     primary:
         name: meta.primary.ebnf
         patterns:
             - include: '#optional-sequence'
             - include: '#repeated-sequence'
-            - include: '#special-sequence'
             - include: '#grouped-sequence'
             - include: '#meta-identifier'
             - include: '#terminal-string'
+            - include: '#special-sequence'
 
     optional-sequence:
-        comment: The brackets [ and ] enclose symbols which are optional
+        comment: The brackets [ and ] or (/ and /) enclose symbols which are optional
         name: meta.sequence.optional.ebnf
-        begin: '\['
+        begin: '(\[|\(\/)'
         beginCaptures: 
             '1': { name: meta.brace.square.ebnf }
-        end: '\]'
+        end: '(\]|\/\))'
         endCaptures: 
             '1': { name: meta.brace.square.ebnf }
         patterns:
             - include: '#definitions-list'
 
     repeated-sequence:
-        comment: The brackets { and } enclose symbols which may be repeated any number of times
+        comment: "The brackets { and } or (: and :) enclose symbols which may be repeated any number of times"
         name: meta.sequence.repeated.ebnf
-        begin: '\{'
+        begin: '(\{|\(:)'
         beginCaptures: 
             '1': { name: meta.brace.curly.ebnf }
-        end: '\}'
+        end: '(\}|:\))'
         endCaptures: 
             '1': { name: meta.brace.curly.ebnf }
         patterns:
