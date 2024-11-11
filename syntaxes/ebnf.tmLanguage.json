@@ -33,21 +33,21 @@
     },
     "integer": {
       "name": "constant.numeric.ebnf",
-      "match": "[0-9]+"
+      "match": "\\b[0-9]+\\b"
     },
     "meta-identifier": {
       "comment": "A <meta identifier> is the name of a syntactic element of the language being defined",
       "name": "entity.name.function.ebnf",
-      "match": "((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)"
+      "match": "\\b(?:[a-zA-Z][a-zA-Z0-9_-]*)\\b"
     },
     "terminal-string": {
-      "name": "constant.string.ebnf",
+      "name": "string.quoted.single.ebnf",
       "match": "(\\'([a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-\\?;\\. :\\+_%@#\\&\\$\\\\\\^~\"])*\\')|(\\\"([a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-\\?;\\. :\\+_%@#\\&\\$\\\\\\^~\\'])*\\\")"
     },
     "special-sequence": {
       "comment": "The meaning of a <special sequence> is not defined in the standard metalanguage.",
-      "name": "constant.string.ebnf",
-      "match": "(\\?[a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-;\\. :\\+_%@#\\&\\$\\\\\\^~\\'\\\"]\\?)"
+      "name": "string.quoted.other.ebnf",
+      "match": "(\\?\\s*[a-zA-Z0-9,=\\|/!\\(\\)\\[\\]\\{\\}\\<\\>\\*\\-;\\. :\\+_%@#\\&\\$\\\\\\^~\\'\\\"]\\s*\\?)"
     },
     "syntax": {
       "name": "meta.syntax.ebnf",
@@ -62,17 +62,33 @@
     },
     "comment-block": {
       "comment": "A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>",
-      "name": "comment.ebnf",
+      "name": "comment.block.ebnf",
       "begin": "\\(\\*",
-      "end": "\\*\\)"
+      "end": "\\*\\)",
+      "patterns": [
+        {
+          "include": "#comment-content"
+        }
+      ]
+    },
+    "comment-content": {
+      "patterns": [
+        {
+          "include": "#comment-block"
+        },
+        {
+          "name": "comment.block.content.ebnf",
+          "match": "."
+        }
+      ]
     },
     "syntax-rule": {
       "comment": "A <syntax rule> defines the sequences of symbols represented by a <meta identifier>",
       "name": "meta.syntax.rule.ebnf",
-      "begin": "((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\\s)*(=)*(?:\\s)*",
+      "begin": "^((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\\s)*(=)*(?:\\s)*",
       "beginCaptures": {
         "1": {
-          "name": "keyword.syntax.rule.ebnf"
+          "name": "keyword.other.syntax.rule.ebnf"
         },
         "2": {
           "name": "keyword.operator.assignment.ebnf"
@@ -80,6 +96,9 @@
       },
       "end": "[;\\.]",
       "patterns": [
+        {
+          "include": "#comment-block"
+        },
         {
           "include": "#definitions-list"
         }
@@ -118,6 +137,17 @@
         },
         {
           "include": "#except-symbol"
+        },
+        {
+          "include": "#exception-rule"
+        }
+      ]
+    },
+    "exception-rule": {
+      "name": "meta.exception.ebnf",
+      "patterns": [
+        {
+          "include": "#factor"
         }
       ]
     },
@@ -129,10 +159,10 @@
           "include": "#integer"
         },
         {
-          "include": "#primary"
+          "include": "#repetition-symbol"
         },
         {
-          "include": "#repetition-symbol"
+          "include": "#primary"
         }
       ]
     },
@@ -146,9 +176,6 @@
           "include": "#repeated-sequence"
         },
         {
-          "include": "#special-sequence"
-        },
-        {
           "include": "#grouped-sequence"
         },
         {
@@ -156,19 +183,22 @@
         },
         {
           "include": "#terminal-string"
+        },
+        {
+          "include": "#special-sequence"
         }
       ]
     },
     "optional-sequence": {
-      "comment": "The brackets [ and ] enclose symbols which are optional",
+      "comment": "The brackets [ and ] or (/ and /) enclose symbols which are optional",
       "name": "meta.sequence.optional.ebnf",
-      "begin": "\\[",
+      "begin": "(\\[|\\(\\/)",
       "beginCaptures": {
         "1": {
           "name": "meta.brace.square.ebnf"
         }
       },
-      "end": "\\]",
+      "end": "(\\]|\\/\\))",
       "endCaptures": {
         "1": {
           "name": "meta.brace.square.ebnf"
@@ -181,15 +211,15 @@
       ]
     },
     "repeated-sequence": {
-      "comment": "The brackets { and } enclose symbols which may be repeated any number of times",
+      "comment": "The brackets { and } or (: and :) enclose symbols which may be repeated any number of times",
       "name": "meta.sequence.repeated.ebnf",
-      "begin": "\\{",
+      "begin": "(\\{|\\(:)",
       "beginCaptures": {
         "1": {
           "name": "meta.brace.curly.ebnf"
         }
       },
-      "end": "\\}",
+      "end": "(\\}|:\\))",
       "endCaptures": {
         "1": {
           "name": "meta.brace.curly.ebnf"
