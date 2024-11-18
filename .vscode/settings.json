@@ -1,0 +1,11 @@
+{
+    // https://github.com/mike-lischke/vscode-antlr4/blob/master/doc/extension-settings.md#parser-generation
+    "antlr4.generation": {
+        "outputDir": "../src/parser",
+        "language": "TypeScript",
+        "mode": "external",
+        "listeners": true,
+        "visitors": true,
+        "alternativeJar": "" // Specifies the ANTLR4 jar to use for generation, instead of the ones shipping with this extension. Use when specific version is needed.
+    }
+}

@@ -25,6 +25,10 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
+### Version 1.4.0
+- Bug fix: parsing comments (see [issue 8](https://github.com/igochkov/vscode-ebnf/issues/8))
+- Bug fix: syntax highlighting non-terminals, terminals and strings (see [issue 17](https://github.com/igochkov/vscode-ebnf/issues/17))
+
 ### Version 1.3
 **Released on 2023-07-04**
 

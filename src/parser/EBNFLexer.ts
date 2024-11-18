@@ -1,197 +1,163 @@
-// Generated from grammar/EBNFLexer.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from d:/projects/Private/vscode-ebnf/grammar/EBNFLexer.g4 by ANTLR 4.13.1
+
+import * as antlr from "antlr4ng";
+import { Token } from "antlr4ng";
 
 
-import { ATN } from "antlr4ts/atn/ATN";
-import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
-import { CharStream } from "antlr4ts/CharStream";
-import { Lexer } from "antlr4ts/Lexer";
-import { LexerATNSimulator } from "antlr4ts/atn/LexerATNSimulator";
-import { NotNull } from "antlr4ts/Decorators";
-import { Override } from "antlr4ts/Decorators";
-import { RuleContext } from "antlr4ts/RuleContext";
-import { Vocabulary } from "antlr4ts/Vocabulary";
-import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
+export class EBNFLexer extends antlr.Lexer {
+    public static readonly IDENTIFIER = 1;
+    public static readonly INTEGER = 2;
+    public static readonly CONCATENATE_SYMBOL = 3;
+    public static readonly DEFINING_SYMBOL = 4;
+    public static readonly DEFINITION_SEPARATOR_SYMBOL = 5;
+    public static readonly START_COMMENT_SYMBOL = 6;
+    public static readonly END_COMMENT_SYMBOL = 7;
+    public static readonly START_OPTION_SYMBOL = 8;
+    public static readonly END_OPTION_SYMBOL = 9;
+    public static readonly START_REPEAT_SYMBOL = 10;
+    public static readonly END_REPEAT_SYMBOL = 11;
+    public static readonly START_GROUP_SYMBOL = 12;
+    public static readonly END_GROUP_SYMBOL = 13;
+    public static readonly EXCEPT_SYMBOL = 14;
+    public static readonly REPETITION_SYMBOL = 15;
+    public static readonly TERMINATOR_SYMBOL = 16;
+    public static readonly FIRST_QUOTE_SYMBOL = 17;
+    public static readonly SECOND_QUOTE_SYMBOL = 18;
+    public static readonly SPECIAL_SEQUENCE_SYMBOL = 19;
+    public static readonly ESC_SEQ = 20;
+    public static readonly GAP_SEPARATOR = 21;
+    public static readonly CHARACTER = 22;
 
-import * as Utils from "antlr4ts/misc/Utils";
+    public static readonly channelNames = [
+        "DEFAULT_TOKEN_CHANNEL", "HIDDEN"
+    ];
 
+    public static readonly literalNames = [
+        null, null, null, "','", "'='", null, "'(*'", "'*)'", null, null, 
+        null, null, "'('", "')'", "'-'", "'*'", null, "'''", "'\"'", "'?'"
+    ];
 
-export class EBNFLexer extends Lexer {
-	public static readonly IDENTIFIER = 1;
-	public static readonly INTEGER = 2;
-	public static readonly CONCATENATE_SYMBOL = 3;
-	public static readonly DEFINING_SYMBOL = 4;
-	public static readonly DEFINITION_SEPARATOR_SYMBOL = 5;
-	public static readonly START_GROUP_SYMBOL = 6;
-	public static readonly END_GROUP_SYMBOL = 7;
-	public static readonly START_OPTION_SYMBOL = 8;
-	public static readonly END_OPTION_SYMBOL = 9;
-	public static readonly START_REPEAT_SYMBOL = 10;
-	public static readonly END_REPEAT_SYMBOL = 11;
-	public static readonly EXCEPT_SYMBOL = 12;
-	public static readonly REPETITION_SYMBOL = 13;
-	public static readonly TERMINATOR_SYMBOL = 14;
-	public static readonly FIRST_QUOTE_SYMBOL = 15;
-	public static readonly SECOND_QUOTE_SYMBOL = 16;
-	public static readonly SPECIAL_SEQUENCE_SYMBOL = 17;
-	public static readonly ESC_SEQ = 18;
-	public static readonly GAP_SEPARATOR = 19;
-	public static readonly COMMENT = 20;
-	public static readonly COMMENTS_CHANNEL = 2;
+    public static readonly symbolicNames = [
+        null, "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", "DEFINING_SYMBOL", 
+        "DEFINITION_SEPARATOR_SYMBOL", "START_COMMENT_SYMBOL", "END_COMMENT_SYMBOL", 
+        "START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", 
+        "END_REPEAT_SYMBOL", "START_GROUP_SYMBOL", "END_GROUP_SYMBOL", "EXCEPT_SYMBOL", 
+        "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", "FIRST_QUOTE_SYMBOL", 
+        "SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "ESC_SEQ", "GAP_SEPARATOR", 
+        "CHARACTER"
+    ];
 
-	// tslint:disable:no-trailing-whitespace
-	public static readonly channelNames: string[] = [
-		"DEFAULT_TOKEN_CHANNEL", "HIDDEN", "COMMENTS_CHANNEL",
-	];
+    public static readonly modeNames = [
+        "DEFAULT_MODE",
+    ];
 
-	// tslint:disable:no-trailing-whitespace
-	public static readonly modeNames: string[] = [
-		"DEFAULT_MODE",
-	];
-
-	public static readonly ruleNames: string[] = [
-		"LETTER", "DECIMAL_DIGIT", "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", 
-		"DEFINING_SYMBOL", "DEFINITION_SEPARATOR_SYMBOL", "START_GROUP_SYMBOL", 
-		"END_GROUP_SYMBOL", "START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", 
-		"END_REPEAT_SYMBOL", "EXCEPT_SYMBOL", "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", 
-		"FIRST_QUOTE_SYMBOL", "SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", 
-		"ESC_SEQ", "START_COMMENT_SYMBOL", "END_COMMENT_SYMBOL", "SPACE_CHARACTER", 
-		"HORIZONTAL_TABULATION_CHARACTER", "NEW_LINE", "VERTICAL_TABULATION_CHARACTER", 
-		"FORM_FEED", "OTHER_CHARACTER", "GAP_SEPARATOR", "COMMENT",
-	];
-
-	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, undefined, undefined, "','", "'='", undefined, "'('", "')'", 
-		undefined, undefined, undefined, undefined, "'-'", "'*'", undefined, undefined, 
-		"'\"'", "'?'",
-	];
-	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", "DEFINING_SYMBOL", 
-		"DEFINITION_SEPARATOR_SYMBOL", "START_GROUP_SYMBOL", "END_GROUP_SYMBOL", 
-		"START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", "END_REPEAT_SYMBOL", 
-		"EXCEPT_SYMBOL", "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", "FIRST_QUOTE_SYMBOL", 
-		"SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "ESC_SEQ", "GAP_SEPARATOR", 
-		"COMMENT",
-	];
-	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(EBNFLexer._LITERAL_NAMES, EBNFLexer._SYMBOLIC_NAMES, []);
-
-	// @Override
-	// @NotNull
-	public get vocabulary(): Vocabulary {
-		return EBNFLexer.VOCABULARY;
-	}
-	// tslint:enable:no-trailing-whitespace
+    public static readonly ruleNames = [
+        "LETTER", "DECIMAL_DIGIT", "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", 
+        "DEFINING_SYMBOL", "DEFINITION_SEPARATOR_SYMBOL", "START_COMMENT_SYMBOL", 
+        "END_COMMENT_SYMBOL", "START_OPTION_SYMBOL", "END_OPTION_SYMBOL", 
+        "START_REPEAT_SYMBOL", "END_REPEAT_SYMBOL", "START_GROUP_SYMBOL", 
+        "END_GROUP_SYMBOL", "EXCEPT_SYMBOL", "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", 
+        "FIRST_QUOTE_SYMBOL", "SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", 
+        "ESC_SEQ", "SPACE_CHARACTER", "HORIZONTAL_TABULATION_CHARACTER", 
+        "NEW_LINE", "VERTICAL_TABULATION_CHARACTER", "FORM_FEED", "GAP_SEPARATOR", 
+        "CHARACTER",
+    ];
 
 
-	constructor(input: CharStream) {
-		super(input);
-		this._interp = new LexerATNSimulator(EBNFLexer._ATN, this);
-	}
+    public constructor(input: antlr.CharStream) {
+        super(input);
+        this.interpreter = new antlr.LexerATNSimulator(this, EBNFLexer._ATN, EBNFLexer.decisionsToDFA, new antlr.PredictionContextCache());
+    }
 
-	// @Override
-	public get grammarFileName(): string { return "EBNFLexer.g4"; }
+    public get grammarFileName(): string { return "EBNFLexer.g4"; }
 
-	// @Override
-	public get ruleNames(): string[] { return EBNFLexer.ruleNames; }
+    public get literalNames(): (string | null)[] { return EBNFLexer.literalNames; }
+    public get symbolicNames(): (string | null)[] { return EBNFLexer.symbolicNames; }
+    public get ruleNames(): string[] { return EBNFLexer.ruleNames; }
 
-	// @Override
-	public get serializedATN(): string { return EBNFLexer._serializedATN; }
+    public get serializedATN(): number[] { return EBNFLexer._serializedATN; }
 
-	// @Override
-	public get channelNames(): string[] { return EBNFLexer.channelNames; }
+    public get channelNames(): string[] { return EBNFLexer.channelNames; }
 
-	// @Override
-	public get modeNames(): string[] { return EBNFLexer.modeNames; }
+    public get modeNames(): string[] { return EBNFLexer.modeNames; }
 
-	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x02\x16\xB6\b\x01" +
-		"\x04\x02\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06" +
-		"\x04\x07\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r" +
-		"\t\r\x04\x0E\t\x0E\x04\x0F\t\x0F\x04\x10\t\x10\x04\x11\t\x11\x04\x12\t" +
-		"\x12\x04\x13\t\x13\x04\x14\t\x14\x04\x15\t\x15\x04\x16\t\x16\x04\x17\t" +
-		"\x17\x04\x18\t\x18\x04\x19\t\x19\x04\x1A\t\x1A\x04\x1B\t\x1B\x04\x1C\t" +
-		"\x1C\x04\x1D\t\x1D\x04\x1E\t\x1E\x04\x1F\t\x1F\x03\x02\x03\x02\x03\x03" +
-		"\x03\x03\x03\x04\x03\x04\x03\x04\x03\x04\x07\x04H\n\x04\f\x04\x0E\x04" +
-		"K\v\x04\x03\x05\x06\x05N\n\x05\r\x05\x0E\x05O\x03\x06\x03\x06\x03\x07" +
-		"\x03\x07\x03\b\x03\b\x03\t\x03\t\x03\n\x03\n\x03\v\x03\v\x03\v\x05\v_" +
-		"\n\v\x03\f\x03\f\x03\f\x05\fd\n\f\x03\r\x03\r\x03\r\x05\ri\n\r\x03\x0E" +
-		"\x03\x0E\x03\x0E\x05\x0En\n\x0E\x03\x0F\x03\x0F\x03\x10\x03\x10\x03\x11" +
-		"\x03\x11\x03\x12\x03\x12\x03\x13\x03\x13\x03\x14\x03\x14\x03\x15\x03\x15" +
-		"\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15\x03\x15\x05\x15\x84\n\x15\x03" +
-		"\x16\x03\x16\x03\x16\x03\x17\x03\x17\x03\x17\x03\x18\x03\x18\x03\x19\x03" +
-		"\x19\x03\x1A\x07\x1A\x91\n\x1A\f\x1A\x0E\x1A\x94\v\x1A\x03\x1A\x03\x1A" +
-		"\x07\x1A\x98\n\x1A\f\x1A\x0E\x1A\x9B\v\x1A\x03\x1B\x03\x1B\x03\x1C\x03" +
-		"\x1C\x03\x1D\x03\x1D\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x03\x1E\x06\x1E\xA8" +
-		"\n\x1E\r\x1E\x0E\x1E\xA9\x03\x1E\x03\x1E\x03\x1F\x03\x1F\x07\x1F\xB0\n" +
-		"\x1F\f\x1F\x0E\x1F\xB3\v\x1F\x03\x1F\x03\x1F\x03\xB1\x02\x02 \x03\x02" +
-		"\x02\x05\x02\x02\x07\x02\x03\t\x02\x04\v\x02\x05\r\x02\x06\x0F\x02\x07" +
-		"\x11\x02\b\x13\x02\t\x15\x02\n\x17\x02\v\x19\x02\f\x1B\x02\r\x1D\x02\x0E" +
-		"\x1F\x02\x0F!\x02\x10#\x02\x11%\x02\x12\'\x02\x13)\x02\x14+\x02\x02-\x02" +
-		"\x02/\x02\x021\x02\x023\x02\x025\x02\x027\x02\x029\x02\x02;\x02\x15=\x02" +
-		"\x16\x03\x02\b\x04\x02C\\c|\x04\x02//aa\x05\x02##11~~\x04\x0200==\x04" +
-		"\x02))\u201B\u201B\v\x02%(--<<>>@@BB^^`a\x80\x80\x02\xBE\x02\x07\x03\x02" +
-		"\x02\x02\x02\t\x03\x02\x02\x02\x02\v\x03\x02\x02\x02\x02\r\x03\x02\x02" +
-		"\x02\x02\x0F\x03\x02\x02\x02\x02\x11\x03\x02\x02\x02\x02\x13\x03\x02\x02" +
-		"\x02\x02\x15\x03\x02\x02\x02\x02\x17\x03\x02\x02\x02\x02\x19\x03\x02\x02" +
-		"\x02\x02\x1B\x03\x02\x02\x02\x02\x1D\x03\x02\x02\x02\x02\x1F\x03\x02\x02" +
-		"\x02\x02!\x03\x02\x02\x02\x02#\x03\x02\x02\x02\x02%\x03\x02\x02\x02\x02" +
-		"\'\x03\x02\x02\x02\x02)\x03\x02\x02\x02\x02;\x03\x02\x02\x02\x02=\x03" +
-		"\x02\x02\x02\x03?\x03\x02\x02\x02\x05A\x03\x02\x02\x02\x07C\x03\x02\x02" +
-		"\x02\tM\x03\x02\x02\x02\vQ\x03\x02\x02\x02\rS\x03\x02\x02\x02\x0FU\x03" +
-		"\x02\x02\x02\x11W\x03\x02\x02\x02\x13Y\x03\x02\x02\x02\x15^\x03\x02\x02" +
-		"\x02\x17c\x03\x02\x02\x02\x19h\x03\x02\x02\x02\x1Bm\x03\x02\x02\x02\x1D" +
-		"o\x03\x02\x02\x02\x1Fq\x03\x02\x02\x02!s\x03\x02\x02\x02#u\x03\x02\x02" +
-		"\x02%w\x03\x02\x02\x02\'y\x03\x02\x02\x02)\x83\x03\x02\x02\x02+\x85\x03" +
-		"\x02\x02\x02-\x88\x03\x02\x02\x02/\x8B\x03\x02\x02\x021\x8D\x03\x02\x02" +
-		"\x023\x92\x03\x02\x02\x025\x9C\x03\x02\x02\x027\x9E\x03\x02\x02\x029\xA0" +
-		"\x03\x02\x02\x02;\xA7\x03\x02\x02\x02=\xAD\x03\x02\x02\x02?@\t\x02\x02" +
-		"\x02@\x04\x03\x02\x02\x02AB\x042;\x02B\x06\x03\x02\x02\x02CI\x05\x03\x02" +
-		"\x02DH\x05\x03\x02\x02EH\x05\x05\x03\x02FH\t\x03\x02\x02GD\x03\x02\x02" +
-		"\x02GE\x03\x02\x02\x02GF\x03\x02\x02\x02HK\x03\x02\x02\x02IG\x03\x02\x02" +
-		"\x02IJ\x03\x02\x02\x02J\b\x03\x02\x02\x02KI\x03\x02\x02\x02LN\x05\x05" +
-		"\x03\x02ML\x03\x02\x02\x02NO\x03\x02\x02\x02OM\x03\x02\x02\x02OP\x03\x02" +
-		"\x02\x02P\n\x03\x02\x02\x02QR\x07.\x02\x02R\f\x03\x02\x02\x02ST\x07?\x02" +
-		"\x02T\x0E\x03\x02\x02\x02UV\t\x04\x02\x02V\x10\x03\x02\x02\x02WX\x07*" +
-		"\x02\x02X\x12\x03\x02\x02\x02YZ\x07+\x02\x02Z\x14\x03\x02\x02\x02[_\x07" +
-		"]\x02\x02\\]\x07*\x02\x02]_\x071\x02\x02^[\x03\x02\x02\x02^\\\x03\x02" +
-		"\x02\x02_\x16\x03\x02\x02\x02`d\x07_\x02\x02ab\x071\x02\x02bd\x07+\x02" +
-		"\x02c`\x03\x02\x02\x02ca\x03\x02\x02\x02d\x18\x03\x02\x02\x02ei\x07}\x02" +
-		"\x02fg\x07*\x02\x02gi\x07<\x02\x02he\x03\x02\x02\x02hf\x03\x02\x02\x02" +
-		"i\x1A\x03\x02\x02\x02jn\x07\x7F\x02\x02kl\x07<\x02\x02ln\x07+\x02\x02" +
-		"mj\x03\x02\x02\x02mk\x03\x02\x02\x02n\x1C\x03\x02\x02\x02op\x07/\x02\x02" +
-		"p\x1E\x03\x02\x02\x02qr\x07,\x02\x02r \x03\x02\x02\x02st\t\x05\x02\x02" +
-		"t\"\x03\x02\x02\x02uv\t\x06\x02\x02v$\x03\x02\x02\x02wx\x07$\x02\x02x" +
-		"&\x03\x02\x02\x02yz\x07A\x02\x02z(\x03\x02\x02\x02{|\x07^\x02\x02|\x84" +
-		"\x07$\x02\x02}~\x07^\x02\x02~\x84\x07)\x02\x02\x7F\x80\x07^\x02\x02\x80" +
-		"\x84\x07\u201B\x02\x02\x81\x82\x07^\x02\x02\x82\x84\x07^\x02\x02\x83{" +
-		"\x03\x02\x02\x02\x83}\x03\x02\x02\x02\x83\x7F\x03\x02\x02\x02\x83\x81" +
-		"\x03\x02\x02\x02\x84*\x03\x02\x02\x02\x85\x86\x07*\x02\x02\x86\x87\x07" +
-		",\x02\x02\x87,\x03\x02\x02\x02\x88\x89\x07,\x02\x02\x89\x8A\x07+\x02\x02" +
-		"\x8A.\x03\x02\x02\x02\x8B\x8C\x07\"\x02\x02\x8C0\x03\x02\x02\x02\x8D\x8E" +
-		"\x07\v\x02\x02\x8E2\x03\x02\x02\x02\x8F\x91\x07\x0F\x02\x02\x90\x8F\x03" +
-		"\x02\x02\x02\x91\x94\x03\x02\x02\x02\x92\x90\x03\x02\x02\x02\x92\x93\x03" +
-		"\x02\x02\x02\x93\x95\x03\x02\x02\x02\x94\x92\x03\x02\x02\x02\x95\x99\x07" +
-		"\f\x02\x02\x96\x98\x07\x0F\x02\x02\x97\x96\x03\x02\x02\x02\x98\x9B\x03" +
-		"\x02\x02\x02\x99\x97\x03\x02\x02\x02\x99\x9A\x03\x02\x02\x02\x9A4\x03" +
-		"\x02\x02\x02\x9B\x99\x03\x02\x02\x02\x9C\x9D\x07\r\x02\x02\x9D6\x03\x02" +
-		"\x02\x02\x9E\x9F\x07\x0E\x02\x02\x9F8\x03\x02\x02\x02\xA0\xA1\t\x07\x02" +
-		"\x02\xA1:\x03\x02\x02\x02\xA2\xA8\x05/\x18\x02\xA3\xA8\x051\x19\x02\xA4" +
-		"\xA8\x053\x1A\x02\xA5\xA8\x055\x1B\x02\xA6\xA8\x057\x1C\x02\xA7\xA2\x03" +
-		"\x02\x02\x02\xA7\xA3\x03\x02\x02\x02\xA7\xA4\x03\x02\x02\x02\xA7\xA5\x03" +
-		"\x02\x02\x02\xA7\xA6\x03\x02\x02\x02\xA8\xA9\x03\x02\x02\x02\xA9\xA7\x03" +
-		"\x02\x02\x02\xA9\xAA\x03\x02\x02\x02\xAA\xAB\x03\x02\x02\x02\xAB\xAC\b" +
-		"\x1E\x02\x02\xAC<\x03\x02\x02\x02\xAD\xB1\x05+\x16\x02\xAE\xB0\v\x02\x02" +
-		"\x02\xAF\xAE\x03\x02\x02\x02\xB0\xB3\x03\x02\x02\x02\xB1\xB2\x03\x02\x02" +
-		"\x02\xB1\xAF\x03\x02\x02\x02\xB2\xB4\x03\x02\x02\x02\xB3\xB1\x03\x02\x02" +
-		"\x02\xB4\xB5\x05-\x17\x02\xB5>\x03\x02\x02\x02\x10\x02GIO^chm\x83\x92" +
-		"\x99\xA7\xA9\xB1\x03\b\x02\x02";
-	public static __ATN: ATN;
-	public static get _ATN(): ATN {
-		if (!EBNFLexer.__ATN) {
-			EBNFLexer.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(EBNFLexer._serializedATN));
-		}
+    public static readonly _serializedATN: number[] = [
+        4,0,22,167,6,-1,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,
+        2,6,7,6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,
+        13,7,13,2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,
+        19,2,20,7,20,2,21,7,21,2,22,7,22,2,23,7,23,2,24,7,24,2,25,7,25,2,
+        26,7,26,2,27,7,27,2,28,7,28,1,0,1,0,1,1,1,1,1,2,1,2,1,2,1,2,5,2,
+        68,8,2,10,2,12,2,71,9,2,1,3,4,3,74,8,3,11,3,12,3,75,1,4,1,4,1,5,
+        1,5,1,6,1,6,1,7,1,7,1,7,1,8,1,8,1,8,1,9,1,9,1,9,3,9,93,8,9,1,10,
+        1,10,1,10,3,10,98,8,10,1,11,1,11,1,11,3,11,103,8,11,1,12,1,12,1,
+        12,3,12,108,8,12,1,13,1,13,1,14,1,14,1,15,1,15,1,16,1,16,1,17,1,
+        17,1,18,1,18,1,19,1,19,1,20,1,20,1,21,1,21,1,21,1,21,1,21,1,21,3,
+        21,132,8,21,1,22,1,22,1,23,1,23,1,24,5,24,139,8,24,10,24,12,24,142,
+        9,24,1,24,1,24,5,24,146,8,24,10,24,12,24,149,9,24,1,25,1,25,1,26,
+        1,26,1,27,1,27,1,27,1,27,1,27,4,27,160,8,27,11,27,12,27,161,1,27,
+        1,27,1,28,1,28,0,0,29,1,0,3,0,5,1,7,2,9,3,11,4,13,5,15,6,17,7,19,
+        8,21,9,23,10,25,11,27,12,29,13,31,14,33,15,35,16,37,17,39,18,41,
+        19,43,20,45,0,47,0,49,0,51,0,53,0,55,21,57,22,1,0,5,2,0,65,90,97,
+        122,1,0,48,57,2,0,45,45,95,95,3,0,33,33,47,47,124,124,2,0,46,46,
+        59,59,176,0,5,1,0,0,0,0,7,1,0,0,0,0,9,1,0,0,0,0,11,1,0,0,0,0,13,
+        1,0,0,0,0,15,1,0,0,0,0,17,1,0,0,0,0,19,1,0,0,0,0,21,1,0,0,0,0,23,
+        1,0,0,0,0,25,1,0,0,0,0,27,1,0,0,0,0,29,1,0,0,0,0,31,1,0,0,0,0,33,
+        1,0,0,0,0,35,1,0,0,0,0,37,1,0,0,0,0,39,1,0,0,0,0,41,1,0,0,0,0,43,
+        1,0,0,0,0,55,1,0,0,0,0,57,1,0,0,0,1,59,1,0,0,0,3,61,1,0,0,0,5,63,
+        1,0,0,0,7,73,1,0,0,0,9,77,1,0,0,0,11,79,1,0,0,0,13,81,1,0,0,0,15,
+        83,1,0,0,0,17,86,1,0,0,0,19,92,1,0,0,0,21,97,1,0,0,0,23,102,1,0,
+        0,0,25,107,1,0,0,0,27,109,1,0,0,0,29,111,1,0,0,0,31,113,1,0,0,0,
+        33,115,1,0,0,0,35,117,1,0,0,0,37,119,1,0,0,0,39,121,1,0,0,0,41,123,
+        1,0,0,0,43,131,1,0,0,0,45,133,1,0,0,0,47,135,1,0,0,0,49,140,1,0,
+        0,0,51,150,1,0,0,0,53,152,1,0,0,0,55,159,1,0,0,0,57,165,1,0,0,0,
+        59,60,7,0,0,0,60,2,1,0,0,0,61,62,7,1,0,0,62,4,1,0,0,0,63,69,3,1,
+        0,0,64,68,3,1,0,0,65,68,3,3,1,0,66,68,7,2,0,0,67,64,1,0,0,0,67,65,
+        1,0,0,0,67,66,1,0,0,0,68,71,1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,
+        70,6,1,0,0,0,71,69,1,0,0,0,72,74,3,3,1,0,73,72,1,0,0,0,74,75,1,0,
+        0,0,75,73,1,0,0,0,75,76,1,0,0,0,76,8,1,0,0,0,77,78,5,44,0,0,78,10,
+        1,0,0,0,79,80,5,61,0,0,80,12,1,0,0,0,81,82,7,3,0,0,82,14,1,0,0,0,
+        83,84,5,40,0,0,84,85,5,42,0,0,85,16,1,0,0,0,86,87,5,42,0,0,87,88,
+        5,41,0,0,88,18,1,0,0,0,89,93,5,91,0,0,90,91,5,40,0,0,91,93,5,47,
+        0,0,92,89,1,0,0,0,92,90,1,0,0,0,93,20,1,0,0,0,94,98,5,93,0,0,95,
+        96,5,47,0,0,96,98,5,41,0,0,97,94,1,0,0,0,97,95,1,0,0,0,98,22,1,0,
+        0,0,99,103,5,123,0,0,100,101,5,40,0,0,101,103,5,58,0,0,102,99,1,
+        0,0,0,102,100,1,0,0,0,103,24,1,0,0,0,104,108,5,125,0,0,105,106,5,
+        58,0,0,106,108,5,41,0,0,107,104,1,0,0,0,107,105,1,0,0,0,108,26,1,
+        0,0,0,109,110,5,40,0,0,110,28,1,0,0,0,111,112,5,41,0,0,112,30,1,
+        0,0,0,113,114,5,45,0,0,114,32,1,0,0,0,115,116,5,42,0,0,116,34,1,
+        0,0,0,117,118,7,4,0,0,118,36,1,0,0,0,119,120,5,39,0,0,120,38,1,0,
+        0,0,121,122,5,34,0,0,122,40,1,0,0,0,123,124,5,63,0,0,124,42,1,0,
+        0,0,125,126,5,92,0,0,126,132,5,34,0,0,127,128,5,92,0,0,128,132,5,
+        39,0,0,129,130,5,92,0,0,130,132,5,92,0,0,131,125,1,0,0,0,131,127,
+        1,0,0,0,131,129,1,0,0,0,132,44,1,0,0,0,133,134,5,32,0,0,134,46,1,
+        0,0,0,135,136,5,9,0,0,136,48,1,0,0,0,137,139,5,13,0,0,138,137,1,
+        0,0,0,139,142,1,0,0,0,140,138,1,0,0,0,140,141,1,0,0,0,141,143,1,
+        0,0,0,142,140,1,0,0,0,143,147,5,10,0,0,144,146,5,13,0,0,145,144,
+        1,0,0,0,146,149,1,0,0,0,147,145,1,0,0,0,147,148,1,0,0,0,148,50,1,
+        0,0,0,149,147,1,0,0,0,150,151,5,11,0,0,151,52,1,0,0,0,152,153,5,
+        12,0,0,153,54,1,0,0,0,154,160,3,45,22,0,155,160,3,47,23,0,156,160,
+        3,49,24,0,157,160,3,51,25,0,158,160,3,53,26,0,159,154,1,0,0,0,159,
+        155,1,0,0,0,159,156,1,0,0,0,159,157,1,0,0,0,159,158,1,0,0,0,160,
+        161,1,0,0,0,161,159,1,0,0,0,161,162,1,0,0,0,162,163,1,0,0,0,163,
+        164,6,27,0,0,164,56,1,0,0,0,165,166,9,0,0,0,166,58,1,0,0,0,13,0,
+        67,69,75,92,97,102,107,131,140,147,159,161,1,6,0,0
+    ];
 
-		return EBNFLexer.__ATN;
-	}
+    private static __ATN: antlr.ATN;
+    public static get _ATN(): antlr.ATN {
+        if (!EBNFLexer.__ATN) {
+            EBNFLexer.__ATN = new antlr.ATNDeserializer().deserialize(EBNFLexer._serializedATN);
+        }
 
+        return EBNFLexer.__ATN;
+    }
+
+
+    private static readonly vocabulary = new antlr.Vocabulary(EBNFLexer.literalNames, EBNFLexer.symbolicNames, []);
+
+    public override get vocabulary(): antlr.Vocabulary {
+        return EBNFLexer.vocabulary;
+    }
+
+    private static readonly decisionsToDFA = EBNFLexer._ATN.decisionToState.map( (ds: antlr.DecisionState, index: number) => new antlr.DFA(ds, index) );
 }
-
