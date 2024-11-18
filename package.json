@@ -2,7 +2,7 @@
     "name": "vscode-ebnf",
     "displayName": "EBNF Tools",
     "description": "EBNF Tools for Visual Studio Code",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "publisher": "igochkov",
     "author": {
         "name": "Ivaylo Gochkov",
