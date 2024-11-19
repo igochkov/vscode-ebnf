@@ -11,7 +11,7 @@ syntax
 	: syntaxRule+;
 
 syntaxRule
-	: COMMENT* IDENTIFIER DEFINING_SYMBOL definitionsList TERMINATOR_SYMBOL;
+	: comment* IDENTIFIER comment* DEFINING_SYMBOL comment* definitionsList comment* TERMINATOR_SYMBOL;
 
 definitionsList
 	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL singleDefinition)*;
@@ -56,27 +56,11 @@ terminalString
 specialSequence
 	: SPECIAL_SEQUENCE_SYMBOL (~SPECIAL_SEQUENCE_SYMBOL)+ SPECIAL_SEQUENCE_SYMBOL; 
 
-/*
- NOTE: Comment is defined in the lexer.
- As a result, the parser has difficulties parsing it's own
- grammar, in particularly this line:
- ----------------------------------------
- comment = ’(*’, {comment symbol}, ’*)’;
- ----------------------------------------
- Everything between (* and *) is considered a comment by the lexer.
- Because the lexer has already matched the comment the
- parser sees only the rest: 
- ----------------------------------------
- comment = ’’;
- ----------------------------------------
- The solution is to define the comment rule in the parser,
- and not in the lexer, however it will 'pollute' the grammar 
- with the comment rule everywhere.
- 
- According the official EBNF grammar, a comment is allowed anywhere outside a
- <terminal string>, <meta identifier>, <integer> or <special sequence>.
- -----------------------------------------
- comment = ’(*’, {comment symbol}, ’*)’;
- comment symbol = comment | terminal string | special sequence | character;
- -----------------------------------------
- */
+comment
+	: START_COMMENT_SYMBOL comment_symbol* END_COMMENT_SYMBOL;
+
+comment_symbol
+	: comment			 // nested comments
+	| terminalString
+	| specialSequence
+	| CHARACTER;         // Any other character

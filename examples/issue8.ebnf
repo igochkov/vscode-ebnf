@@ -1,0 +1,11 @@
+(* COMMENT is defined in the lexer. As a result, the parser has difficulties parsing it's own grammar, in particularly this line:
+comment = '(*', {comment symbol}, '*)';
+
+Everything between (* and *) is considered a comment by the lexer. Because the lexer has already matched the comment the parser sees only the rest, which is:
+comment = '';
+
+The solution is to define the comment rule in the parser, and not in the lexer, however it will 'pollute' the grammar with the comment rule everywhere. According the official EBNF grammar, a comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>.
+*)
+
+comment = '(*', {comment_symbol}, '*)';
+comment_symbol = comment | terminal string | special sequence | character;

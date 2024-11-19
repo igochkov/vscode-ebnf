@@ -1,1357 +1,1527 @@
-// Generated from grammar/EBNFParser.g4 by ANTLR 4.9.0-SNAPSHOT
+// Generated from d:/projects/Private/vscode-ebnf/grammar/EBNFParser.g4 by ANTLR 4.13.1
+
+import * as antlr from "antlr4ng";
+import { Token } from "antlr4ng";
+
+import { EBNFParserListener } from "./EBNFParserListener.js";
+import { EBNFParserVisitor } from "./EBNFParserVisitor.js";
+
+// for running tests with parameters, TODO: discuss strategy for typed parameters in CI
+// eslint-disable-next-line no-unused-vars
+type int = number;
 
 
-import { ATN } from "antlr4ts/atn/ATN";
-import { ATNDeserializer } from "antlr4ts/atn/ATNDeserializer";
-import { FailedPredicateException } from "antlr4ts/FailedPredicateException";
-import { NotNull } from "antlr4ts/Decorators";
-import { NoViableAltException } from "antlr4ts/NoViableAltException";
-import { Override } from "antlr4ts/Decorators";
-import { Parser } from "antlr4ts/Parser";
-import { ParserRuleContext } from "antlr4ts/ParserRuleContext";
-import { ParserATNSimulator } from "antlr4ts/atn/ParserATNSimulator";
-import { ParseTreeListener } from "antlr4ts/tree/ParseTreeListener";
-import { ParseTreeVisitor } from "antlr4ts/tree/ParseTreeVisitor";
-import { RecognitionException } from "antlr4ts/RecognitionException";
-import { RuleContext } from "antlr4ts/RuleContext";
-//import { RuleVersion } from "antlr4ts/RuleVersion";
-import { TerminalNode } from "antlr4ts/tree/TerminalNode";
-import { Token } from "antlr4ts/Token";
-import { TokenStream } from "antlr4ts/TokenStream";
-import { Vocabulary } from "antlr4ts/Vocabulary";
-import { VocabularyImpl } from "antlr4ts/VocabularyImpl";
+export class EBNFParser extends antlr.Parser {
+    public static readonly IDENTIFIER = 1;
+    public static readonly INTEGER = 2;
+    public static readonly CONCATENATE_SYMBOL = 3;
+    public static readonly DEFINING_SYMBOL = 4;
+    public static readonly DEFINITION_SEPARATOR_SYMBOL = 5;
+    public static readonly START_COMMENT_SYMBOL = 6;
+    public static readonly END_COMMENT_SYMBOL = 7;
+    public static readonly START_OPTION_SYMBOL = 8;
+    public static readonly END_OPTION_SYMBOL = 9;
+    public static readonly START_REPEAT_SYMBOL = 10;
+    public static readonly END_REPEAT_SYMBOL = 11;
+    public static readonly START_GROUP_SYMBOL = 12;
+    public static readonly END_GROUP_SYMBOL = 13;
+    public static readonly EXCEPT_SYMBOL = 14;
+    public static readonly REPETITION_SYMBOL = 15;
+    public static readonly TERMINATOR_SYMBOL = 16;
+    public static readonly FIRST_QUOTE_SYMBOL = 17;
+    public static readonly SECOND_QUOTE_SYMBOL = 18;
+    public static readonly SPECIAL_SEQUENCE_SYMBOL = 19;
+    public static readonly ESC_SEQ = 20;
+    public static readonly GAP_SEPARATOR = 21;
+    public static readonly CHARACTER = 22;
+    public static readonly RULE_syntax = 0;
+    public static readonly RULE_syntaxRule = 1;
+    public static readonly RULE_definitionsList = 2;
+    public static readonly RULE_singleDefinition = 3;
+    public static readonly RULE_term = 4;
+    public static readonly RULE_exceptionRule = 5;
+    public static readonly RULE_factor = 6;
+    public static readonly RULE_primary = 7;
+    public static readonly RULE_empty = 8;
+    public static readonly RULE_optionalSequence = 9;
+    public static readonly RULE_repeatedSequence = 10;
+    public static readonly RULE_groupedSequence = 11;
+    public static readonly RULE_terminalString = 12;
+    public static readonly RULE_specialSequence = 13;
+    public static readonly RULE_comment = 14;
+    public static readonly RULE_comment_symbol = 15;
 
-import * as Utils from "antlr4ts/misc/Utils";
+    public static readonly literalNames = [
+        null, null, null, "','", "'='", null, "'(*'", "'*)'", null, null, 
+        null, null, "'('", "')'", "'-'", "'*'", null, "'''", "'\"'", "'?'"
+    ];
 
-import { EBNFParserListener } from "./EBNFParserListener";
-import { EBNFParserVisitor } from "./EBNFParserVisitor";
+    public static readonly symbolicNames = [
+        null, "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", "DEFINING_SYMBOL", 
+        "DEFINITION_SEPARATOR_SYMBOL", "START_COMMENT_SYMBOL", "END_COMMENT_SYMBOL", 
+        "START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", 
+        "END_REPEAT_SYMBOL", "START_GROUP_SYMBOL", "END_GROUP_SYMBOL", "EXCEPT_SYMBOL", 
+        "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", "FIRST_QUOTE_SYMBOL", 
+        "SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "ESC_SEQ", "GAP_SEPARATOR", 
+        "CHARACTER"
+    ];
+    public static readonly ruleNames = [
+        "syntax", "syntaxRule", "definitionsList", "singleDefinition", "term", 
+        "exceptionRule", "factor", "primary", "empty", "optionalSequence", 
+        "repeatedSequence", "groupedSequence", "terminalString", "specialSequence", 
+        "comment", "comment_symbol",
+    ];
+
+    public get grammarFileName(): string { return "EBNFParser.g4"; }
+    public get literalNames(): (string | null)[] { return EBNFParser.literalNames; }
+    public get symbolicNames(): (string | null)[] { return EBNFParser.symbolicNames; }
+    public get ruleNames(): string[] { return EBNFParser.ruleNames; }
+    public get serializedATN(): number[] { return EBNFParser._serializedATN; }
+
+    protected createFailedPredicateException(predicate?: string, message?: string): antlr.FailedPredicateException {
+        return new antlr.FailedPredicateException(this, predicate, message);
+    }
+
+    public constructor(input: antlr.TokenStream) {
+        super(input);
+        this.interpreter = new antlr.ParserATNSimulator(this, EBNFParser._ATN, EBNFParser.decisionsToDFA, new antlr.PredictionContextCache());
+    }
+    public syntax(): SyntaxContext {
+        let localContext = new SyntaxContext(this.context, this.state);
+        this.enterRule(localContext, 0, EBNFParser.RULE_syntax);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 33;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            do {
+                {
+                {
+                this.state = 32;
+                this.syntaxRule();
+                }
+                }
+                this.state = 35;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            } while (_la === 1 || _la === 6);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public syntaxRule(): SyntaxRuleContext {
+        let localContext = new SyntaxRuleContext(this.context, this.state);
+        this.enterRule(localContext, 2, EBNFParser.RULE_syntaxRule);
+        let _la: number;
+        try {
+            let alternative: number;
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 40;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 6) {
+                {
+                {
+                this.state = 37;
+                this.comment();
+                }
+                }
+                this.state = 42;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            this.state = 43;
+            this.match(EBNFParser.IDENTIFIER);
+            this.state = 47;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 6) {
+                {
+                {
+                this.state = 44;
+                this.comment();
+                }
+                }
+                this.state = 49;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            this.state = 50;
+            this.match(EBNFParser.DEFINING_SYMBOL);
+            this.state = 54;
+            this.errorHandler.sync(this);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 3, this.context);
+            while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
+                if (alternative === 1) {
+                    {
+                    {
+                    this.state = 51;
+                    this.comment();
+                    }
+                    }
+                }
+                this.state = 56;
+                this.errorHandler.sync(this);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 3, this.context);
+            }
+            this.state = 57;
+            this.definitionsList();
+            this.state = 61;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 6) {
+                {
+                {
+                this.state = 58;
+                this.comment();
+                }
+                }
+                this.state = 63;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            this.state = 64;
+            this.match(EBNFParser.TERMINATOR_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public definitionsList(): DefinitionsListContext {
+        let localContext = new DefinitionsListContext(this.context, this.state);
+        this.enterRule(localContext, 4, EBNFParser.RULE_definitionsList);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 66;
+            this.singleDefinition();
+            this.state = 71;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 5) {
+                {
+                {
+                this.state = 67;
+                this.match(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
+                this.state = 68;
+                this.singleDefinition();
+                }
+                }
+                this.state = 73;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public singleDefinition(): SingleDefinitionContext {
+        let localContext = new SingleDefinitionContext(this.context, this.state);
+        this.enterRule(localContext, 6, EBNFParser.RULE_singleDefinition);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 74;
+            this.term();
+            this.state = 79;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 3) {
+                {
+                {
+                this.state = 75;
+                this.match(EBNFParser.CONCATENATE_SYMBOL);
+                this.state = 76;
+                this.term();
+                }
+                }
+                this.state = 81;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public term(): TermContext {
+        let localContext = new TermContext(this.context, this.state);
+        this.enterRule(localContext, 8, EBNFParser.RULE_term);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 82;
+            this.factor();
+            this.state = 85;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 14) {
+                {
+                this.state = 83;
+                this.match(EBNFParser.EXCEPT_SYMBOL);
+                this.state = 84;
+                this.exceptionRule();
+                }
+            }
+
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public exceptionRule(): ExceptionRuleContext {
+        let localContext = new ExceptionRuleContext(this.context, this.state);
+        this.enterRule(localContext, 10, EBNFParser.RULE_exceptionRule);
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 87;
+            this.factor();
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public factor(): FactorContext {
+        let localContext = new FactorContext(this.context, this.state);
+        this.enterRule(localContext, 12, EBNFParser.RULE_factor);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 91;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            if (_la === 2) {
+                {
+                this.state = 89;
+                this.match(EBNFParser.INTEGER);
+                this.state = 90;
+                this.match(EBNFParser.REPETITION_SYMBOL);
+                }
+            }
+
+            this.state = 93;
+            this.primary();
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public primary(): PrimaryContext {
+        let localContext = new PrimaryContext(this.context, this.state);
+        this.enterRule(localContext, 14, EBNFParser.RULE_primary);
+        try {
+            this.state = 102;
+            this.errorHandler.sync(this);
+            switch (this.tokenStream.LA(1)) {
+            case EBNFParser.START_OPTION_SYMBOL:
+                this.enterOuterAlt(localContext, 1);
+                {
+                this.state = 95;
+                this.optionalSequence();
+                }
+                break;
+            case EBNFParser.START_REPEAT_SYMBOL:
+                this.enterOuterAlt(localContext, 2);
+                {
+                this.state = 96;
+                this.repeatedSequence();
+                }
+                break;
+            case EBNFParser.START_GROUP_SYMBOL:
+                this.enterOuterAlt(localContext, 3);
+                {
+                this.state = 97;
+                this.groupedSequence();
+                }
+                break;
+            case EBNFParser.IDENTIFIER:
+                this.enterOuterAlt(localContext, 4);
+                {
+                this.state = 98;
+                this.match(EBNFParser.IDENTIFIER);
+                }
+                break;
+            case EBNFParser.FIRST_QUOTE_SYMBOL:
+            case EBNFParser.SECOND_QUOTE_SYMBOL:
+                this.enterOuterAlt(localContext, 5);
+                {
+                this.state = 99;
+                this.terminalString();
+                }
+                break;
+            case EBNFParser.SPECIAL_SEQUENCE_SYMBOL:
+                this.enterOuterAlt(localContext, 6);
+                {
+                this.state = 100;
+                this.specialSequence();
+                }
+                break;
+            case EBNFParser.CONCATENATE_SYMBOL:
+            case EBNFParser.DEFINITION_SEPARATOR_SYMBOL:
+            case EBNFParser.START_COMMENT_SYMBOL:
+            case EBNFParser.END_OPTION_SYMBOL:
+            case EBNFParser.END_REPEAT_SYMBOL:
+            case EBNFParser.END_GROUP_SYMBOL:
+            case EBNFParser.EXCEPT_SYMBOL:
+            case EBNFParser.TERMINATOR_SYMBOL:
+                this.enterOuterAlt(localContext, 7);
+                {
+                this.state = 101;
+                this.empty();
+                }
+                break;
+            default:
+                throw new antlr.NoViableAltException(this);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public empty(): EmptyContext {
+        let localContext = new EmptyContext(this.context, this.state);
+        this.enterRule(localContext, 16, EBNFParser.RULE_empty);
+        try {
+            this.enterOuterAlt(localContext, 1);
+            // tslint:disable-next-line:no-empty
+            {
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public optionalSequence(): OptionalSequenceContext {
+        let localContext = new OptionalSequenceContext(this.context, this.state);
+        this.enterRule(localContext, 18, EBNFParser.RULE_optionalSequence);
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 106;
+            this.match(EBNFParser.START_OPTION_SYMBOL);
+            this.state = 107;
+            this.definitionsList();
+            this.state = 108;
+            this.match(EBNFParser.END_OPTION_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public repeatedSequence(): RepeatedSequenceContext {
+        let localContext = new RepeatedSequenceContext(this.context, this.state);
+        this.enterRule(localContext, 20, EBNFParser.RULE_repeatedSequence);
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 110;
+            this.match(EBNFParser.START_REPEAT_SYMBOL);
+            this.state = 111;
+            this.definitionsList();
+            this.state = 112;
+            this.match(EBNFParser.END_REPEAT_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public groupedSequence(): GroupedSequenceContext {
+        let localContext = new GroupedSequenceContext(this.context, this.state);
+        this.enterRule(localContext, 22, EBNFParser.RULE_groupedSequence);
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 114;
+            this.match(EBNFParser.START_GROUP_SYMBOL);
+            this.state = 115;
+            this.definitionsList();
+            this.state = 116;
+            this.match(EBNFParser.END_GROUP_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public terminalString(): TerminalStringContext {
+        let localContext = new TerminalStringContext(this.context, this.state);
+        this.enterRule(localContext, 24, EBNFParser.RULE_terminalString);
+        let _la: number;
+        try {
+            this.state = 136;
+            this.errorHandler.sync(this);
+            switch (this.tokenStream.LA(1)) {
+            case EBNFParser.FIRST_QUOTE_SYMBOL:
+                this.enterOuterAlt(localContext, 1);
+                {
+                this.state = 118;
+                this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
+                this.state = 123;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+                while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 8257534) !== 0)) {
+                    {
+                    this.state = 121;
+                    this.errorHandler.sync(this);
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 10, this.context) ) {
+                    case 1:
+                        {
+                        this.state = 119;
+                        _la = this.tokenStream.LA(1);
+                        if(_la<=0 || _la === 17) {
+                        this.errorHandler.recoverInline(this);
+                        }
+                        else {
+                            this.errorHandler.reportMatch(this);
+                            this.consume();
+                        }
+                        }
+                        break;
+                    case 2:
+                        {
+                        this.state = 120;
+                        this.match(EBNFParser.ESC_SEQ);
+                        }
+                        break;
+                    }
+                    }
+                    this.state = 125;
+                    this.errorHandler.sync(this);
+                    _la = this.tokenStream.LA(1);
+                }
+                this.state = 126;
+                this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
+                }
+                break;
+            case EBNFParser.SECOND_QUOTE_SYMBOL:
+                this.enterOuterAlt(localContext, 2);
+                {
+                this.state = 127;
+                this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
+                this.state = 132;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+                while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 8126462) !== 0)) {
+                    {
+                    this.state = 130;
+                    this.errorHandler.sync(this);
+                    switch (this.interpreter.adaptivePredict(this.tokenStream, 12, this.context) ) {
+                    case 1:
+                        {
+                        this.state = 128;
+                        _la = this.tokenStream.LA(1);
+                        if(_la<=0 || _la === 18) {
+                        this.errorHandler.recoverInline(this);
+                        }
+                        else {
+                            this.errorHandler.reportMatch(this);
+                            this.consume();
+                        }
+                        }
+                        break;
+                    case 2:
+                        {
+                        this.state = 129;
+                        this.match(EBNFParser.ESC_SEQ);
+                        }
+                        break;
+                    }
+                    }
+                    this.state = 134;
+                    this.errorHandler.sync(this);
+                    _la = this.tokenStream.LA(1);
+                }
+                this.state = 135;
+                this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
+                }
+                break;
+            default:
+                throw new antlr.NoViableAltException(this);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public specialSequence(): SpecialSequenceContext {
+        let localContext = new SpecialSequenceContext(this.context, this.state);
+        this.enterRule(localContext, 26, EBNFParser.RULE_specialSequence);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 138;
+            this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
+            this.state = 140;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            do {
+                {
+                {
+                this.state = 139;
+                _la = this.tokenStream.LA(1);
+                if(_la<=0 || _la === 19) {
+                this.errorHandler.recoverInline(this);
+                }
+                else {
+                    this.errorHandler.reportMatch(this);
+                    this.consume();
+                }
+                }
+                }
+                this.state = 142;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            } while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 7864318) !== 0));
+            this.state = 144;
+            this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public comment(): CommentContext {
+        let localContext = new CommentContext(this.context, this.state);
+        this.enterRule(localContext, 28, EBNFParser.RULE_comment);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 146;
+            this.match(EBNFParser.START_COMMENT_SYMBOL);
+            this.state = 150;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 5111872) !== 0)) {
+                {
+                {
+                this.state = 147;
+                this.comment_symbol();
+                }
+                }
+                this.state = 152;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            this.state = 153;
+            this.match(EBNFParser.END_COMMENT_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public comment_symbol(): Comment_symbolContext {
+        let localContext = new Comment_symbolContext(this.context, this.state);
+        this.enterRule(localContext, 30, EBNFParser.RULE_comment_symbol);
+        try {
+            this.state = 159;
+            this.errorHandler.sync(this);
+            switch (this.tokenStream.LA(1)) {
+            case EBNFParser.START_COMMENT_SYMBOL:
+                this.enterOuterAlt(localContext, 1);
+                {
+                this.state = 155;
+                this.comment();
+                }
+                break;
+            case EBNFParser.FIRST_QUOTE_SYMBOL:
+            case EBNFParser.SECOND_QUOTE_SYMBOL:
+                this.enterOuterAlt(localContext, 2);
+                {
+                this.state = 156;
+                this.terminalString();
+                }
+                break;
+            case EBNFParser.SPECIAL_SEQUENCE_SYMBOL:
+                this.enterOuterAlt(localContext, 3);
+                {
+                this.state = 157;
+                this.specialSequence();
+                }
+                break;
+            case EBNFParser.CHARACTER:
+                this.enterOuterAlt(localContext, 4);
+                {
+                this.state = 158;
+                this.match(EBNFParser.CHARACTER);
+                }
+                break;
+            default:
+                throw new antlr.NoViableAltException(this);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+
+    public static readonly _serializedATN: number[] = [
+        4,1,22,162,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
+        2,14,7,14,2,15,7,15,1,0,4,0,34,8,0,11,0,12,0,35,1,1,5,1,39,8,1,10,
+        1,12,1,42,9,1,1,1,1,1,5,1,46,8,1,10,1,12,1,49,9,1,1,1,1,1,5,1,53,
+        8,1,10,1,12,1,56,9,1,1,1,1,1,5,1,60,8,1,10,1,12,1,63,9,1,1,1,1,1,
+        1,2,1,2,1,2,5,2,70,8,2,10,2,12,2,73,9,2,1,3,1,3,1,3,5,3,78,8,3,10,
+        3,12,3,81,9,3,1,4,1,4,1,4,3,4,86,8,4,1,5,1,5,1,6,1,6,3,6,92,8,6,
+        1,6,1,6,1,7,1,7,1,7,1,7,1,7,1,7,1,7,3,7,103,8,7,1,8,1,8,1,9,1,9,
+        1,9,1,9,1,10,1,10,1,10,1,10,1,11,1,11,1,11,1,11,1,12,1,12,1,12,5,
+        12,122,8,12,10,12,12,12,125,9,12,1,12,1,12,1,12,1,12,5,12,131,8,
+        12,10,12,12,12,134,9,12,1,12,3,12,137,8,12,1,13,1,13,4,13,141,8,
+        13,11,13,12,13,142,1,13,1,13,1,14,1,14,5,14,149,8,14,10,14,12,14,
+        152,9,14,1,14,1,14,1,15,1,15,1,15,1,15,3,15,160,8,15,1,15,0,0,16,
+        0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,0,3,1,0,17,17,1,0,18,
+        18,1,0,19,19,170,0,33,1,0,0,0,2,40,1,0,0,0,4,66,1,0,0,0,6,74,1,0,
+        0,0,8,82,1,0,0,0,10,87,1,0,0,0,12,91,1,0,0,0,14,102,1,0,0,0,16,104,
+        1,0,0,0,18,106,1,0,0,0,20,110,1,0,0,0,22,114,1,0,0,0,24,136,1,0,
+        0,0,26,138,1,0,0,0,28,146,1,0,0,0,30,159,1,0,0,0,32,34,3,2,1,0,33,
+        32,1,0,0,0,34,35,1,0,0,0,35,33,1,0,0,0,35,36,1,0,0,0,36,1,1,0,0,
+        0,37,39,3,28,14,0,38,37,1,0,0,0,39,42,1,0,0,0,40,38,1,0,0,0,40,41,
+        1,0,0,0,41,43,1,0,0,0,42,40,1,0,0,0,43,47,5,1,0,0,44,46,3,28,14,
+        0,45,44,1,0,0,0,46,49,1,0,0,0,47,45,1,0,0,0,47,48,1,0,0,0,48,50,
+        1,0,0,0,49,47,1,0,0,0,50,54,5,4,0,0,51,53,3,28,14,0,52,51,1,0,0,
+        0,53,56,1,0,0,0,54,52,1,0,0,0,54,55,1,0,0,0,55,57,1,0,0,0,56,54,
+        1,0,0,0,57,61,3,4,2,0,58,60,3,28,14,0,59,58,1,0,0,0,60,63,1,0,0,
+        0,61,59,1,0,0,0,61,62,1,0,0,0,62,64,1,0,0,0,63,61,1,0,0,0,64,65,
+        5,16,0,0,65,3,1,0,0,0,66,71,3,6,3,0,67,68,5,5,0,0,68,70,3,6,3,0,
+        69,67,1,0,0,0,70,73,1,0,0,0,71,69,1,0,0,0,71,72,1,0,0,0,72,5,1,0,
+        0,0,73,71,1,0,0,0,74,79,3,8,4,0,75,76,5,3,0,0,76,78,3,8,4,0,77,75,
+        1,0,0,0,78,81,1,0,0,0,79,77,1,0,0,0,79,80,1,0,0,0,80,7,1,0,0,0,81,
+        79,1,0,0,0,82,85,3,12,6,0,83,84,5,14,0,0,84,86,3,10,5,0,85,83,1,
+        0,0,0,85,86,1,0,0,0,86,9,1,0,0,0,87,88,3,12,6,0,88,11,1,0,0,0,89,
+        90,5,2,0,0,90,92,5,15,0,0,91,89,1,0,0,0,91,92,1,0,0,0,92,93,1,0,
+        0,0,93,94,3,14,7,0,94,13,1,0,0,0,95,103,3,18,9,0,96,103,3,20,10,
+        0,97,103,3,22,11,0,98,103,5,1,0,0,99,103,3,24,12,0,100,103,3,26,
+        13,0,101,103,3,16,8,0,102,95,1,0,0,0,102,96,1,0,0,0,102,97,1,0,0,
+        0,102,98,1,0,0,0,102,99,1,0,0,0,102,100,1,0,0,0,102,101,1,0,0,0,
+        103,15,1,0,0,0,104,105,1,0,0,0,105,17,1,0,0,0,106,107,5,8,0,0,107,
+        108,3,4,2,0,108,109,5,9,0,0,109,19,1,0,0,0,110,111,5,10,0,0,111,
+        112,3,4,2,0,112,113,5,11,0,0,113,21,1,0,0,0,114,115,5,12,0,0,115,
+        116,3,4,2,0,116,117,5,13,0,0,117,23,1,0,0,0,118,123,5,17,0,0,119,
+        122,8,0,0,0,120,122,5,20,0,0,121,119,1,0,0,0,121,120,1,0,0,0,122,
+        125,1,0,0,0,123,121,1,0,0,0,123,124,1,0,0,0,124,126,1,0,0,0,125,
+        123,1,0,0,0,126,137,5,17,0,0,127,132,5,18,0,0,128,131,8,1,0,0,129,
+        131,5,20,0,0,130,128,1,0,0,0,130,129,1,0,0,0,131,134,1,0,0,0,132,
+        130,1,0,0,0,132,133,1,0,0,0,133,135,1,0,0,0,134,132,1,0,0,0,135,
+        137,5,18,0,0,136,118,1,0,0,0,136,127,1,0,0,0,137,25,1,0,0,0,138,
+        140,5,19,0,0,139,141,8,2,0,0,140,139,1,0,0,0,141,142,1,0,0,0,142,
+        140,1,0,0,0,142,143,1,0,0,0,143,144,1,0,0,0,144,145,5,19,0,0,145,
+        27,1,0,0,0,146,150,5,6,0,0,147,149,3,30,15,0,148,147,1,0,0,0,149,
+        152,1,0,0,0,150,148,1,0,0,0,150,151,1,0,0,0,151,153,1,0,0,0,152,
+        150,1,0,0,0,153,154,5,7,0,0,154,29,1,0,0,0,155,160,3,28,14,0,156,
+        160,3,24,12,0,157,160,3,26,13,0,158,160,5,22,0,0,159,155,1,0,0,0,
+        159,156,1,0,0,0,159,157,1,0,0,0,159,158,1,0,0,0,160,31,1,0,0,0,18,
+        35,40,47,54,61,71,79,85,91,102,121,123,130,132,136,142,150,159
+    ];
+
+    private static __ATN: antlr.ATN;
+    public static get _ATN(): antlr.ATN {
+        if (!EBNFParser.__ATN) {
+            EBNFParser.__ATN = new antlr.ATNDeserializer().deserialize(EBNFParser._serializedATN);
+        }
+
+        return EBNFParser.__ATN;
+    }
 
 
-export class EBNFParser extends Parser {
-	public static readonly IDENTIFIER = 1;
-	public static readonly INTEGER = 2;
-	public static readonly CONCATENATE_SYMBOL = 3;
-	public static readonly DEFINING_SYMBOL = 4;
-	public static readonly DEFINITION_SEPARATOR_SYMBOL = 5;
-	public static readonly START_GROUP_SYMBOL = 6;
-	public static readonly END_GROUP_SYMBOL = 7;
-	public static readonly START_OPTION_SYMBOL = 8;
-	public static readonly END_OPTION_SYMBOL = 9;
-	public static readonly START_REPEAT_SYMBOL = 10;
-	public static readonly END_REPEAT_SYMBOL = 11;
-	public static readonly EXCEPT_SYMBOL = 12;
-	public static readonly REPETITION_SYMBOL = 13;
-	public static readonly TERMINATOR_SYMBOL = 14;
-	public static readonly FIRST_QUOTE_SYMBOL = 15;
-	public static readonly SECOND_QUOTE_SYMBOL = 16;
-	public static readonly SPECIAL_SEQUENCE_SYMBOL = 17;
-	public static readonly ESC_SEQ = 18;
-	public static readonly GAP_SEPARATOR = 19;
-	public static readonly COMMENT = 20;
-	public static readonly RULE_syntax = 0;
-	public static readonly RULE_syntaxRule = 1;
-	public static readonly RULE_definitionsList = 2;
-	public static readonly RULE_singleDefinition = 3;
-	public static readonly RULE_term = 4;
-	public static readonly RULE_exceptionRule = 5;
-	public static readonly RULE_factor = 6;
-	public static readonly RULE_primary = 7;
-	public static readonly RULE_empty = 8;
-	public static readonly RULE_optionalSequence = 9;
-	public static readonly RULE_repeatedSequence = 10;
-	public static readonly RULE_groupedSequence = 11;
-	public static readonly RULE_terminalString = 12;
-	public static readonly RULE_specialSequence = 13;
-	// tslint:disable:no-trailing-whitespace
-	public static readonly ruleNames: string[] = [
-		"syntax", "syntaxRule", "definitionsList", "singleDefinition", "term", 
-		"exceptionRule", "factor", "primary", "empty", "optionalSequence", "repeatedSequence", 
-		"groupedSequence", "terminalString", "specialSequence",
-	];
+    private static readonly vocabulary = new antlr.Vocabulary(EBNFParser.literalNames, EBNFParser.symbolicNames, []);
 
-	private static readonly _LITERAL_NAMES: Array<string | undefined> = [
-		undefined, undefined, undefined, "','", "'='", undefined, "'('", "')'", 
-		undefined, undefined, undefined, undefined, "'-'", "'*'", undefined, undefined, 
-		"'\"'", "'?'",
-	];
-	private static readonly _SYMBOLIC_NAMES: Array<string | undefined> = [
-		undefined, "IDENTIFIER", "INTEGER", "CONCATENATE_SYMBOL", "DEFINING_SYMBOL", 
-		"DEFINITION_SEPARATOR_SYMBOL", "START_GROUP_SYMBOL", "END_GROUP_SYMBOL", 
-		"START_OPTION_SYMBOL", "END_OPTION_SYMBOL", "START_REPEAT_SYMBOL", "END_REPEAT_SYMBOL", 
-		"EXCEPT_SYMBOL", "REPETITION_SYMBOL", "TERMINATOR_SYMBOL", "FIRST_QUOTE_SYMBOL", 
-		"SECOND_QUOTE_SYMBOL", "SPECIAL_SEQUENCE_SYMBOL", "ESC_SEQ", "GAP_SEPARATOR", 
-		"COMMENT",
-	];
-	public static readonly VOCABULARY: Vocabulary = new VocabularyImpl(EBNFParser._LITERAL_NAMES, EBNFParser._SYMBOLIC_NAMES, []);
+    public override get vocabulary(): antlr.Vocabulary {
+        return EBNFParser.vocabulary;
+    }
 
-	// @Override
-	// @NotNull
-	public get vocabulary(): Vocabulary {
-		return EBNFParser.VOCABULARY;
-	}
-	// tslint:enable:no-trailing-whitespace
-
-	// @Override
-	public get grammarFileName(): string { return "EBNFParser.g4"; }
-
-	// @Override
-	public get ruleNames(): string[] { return EBNFParser.ruleNames; }
-
-	// @Override
-	public get serializedATN(): string { return EBNFParser._serializedATN; }
-
-	protected createFailedPredicateException(predicate?: string, message?: string): FailedPredicateException {
-		return new FailedPredicateException(this, predicate, message);
-	}
-
-	constructor(input: TokenStream) {
-		super(input);
-		this._interp = new ParserATNSimulator(EBNFParser._ATN, this);
-	}
-	// @RuleVersion(0)
-	public syntax(): SyntaxContext {
-		let _localctx: SyntaxContext = new SyntaxContext(this._ctx, this.state);
-		this.enterRule(_localctx, 0, EBNFParser.RULE_syntax);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 29;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			do {
-				{
-				{
-				this.state = 28;
-				this.syntaxRule();
-				}
-				}
-				this.state = 31;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			} while (_la === EBNFParser.IDENTIFIER || _la === EBNFParser.COMMENT);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public syntaxRule(): SyntaxRuleContext {
-		let _localctx: SyntaxRuleContext = new SyntaxRuleContext(this._ctx, this.state);
-		this.enterRule(_localctx, 2, EBNFParser.RULE_syntaxRule);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 36;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === EBNFParser.COMMENT) {
-				{
-				{
-				this.state = 33;
-				this.match(EBNFParser.COMMENT);
-				}
-				}
-				this.state = 38;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			this.state = 39;
-			this.match(EBNFParser.IDENTIFIER);
-			this.state = 40;
-			this.match(EBNFParser.DEFINING_SYMBOL);
-			this.state = 41;
-			this.definitionsList();
-			this.state = 42;
-			this.match(EBNFParser.TERMINATOR_SYMBOL);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public definitionsList(): DefinitionsListContext {
-		let _localctx: DefinitionsListContext = new DefinitionsListContext(this._ctx, this.state);
-		this.enterRule(_localctx, 4, EBNFParser.RULE_definitionsList);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 44;
-			this.singleDefinition();
-			this.state = 49;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === EBNFParser.DEFINITION_SEPARATOR_SYMBOL) {
-				{
-				{
-				this.state = 45;
-				this.match(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
-				this.state = 46;
-				this.singleDefinition();
-				}
-				}
-				this.state = 51;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public singleDefinition(): SingleDefinitionContext {
-		let _localctx: SingleDefinitionContext = new SingleDefinitionContext(this._ctx, this.state);
-		this.enterRule(_localctx, 6, EBNFParser.RULE_singleDefinition);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 52;
-			this.term();
-			this.state = 57;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			while (_la === EBNFParser.CONCATENATE_SYMBOL) {
-				{
-				{
-				this.state = 53;
-				this.match(EBNFParser.CONCATENATE_SYMBOL);
-				this.state = 54;
-				this.term();
-				}
-				}
-				this.state = 59;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			}
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public term(): TermContext {
-		let _localctx: TermContext = new TermContext(this._ctx, this.state);
-		this.enterRule(_localctx, 8, EBNFParser.RULE_term);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 60;
-			this.factor();
-			this.state = 63;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === EBNFParser.EXCEPT_SYMBOL) {
-				{
-				this.state = 61;
-				this.match(EBNFParser.EXCEPT_SYMBOL);
-				this.state = 62;
-				this.exceptionRule();
-				}
-			}
-
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public exceptionRule(): ExceptionRuleContext {
-		let _localctx: ExceptionRuleContext = new ExceptionRuleContext(this._ctx, this.state);
-		this.enterRule(_localctx, 10, EBNFParser.RULE_exceptionRule);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 65;
-			this.factor();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public factor(): FactorContext {
-		let _localctx: FactorContext = new FactorContext(this._ctx, this.state);
-		this.enterRule(_localctx, 12, EBNFParser.RULE_factor);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 69;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			if (_la === EBNFParser.INTEGER) {
-				{
-				this.state = 67;
-				this.match(EBNFParser.INTEGER);
-				this.state = 68;
-				this.match(EBNFParser.REPETITION_SYMBOL);
-				}
-			}
-
-			this.state = 71;
-			this.primary();
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public primary(): PrimaryContext {
-		let _localctx: PrimaryContext = new PrimaryContext(this._ctx, this.state);
-		this.enterRule(_localctx, 14, EBNFParser.RULE_primary);
-		try {
-			this.state = 80;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case EBNFParser.START_OPTION_SYMBOL:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 73;
-				this.optionalSequence();
-				}
-				break;
-			case EBNFParser.START_REPEAT_SYMBOL:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 74;
-				this.repeatedSequence();
-				}
-				break;
-			case EBNFParser.START_GROUP_SYMBOL:
-				this.enterOuterAlt(_localctx, 3);
-				{
-				this.state = 75;
-				this.groupedSequence();
-				}
-				break;
-			case EBNFParser.IDENTIFIER:
-				this.enterOuterAlt(_localctx, 4);
-				{
-				this.state = 76;
-				this.match(EBNFParser.IDENTIFIER);
-				}
-				break;
-			case EBNFParser.FIRST_QUOTE_SYMBOL:
-			case EBNFParser.SECOND_QUOTE_SYMBOL:
-				this.enterOuterAlt(_localctx, 5);
-				{
-				this.state = 77;
-				this.terminalString();
-				}
-				break;
-			case EBNFParser.SPECIAL_SEQUENCE_SYMBOL:
-				this.enterOuterAlt(_localctx, 6);
-				{
-				this.state = 78;
-				this.specialSequence();
-				}
-				break;
-			case EBNFParser.CONCATENATE_SYMBOL:
-			case EBNFParser.DEFINITION_SEPARATOR_SYMBOL:
-			case EBNFParser.END_GROUP_SYMBOL:
-			case EBNFParser.END_OPTION_SYMBOL:
-			case EBNFParser.END_REPEAT_SYMBOL:
-			case EBNFParser.EXCEPT_SYMBOL:
-			case EBNFParser.TERMINATOR_SYMBOL:
-				this.enterOuterAlt(_localctx, 7);
-				{
-				this.state = 79;
-				this.empty();
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public empty(): EmptyContext {
-		let _localctx: EmptyContext = new EmptyContext(this._ctx, this.state);
-		this.enterRule(_localctx, 16, EBNFParser.RULE_empty);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			// tslint:disable-next-line:no-empty
-			{
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public optionalSequence(): OptionalSequenceContext {
-		let _localctx: OptionalSequenceContext = new OptionalSequenceContext(this._ctx, this.state);
-		this.enterRule(_localctx, 18, EBNFParser.RULE_optionalSequence);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 84;
-			this.match(EBNFParser.START_OPTION_SYMBOL);
-			this.state = 85;
-			this.definitionsList();
-			this.state = 86;
-			this.match(EBNFParser.END_OPTION_SYMBOL);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public repeatedSequence(): RepeatedSequenceContext {
-		let _localctx: RepeatedSequenceContext = new RepeatedSequenceContext(this._ctx, this.state);
-		this.enterRule(_localctx, 20, EBNFParser.RULE_repeatedSequence);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 88;
-			this.match(EBNFParser.START_REPEAT_SYMBOL);
-			this.state = 89;
-			this.definitionsList();
-			this.state = 90;
-			this.match(EBNFParser.END_REPEAT_SYMBOL);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public groupedSequence(): GroupedSequenceContext {
-		let _localctx: GroupedSequenceContext = new GroupedSequenceContext(this._ctx, this.state);
-		this.enterRule(_localctx, 22, EBNFParser.RULE_groupedSequence);
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 92;
-			this.match(EBNFParser.START_GROUP_SYMBOL);
-			this.state = 93;
-			this.definitionsList();
-			this.state = 94;
-			this.match(EBNFParser.END_GROUP_SYMBOL);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public terminalString(): TerminalStringContext {
-		let _localctx: TerminalStringContext = new TerminalStringContext(this._ctx, this.state);
-		this.enterRule(_localctx, 24, EBNFParser.RULE_terminalString);
-		let _la: number;
-		try {
-			this.state = 114;
-			this._errHandler.sync(this);
-			switch (this._input.LA(1)) {
-			case EBNFParser.FIRST_QUOTE_SYMBOL:
-				this.enterOuterAlt(_localctx, 1);
-				{
-				this.state = 96;
-				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
-				this.state = 101;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0)) {
-					{
-					this.state = 99;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 7, this._ctx) ) {
-					case 1:
-						{
-						this.state = 97;
-						_la = this._input.LA(1);
-						if (_la <= 0 || (_la === EBNFParser.FIRST_QUOTE_SYMBOL)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						}
-						break;
-
-					case 2:
-						{
-						this.state = 98;
-						this.match(EBNFParser.ESC_SEQ);
-						}
-						break;
-					}
-					}
-					this.state = 103;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				this.state = 104;
-				this.match(EBNFParser.FIRST_QUOTE_SYMBOL);
-				}
-				break;
-			case EBNFParser.SECOND_QUOTE_SYMBOL:
-				this.enterOuterAlt(_localctx, 2);
-				{
-				this.state = 105;
-				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
-				this.state = 110;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-				while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SPECIAL_SEQUENCE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0)) {
-					{
-					this.state = 108;
-					this._errHandler.sync(this);
-					switch ( this.interpreter.adaptivePredict(this._input, 9, this._ctx) ) {
-					case 1:
-						{
-						this.state = 106;
-						_la = this._input.LA(1);
-						if (_la <= 0 || (_la === EBNFParser.SECOND_QUOTE_SYMBOL)) {
-						this._errHandler.recoverInline(this);
-						} else {
-							if (this._input.LA(1) === Token.EOF) {
-								this.matchedEOF = true;
-							}
-
-							this._errHandler.reportMatch(this);
-							this.consume();
-						}
-						}
-						break;
-
-					case 2:
-						{
-						this.state = 107;
-						this.match(EBNFParser.ESC_SEQ);
-						}
-						break;
-					}
-					}
-					this.state = 112;
-					this._errHandler.sync(this);
-					_la = this._input.LA(1);
-				}
-				this.state = 113;
-				this.match(EBNFParser.SECOND_QUOTE_SYMBOL);
-				}
-				break;
-			default:
-				throw new NoViableAltException(this);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-	// @RuleVersion(0)
-	public specialSequence(): SpecialSequenceContext {
-		let _localctx: SpecialSequenceContext = new SpecialSequenceContext(this._ctx, this.state);
-		this.enterRule(_localctx, 26, EBNFParser.RULE_specialSequence);
-		let _la: number;
-		try {
-			this.enterOuterAlt(_localctx, 1);
-			{
-			this.state = 116;
-			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
-			this.state = 118;
-			this._errHandler.sync(this);
-			_la = this._input.LA(1);
-			do {
-				{
-				{
-				this.state = 117;
-				_la = this._input.LA(1);
-				if (_la <= 0 || (_la === EBNFParser.SPECIAL_SEQUENCE_SYMBOL)) {
-				this._errHandler.recoverInline(this);
-				} else {
-					if (this._input.LA(1) === Token.EOF) {
-						this.matchedEOF = true;
-					}
-
-					this._errHandler.reportMatch(this);
-					this.consume();
-				}
-				}
-				}
-				this.state = 120;
-				this._errHandler.sync(this);
-				_la = this._input.LA(1);
-			} while ((((_la) & ~0x1F) === 0 && ((1 << _la) & ((1 << EBNFParser.IDENTIFIER) | (1 << EBNFParser.INTEGER) | (1 << EBNFParser.CONCATENATE_SYMBOL) | (1 << EBNFParser.DEFINING_SYMBOL) | (1 << EBNFParser.DEFINITION_SEPARATOR_SYMBOL) | (1 << EBNFParser.START_GROUP_SYMBOL) | (1 << EBNFParser.END_GROUP_SYMBOL) | (1 << EBNFParser.START_OPTION_SYMBOL) | (1 << EBNFParser.END_OPTION_SYMBOL) | (1 << EBNFParser.START_REPEAT_SYMBOL) | (1 << EBNFParser.END_REPEAT_SYMBOL) | (1 << EBNFParser.EXCEPT_SYMBOL) | (1 << EBNFParser.REPETITION_SYMBOL) | (1 << EBNFParser.TERMINATOR_SYMBOL) | (1 << EBNFParser.FIRST_QUOTE_SYMBOL) | (1 << EBNFParser.SECOND_QUOTE_SYMBOL) | (1 << EBNFParser.ESC_SEQ) | (1 << EBNFParser.GAP_SEPARATOR) | (1 << EBNFParser.COMMENT))) !== 0));
-			this.state = 122;
-			this.match(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
-			}
-		}
-		catch (re) {
-			if (re instanceof RecognitionException) {
-				_localctx.exception = re;
-				this._errHandler.reportError(this, re);
-				this._errHandler.recover(this, re);
-			} else {
-				throw re;
-			}
-		}
-		finally {
-			this.exitRule();
-		}
-		return _localctx;
-	}
-
-	public static readonly _serializedATN: string =
-		"\x03\uC91D\uCABA\u058D\uAFBA\u4F53\u0607\uEA8B\uC241\x03\x16\x7F\x04\x02" +
-		"\t\x02\x04\x03\t\x03\x04\x04\t\x04\x04\x05\t\x05\x04\x06\t\x06\x04\x07" +
-		"\t\x07\x04\b\t\b\x04\t\t\t\x04\n\t\n\x04\v\t\v\x04\f\t\f\x04\r\t\r\x04" +
-		"\x0E\t\x0E\x04\x0F\t\x0F\x03\x02\x06\x02 \n\x02\r\x02\x0E\x02!\x03\x03" +
-		"\x07\x03%\n\x03\f\x03\x0E\x03(\v\x03\x03\x03\x03\x03\x03\x03\x03\x03\x03" +
-		"\x03\x03\x04\x03\x04\x03\x04\x07\x042\n\x04\f\x04\x0E\x045\v\x04\x03\x05" +
-		"\x03\x05\x03\x05\x07\x05:\n\x05\f\x05\x0E\x05=\v\x05\x03\x06\x03\x06\x03" +
-		"\x06\x05\x06B\n\x06\x03\x07\x03\x07\x03\b\x03\b\x05\bH\n\b\x03\b\x03\b" +
-		"\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x03\t\x05\tS\n\t\x03\n\x03\n\x03" +
-		"\v\x03\v\x03\v\x03\v\x03\f\x03\f\x03\f\x03\f\x03\r\x03\r\x03\r\x03\r\x03" +
-		"\x0E\x03\x0E\x03\x0E\x07\x0Ef\n\x0E\f\x0E\x0E\x0Ei\v\x0E\x03\x0E\x03\x0E" +
-		"\x03\x0E\x03\x0E\x07\x0Eo\n\x0E\f\x0E\x0E\x0Er\v\x0E\x03\x0E\x05\x0Eu" +
-		"\n\x0E\x03\x0F\x03\x0F\x06\x0Fy\n\x0F\r\x0F\x0E\x0Fz\x03\x0F\x03\x0F\x03" +
-		"\x0F\x02\x02\x02\x10\x02\x02\x04\x02\x06\x02\b\x02\n\x02\f\x02\x0E\x02" +
-		"\x10\x02\x12\x02\x14\x02\x16\x02\x18\x02\x1A\x02\x1C\x02\x02\x05\x03\x02" +
-		"\x11\x11\x03\x02\x12\x12\x03\x02\x13\x13\x02\x82\x02\x1F\x03\x02\x02\x02" +
-		"\x04&\x03\x02\x02\x02\x06.\x03\x02\x02\x02\b6\x03\x02\x02\x02\n>\x03\x02" +
-		"\x02\x02\fC\x03\x02\x02\x02\x0EG\x03\x02\x02\x02\x10R\x03\x02\x02\x02" +
-		"\x12T\x03\x02\x02\x02\x14V\x03\x02\x02\x02\x16Z\x03\x02\x02\x02\x18^\x03" +
-		"\x02\x02\x02\x1At\x03\x02\x02\x02\x1Cv\x03\x02\x02\x02\x1E \x05\x04\x03" +
-		"\x02\x1F\x1E\x03\x02\x02\x02 !\x03\x02\x02\x02!\x1F\x03\x02\x02\x02!\"" +
-		"\x03\x02\x02\x02\"\x03\x03\x02\x02\x02#%\x07\x16\x02\x02$#\x03\x02\x02" +
-		"\x02%(\x03\x02\x02\x02&$\x03\x02\x02\x02&\'\x03\x02\x02\x02\')\x03\x02" +
-		"\x02\x02(&\x03\x02\x02\x02)*\x07\x03\x02\x02*+\x07\x06\x02\x02+,\x05\x06" +
-		"\x04\x02,-\x07\x10\x02\x02-\x05\x03\x02\x02\x02.3\x05\b\x05\x02/0\x07" +
-		"\x07\x02\x0202\x05\b\x05\x021/\x03\x02\x02\x0225\x03\x02\x02\x0231\x03" +
-		"\x02\x02\x0234\x03\x02\x02\x024\x07\x03\x02\x02\x0253\x03\x02\x02\x02" +
-		"6;\x05\n\x06\x0278\x07\x05\x02\x028:\x05\n\x06\x0297\x03\x02\x02\x02:" +
-		"=\x03\x02\x02\x02;9\x03\x02\x02\x02;<\x03\x02\x02\x02<\t\x03\x02\x02\x02" +
-		"=;\x03\x02\x02\x02>A\x05\x0E\b\x02?@\x07\x0E\x02\x02@B\x05\f\x07\x02A" +
-		"?\x03\x02\x02\x02AB\x03\x02\x02\x02B\v\x03\x02\x02\x02CD\x05\x0E\b\x02" +
-		"D\r\x03\x02\x02\x02EF\x07\x04\x02\x02FH\x07\x0F\x02\x02GE\x03\x02\x02" +
-		"\x02GH\x03\x02\x02\x02HI\x03\x02\x02\x02IJ\x05\x10\t\x02J\x0F\x03\x02" +
-		"\x02\x02KS\x05\x14\v\x02LS\x05\x16\f\x02MS\x05\x18\r\x02NS\x07\x03\x02" +
-		"\x02OS\x05\x1A\x0E\x02PS\x05\x1C\x0F\x02QS\x05\x12\n\x02RK\x03\x02\x02" +
-		"\x02RL\x03\x02\x02\x02RM\x03\x02\x02\x02RN\x03\x02\x02\x02RO\x03\x02\x02" +
-		"\x02RP\x03\x02\x02\x02RQ\x03\x02\x02\x02S\x11\x03\x02\x02\x02TU\x03\x02" +
-		"\x02\x02U\x13\x03\x02\x02\x02VW\x07\n\x02\x02WX\x05\x06\x04\x02XY\x07" +
-		"\v\x02\x02Y\x15\x03\x02\x02\x02Z[\x07\f\x02\x02[\\\x05\x06\x04\x02\\]" +
-		"\x07\r\x02\x02]\x17\x03\x02\x02\x02^_\x07\b\x02\x02_`\x05\x06\x04\x02" +
-		"`a\x07\t\x02\x02a\x19\x03\x02\x02\x02bg\x07\x11\x02\x02cf\n\x02\x02\x02" +
-		"df\x07\x14\x02\x02ec\x03\x02\x02\x02ed\x03\x02\x02\x02fi\x03\x02\x02\x02" +
-		"ge\x03\x02\x02\x02gh\x03\x02\x02\x02hj\x03\x02\x02\x02ig\x03\x02\x02\x02" +
-		"ju\x07\x11\x02\x02kp\x07\x12\x02\x02lo\n\x03\x02\x02mo\x07\x14\x02\x02" +
-		"nl\x03\x02\x02\x02nm\x03\x02\x02\x02or\x03\x02\x02\x02pn\x03\x02\x02\x02" +
-		"pq\x03\x02\x02\x02qs\x03\x02\x02\x02rp\x03\x02\x02\x02su\x07\x12\x02\x02" +
-		"tb\x03\x02\x02\x02tk\x03\x02\x02\x02u\x1B\x03\x02\x02\x02vx\x07\x13\x02" +
-		"\x02wy\n\x04\x02\x02xw\x03\x02\x02\x02yz\x03\x02\x02\x02zx\x03\x02\x02" +
-		"\x02z{\x03\x02\x02\x02{|\x03\x02\x02\x02|}\x07\x13\x02\x02}\x1D\x03\x02" +
-		"\x02\x02\x0F!&3;AGRegnptz";
-	public static __ATN: ATN;
-	public static get _ATN(): ATN {
-		if (!EBNFParser.__ATN) {
-			EBNFParser.__ATN = new ATNDeserializer().deserialize(Utils.toCharArray(EBNFParser._serializedATN));
-		}
-
-		return EBNFParser.__ATN;
-	}
-
+    private static readonly decisionsToDFA = EBNFParser._ATN.decisionToState.map( (ds: antlr.DecisionState, index: number) => new antlr.DFA(ds, index) );
 }
 
-export class SyntaxContext extends ParserRuleContext {
-	public syntaxRule(): SyntaxRuleContext[];
-	public syntaxRule(i: number): SyntaxRuleContext;
-	public syntaxRule(i?: number): SyntaxRuleContext | SyntaxRuleContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(SyntaxRuleContext);
-		} else {
-			return this.getRuleContext(i, SyntaxRuleContext);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_syntax; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterSyntax) {
-			listener.enterSyntax(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitSyntax) {
-			listener.exitSyntax(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitSyntax) {
-			return visitor.visitSyntax(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
+export class SyntaxContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public syntaxRule(): SyntaxRuleContext[];
+    public syntaxRule(i: number): SyntaxRuleContext | null;
+    public syntaxRule(i?: number): SyntaxRuleContext[] | SyntaxRuleContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(SyntaxRuleContext);
+        }
 
-
-export class SyntaxRuleContext extends ParserRuleContext {
-	public IDENTIFIER(): TerminalNode { return this.getToken(EBNFParser.IDENTIFIER, 0); }
-	public DEFINING_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.DEFINING_SYMBOL, 0); }
-	public definitionsList(): DefinitionsListContext {
-		return this.getRuleContext(0, DefinitionsListContext);
-	}
-	public TERMINATOR_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.TERMINATOR_SYMBOL, 0); }
-	public COMMENT(): TerminalNode[];
-	public COMMENT(i: number): TerminalNode;
-	public COMMENT(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.COMMENT);
-		} else {
-			return this.getToken(EBNFParser.COMMENT, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_syntaxRule; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterSyntaxRule) {
-			listener.enterSyntaxRule(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitSyntaxRule) {
-			listener.exitSyntaxRule(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitSyntaxRule) {
-			return visitor.visitSyntaxRule(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class DefinitionsListContext extends ParserRuleContext {
-	public singleDefinition(): SingleDefinitionContext[];
-	public singleDefinition(i: number): SingleDefinitionContext;
-	public singleDefinition(i?: number): SingleDefinitionContext | SingleDefinitionContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(SingleDefinitionContext);
-		} else {
-			return this.getRuleContext(i, SingleDefinitionContext);
-		}
-	}
-	public DEFINITION_SEPARATOR_SYMBOL(): TerminalNode[];
-	public DEFINITION_SEPARATOR_SYMBOL(i: number): TerminalNode;
-	public DEFINITION_SEPARATOR_SYMBOL(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
-		} else {
-			return this.getToken(EBNFParser.DEFINITION_SEPARATOR_SYMBOL, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_definitionsList; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterDefinitionsList) {
-			listener.enterDefinitionsList(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitDefinitionsList) {
-			listener.exitDefinitionsList(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitDefinitionsList) {
-			return visitor.visitDefinitionsList(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
-}
-
-
-export class SingleDefinitionContext extends ParserRuleContext {
-	public term(): TermContext[];
-	public term(i: number): TermContext;
-	public term(i?: number): TermContext | TermContext[] {
-		if (i === undefined) {
-			return this.getRuleContexts(TermContext);
-		} else {
-			return this.getRuleContext(i, TermContext);
-		}
-	}
-	public CONCATENATE_SYMBOL(): TerminalNode[];
-	public CONCATENATE_SYMBOL(i: number): TerminalNode;
-	public CONCATENATE_SYMBOL(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.CONCATENATE_SYMBOL);
-		} else {
-			return this.getToken(EBNFParser.CONCATENATE_SYMBOL, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_singleDefinition; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterSingleDefinition) {
-			listener.enterSingleDefinition(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitSingleDefinition) {
-			listener.exitSingleDefinition(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitSingleDefinition) {
-			return visitor.visitSingleDefinition(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+        return this.getRuleContext(i, SyntaxRuleContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_syntax;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterSyntax) {
+             listener.enterSyntax(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitSyntax) {
+             listener.exitSyntax(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitSyntax) {
+            return visitor.visitSyntax(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class TermContext extends ParserRuleContext {
-	public factor(): FactorContext {
-		return this.getRuleContext(0, FactorContext);
-	}
-	public EXCEPT_SYMBOL(): TerminalNode | undefined { return this.tryGetToken(EBNFParser.EXCEPT_SYMBOL, 0); }
-	public exceptionRule(): ExceptionRuleContext | undefined {
-		return this.tryGetRuleContext(0, ExceptionRuleContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_term; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterTerm) {
-			listener.enterTerm(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitTerm) {
-			listener.exitTerm(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitTerm) {
-			return visitor.visitTerm(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class SyntaxRuleContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public IDENTIFIER(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.IDENTIFIER, 0)!;
+    }
+    public DEFINING_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.DEFINING_SYMBOL, 0)!;
+    }
+    public definitionsList(): DefinitionsListContext {
+        return this.getRuleContext(0, DefinitionsListContext)!;
+    }
+    public TERMINATOR_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.TERMINATOR_SYMBOL, 0)!;
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_syntaxRule;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterSyntaxRule) {
+             listener.enterSyntaxRule(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitSyntaxRule) {
+             listener.exitSyntaxRule(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitSyntaxRule) {
+            return visitor.visitSyntaxRule(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class ExceptionRuleContext extends ParserRuleContext {
-	public factor(): FactorContext {
-		return this.getRuleContext(0, FactorContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_exceptionRule; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterExceptionRule) {
-			listener.enterExceptionRule(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitExceptionRule) {
-			listener.exitExceptionRule(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitExceptionRule) {
-			return visitor.visitExceptionRule(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class DefinitionsListContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public singleDefinition(): SingleDefinitionContext[];
+    public singleDefinition(i: number): SingleDefinitionContext | null;
+    public singleDefinition(i?: number): SingleDefinitionContext[] | SingleDefinitionContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(SingleDefinitionContext);
+        }
+
+        return this.getRuleContext(i, SingleDefinitionContext);
+    }
+    public DEFINITION_SEPARATOR_SYMBOL(): antlr.TerminalNode[];
+    public DEFINITION_SEPARATOR_SYMBOL(i: number): antlr.TerminalNode | null;
+    public DEFINITION_SEPARATOR_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
+    	} else {
+    		return this.getToken(EBNFParser.DEFINITION_SEPARATOR_SYMBOL, i);
+    	}
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_definitionsList;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterDefinitionsList) {
+             listener.enterDefinitionsList(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitDefinitionsList) {
+             listener.exitDefinitionsList(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitDefinitionsList) {
+            return visitor.visitDefinitionsList(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class FactorContext extends ParserRuleContext {
-	public primary(): PrimaryContext {
-		return this.getRuleContext(0, PrimaryContext);
-	}
-	public INTEGER(): TerminalNode | undefined { return this.tryGetToken(EBNFParser.INTEGER, 0); }
-	public REPETITION_SYMBOL(): TerminalNode | undefined { return this.tryGetToken(EBNFParser.REPETITION_SYMBOL, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_factor; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterFactor) {
-			listener.enterFactor(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitFactor) {
-			listener.exitFactor(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitFactor) {
-			return visitor.visitFactor(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class SingleDefinitionContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public term(): TermContext[];
+    public term(i: number): TermContext | null;
+    public term(i?: number): TermContext[] | TermContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(TermContext);
+        }
+
+        return this.getRuleContext(i, TermContext);
+    }
+    public CONCATENATE_SYMBOL(): antlr.TerminalNode[];
+    public CONCATENATE_SYMBOL(i: number): antlr.TerminalNode | null;
+    public CONCATENATE_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.CONCATENATE_SYMBOL);
+    	} else {
+    		return this.getToken(EBNFParser.CONCATENATE_SYMBOL, i);
+    	}
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_singleDefinition;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterSingleDefinition) {
+             listener.enterSingleDefinition(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitSingleDefinition) {
+             listener.exitSingleDefinition(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitSingleDefinition) {
+            return visitor.visitSingleDefinition(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class PrimaryContext extends ParserRuleContext {
-	public optionalSequence(): OptionalSequenceContext | undefined {
-		return this.tryGetRuleContext(0, OptionalSequenceContext);
-	}
-	public repeatedSequence(): RepeatedSequenceContext | undefined {
-		return this.tryGetRuleContext(0, RepeatedSequenceContext);
-	}
-	public groupedSequence(): GroupedSequenceContext | undefined {
-		return this.tryGetRuleContext(0, GroupedSequenceContext);
-	}
-	public IDENTIFIER(): TerminalNode | undefined { return this.tryGetToken(EBNFParser.IDENTIFIER, 0); }
-	public terminalString(): TerminalStringContext | undefined {
-		return this.tryGetRuleContext(0, TerminalStringContext);
-	}
-	public specialSequence(): SpecialSequenceContext | undefined {
-		return this.tryGetRuleContext(0, SpecialSequenceContext);
-	}
-	public empty(): EmptyContext | undefined {
-		return this.tryGetRuleContext(0, EmptyContext);
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_primary; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterPrimary) {
-			listener.enterPrimary(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitPrimary) {
-			listener.exitPrimary(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitPrimary) {
-			return visitor.visitPrimary(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class TermContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public factor(): FactorContext {
+        return this.getRuleContext(0, FactorContext)!;
+    }
+    public EXCEPT_SYMBOL(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.EXCEPT_SYMBOL, 0);
+    }
+    public exceptionRule(): ExceptionRuleContext | null {
+        return this.getRuleContext(0, ExceptionRuleContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_term;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterTerm) {
+             listener.enterTerm(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitTerm) {
+             listener.exitTerm(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitTerm) {
+            return visitor.visitTerm(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class EmptyContext extends ParserRuleContext {
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_empty; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterEmpty) {
-			listener.enterEmpty(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitEmpty) {
-			listener.exitEmpty(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitEmpty) {
-			return visitor.visitEmpty(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class ExceptionRuleContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public factor(): FactorContext {
+        return this.getRuleContext(0, FactorContext)!;
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_exceptionRule;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterExceptionRule) {
+             listener.enterExceptionRule(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitExceptionRule) {
+             listener.exitExceptionRule(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitExceptionRule) {
+            return visitor.visitExceptionRule(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class OptionalSequenceContext extends ParserRuleContext {
-	public START_OPTION_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.START_OPTION_SYMBOL, 0); }
-	public definitionsList(): DefinitionsListContext {
-		return this.getRuleContext(0, DefinitionsListContext);
-	}
-	public END_OPTION_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.END_OPTION_SYMBOL, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_optionalSequence; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterOptionalSequence) {
-			listener.enterOptionalSequence(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitOptionalSequence) {
-			listener.exitOptionalSequence(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitOptionalSequence) {
-			return visitor.visitOptionalSequence(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class FactorContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public primary(): PrimaryContext {
+        return this.getRuleContext(0, PrimaryContext)!;
+    }
+    public INTEGER(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.INTEGER, 0);
+    }
+    public REPETITION_SYMBOL(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.REPETITION_SYMBOL, 0);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_factor;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterFactor) {
+             listener.enterFactor(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitFactor) {
+             listener.exitFactor(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitFactor) {
+            return visitor.visitFactor(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class RepeatedSequenceContext extends ParserRuleContext {
-	public START_REPEAT_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.START_REPEAT_SYMBOL, 0); }
-	public definitionsList(): DefinitionsListContext {
-		return this.getRuleContext(0, DefinitionsListContext);
-	}
-	public END_REPEAT_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.END_REPEAT_SYMBOL, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_repeatedSequence; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterRepeatedSequence) {
-			listener.enterRepeatedSequence(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitRepeatedSequence) {
-			listener.exitRepeatedSequence(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitRepeatedSequence) {
-			return visitor.visitRepeatedSequence(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class PrimaryContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public optionalSequence(): OptionalSequenceContext | null {
+        return this.getRuleContext(0, OptionalSequenceContext);
+    }
+    public repeatedSequence(): RepeatedSequenceContext | null {
+        return this.getRuleContext(0, RepeatedSequenceContext);
+    }
+    public groupedSequence(): GroupedSequenceContext | null {
+        return this.getRuleContext(0, GroupedSequenceContext);
+    }
+    public IDENTIFIER(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.IDENTIFIER, 0);
+    }
+    public terminalString(): TerminalStringContext | null {
+        return this.getRuleContext(0, TerminalStringContext);
+    }
+    public specialSequence(): SpecialSequenceContext | null {
+        return this.getRuleContext(0, SpecialSequenceContext);
+    }
+    public empty(): EmptyContext | null {
+        return this.getRuleContext(0, EmptyContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_primary;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterPrimary) {
+             listener.enterPrimary(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitPrimary) {
+             listener.exitPrimary(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitPrimary) {
+            return visitor.visitPrimary(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class GroupedSequenceContext extends ParserRuleContext {
-	public START_GROUP_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.START_GROUP_SYMBOL, 0); }
-	public definitionsList(): DefinitionsListContext {
-		return this.getRuleContext(0, DefinitionsListContext);
-	}
-	public END_GROUP_SYMBOL(): TerminalNode { return this.getToken(EBNFParser.END_GROUP_SYMBOL, 0); }
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_groupedSequence; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterGroupedSequence) {
-			listener.enterGroupedSequence(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitGroupedSequence) {
-			listener.exitGroupedSequence(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitGroupedSequence) {
-			return visitor.visitGroupedSequence(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class EmptyContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_empty;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterEmpty) {
+             listener.enterEmpty(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitEmpty) {
+             listener.exitEmpty(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitEmpty) {
+            return visitor.visitEmpty(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class TerminalStringContext extends ParserRuleContext {
-	public FIRST_QUOTE_SYMBOL(): TerminalNode[];
-	public FIRST_QUOTE_SYMBOL(i: number): TerminalNode;
-	public FIRST_QUOTE_SYMBOL(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.FIRST_QUOTE_SYMBOL);
-		} else {
-			return this.getToken(EBNFParser.FIRST_QUOTE_SYMBOL, i);
-		}
-	}
-	public ESC_SEQ(): TerminalNode[];
-	public ESC_SEQ(i: number): TerminalNode;
-	public ESC_SEQ(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.ESC_SEQ);
-		} else {
-			return this.getToken(EBNFParser.ESC_SEQ, i);
-		}
-	}
-	public SECOND_QUOTE_SYMBOL(): TerminalNode[];
-	public SECOND_QUOTE_SYMBOL(i: number): TerminalNode;
-	public SECOND_QUOTE_SYMBOL(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.SECOND_QUOTE_SYMBOL);
-		} else {
-			return this.getToken(EBNFParser.SECOND_QUOTE_SYMBOL, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_terminalString; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterTerminalString) {
-			listener.enterTerminalString(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitTerminalString) {
-			listener.exitTerminalString(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitTerminalString) {
-			return visitor.visitTerminalString(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class OptionalSequenceContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public START_OPTION_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.START_OPTION_SYMBOL, 0)!;
+    }
+    public definitionsList(): DefinitionsListContext {
+        return this.getRuleContext(0, DefinitionsListContext)!;
+    }
+    public END_OPTION_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.END_OPTION_SYMBOL, 0)!;
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_optionalSequence;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterOptionalSequence) {
+             listener.enterOptionalSequence(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitOptionalSequence) {
+             listener.exitOptionalSequence(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitOptionalSequence) {
+            return visitor.visitOptionalSequence(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
-export class SpecialSequenceContext extends ParserRuleContext {
-	public SPECIAL_SEQUENCE_SYMBOL(): TerminalNode[];
-	public SPECIAL_SEQUENCE_SYMBOL(i: number): TerminalNode;
-	public SPECIAL_SEQUENCE_SYMBOL(i?: number): TerminalNode | TerminalNode[] {
-		if (i === undefined) {
-			return this.getTokens(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
-		} else {
-			return this.getToken(EBNFParser.SPECIAL_SEQUENCE_SYMBOL, i);
-		}
-	}
-	constructor(parent: ParserRuleContext | undefined, invokingState: number) {
-		super(parent, invokingState);
-	}
-	// @Override
-	public get ruleIndex(): number { return EBNFParser.RULE_specialSequence; }
-	// @Override
-	public enterRule(listener: EBNFParserListener): void {
-		if (listener.enterSpecialSequence) {
-			listener.enterSpecialSequence(this);
-		}
-	}
-	// @Override
-	public exitRule(listener: EBNFParserListener): void {
-		if (listener.exitSpecialSequence) {
-			listener.exitSpecialSequence(this);
-		}
-	}
-	// @Override
-	public accept<Result>(visitor: EBNFParserVisitor<Result>): Result {
-		if (visitor.visitSpecialSequence) {
-			return visitor.visitSpecialSequence(this);
-		} else {
-			return visitor.visitChildren(this);
-		}
-	}
+export class RepeatedSequenceContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public START_REPEAT_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.START_REPEAT_SYMBOL, 0)!;
+    }
+    public definitionsList(): DefinitionsListContext {
+        return this.getRuleContext(0, DefinitionsListContext)!;
+    }
+    public END_REPEAT_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.END_REPEAT_SYMBOL, 0)!;
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_repeatedSequence;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterRepeatedSequence) {
+             listener.enterRepeatedSequence(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitRepeatedSequence) {
+             listener.exitRepeatedSequence(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitRepeatedSequence) {
+            return visitor.visitRepeatedSequence(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
 }
 
 
+export class GroupedSequenceContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public START_GROUP_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.START_GROUP_SYMBOL, 0)!;
+    }
+    public definitionsList(): DefinitionsListContext {
+        return this.getRuleContext(0, DefinitionsListContext)!;
+    }
+    public END_GROUP_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.END_GROUP_SYMBOL, 0)!;
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_groupedSequence;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterGroupedSequence) {
+             listener.enterGroupedSequence(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitGroupedSequence) {
+             listener.exitGroupedSequence(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitGroupedSequence) {
+            return visitor.visitGroupedSequence(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
+export class TerminalStringContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public FIRST_QUOTE_SYMBOL(): antlr.TerminalNode[];
+    public FIRST_QUOTE_SYMBOL(i: number): antlr.TerminalNode | null;
+    public FIRST_QUOTE_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.FIRST_QUOTE_SYMBOL);
+    	} else {
+    		return this.getToken(EBNFParser.FIRST_QUOTE_SYMBOL, i);
+    	}
+    }
+    public ESC_SEQ(): antlr.TerminalNode[];
+    public ESC_SEQ(i: number): antlr.TerminalNode | null;
+    public ESC_SEQ(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.ESC_SEQ);
+    	} else {
+    		return this.getToken(EBNFParser.ESC_SEQ, i);
+    	}
+    }
+    public SECOND_QUOTE_SYMBOL(): antlr.TerminalNode[];
+    public SECOND_QUOTE_SYMBOL(i: number): antlr.TerminalNode | null;
+    public SECOND_QUOTE_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.SECOND_QUOTE_SYMBOL);
+    	} else {
+    		return this.getToken(EBNFParser.SECOND_QUOTE_SYMBOL, i);
+    	}
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_terminalString;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterTerminalString) {
+             listener.enterTerminalString(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitTerminalString) {
+             listener.exitTerminalString(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitTerminalString) {
+            return visitor.visitTerminalString(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
+export class SpecialSequenceContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public SPECIAL_SEQUENCE_SYMBOL(): antlr.TerminalNode[];
+    public SPECIAL_SEQUENCE_SYMBOL(i: number): antlr.TerminalNode | null;
+    public SPECIAL_SEQUENCE_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
+    	if (i === undefined) {
+    		return this.getTokens(EBNFParser.SPECIAL_SEQUENCE_SYMBOL);
+    	} else {
+    		return this.getToken(EBNFParser.SPECIAL_SEQUENCE_SYMBOL, i);
+    	}
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_specialSequence;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterSpecialSequence) {
+             listener.enterSpecialSequence(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitSpecialSequence) {
+             listener.exitSpecialSequence(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitSpecialSequence) {
+            return visitor.visitSpecialSequence(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
+export class CommentContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public START_COMMENT_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.START_COMMENT_SYMBOL, 0)!;
+    }
+    public END_COMMENT_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.END_COMMENT_SYMBOL, 0)!;
+    }
+    public comment_symbol(): Comment_symbolContext[];
+    public comment_symbol(i: number): Comment_symbolContext | null;
+    public comment_symbol(i?: number): Comment_symbolContext[] | Comment_symbolContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(Comment_symbolContext);
+        }
+
+        return this.getRuleContext(i, Comment_symbolContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_comment;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterComment) {
+             listener.enterComment(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitComment) {
+             listener.exitComment(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitComment) {
+            return visitor.visitComment(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
+export class Comment_symbolContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public comment(): CommentContext | null {
+        return this.getRuleContext(0, CommentContext);
+    }
+    public terminalString(): TerminalStringContext | null {
+        return this.getRuleContext(0, TerminalStringContext);
+    }
+    public specialSequence(): SpecialSequenceContext | null {
+        return this.getRuleContext(0, SpecialSequenceContext);
+    }
+    public CHARACTER(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.CHARACTER, 0);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_comment_symbol;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterComment_symbol) {
+             listener.enterComment_symbol(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitComment_symbol) {
+             listener.exitComment_symbol(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitComment_symbol) {
+            return visitor.visitComment_symbol(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}

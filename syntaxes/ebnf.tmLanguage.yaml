@@ -7,6 +7,28 @@ patterns:
   - include: '#syntax'
 
 repository:
+    brackets:
+        patterns:
+            - name: punctuation.definition.bracket.round.begin.ebnf
+              match: '\('
+            - name: punctuation.definition.bracket.round.end.ebnf
+              match: '\)'
+            - name: punctuation.definition.bracket.square.begin.ebnf
+              match: '\['
+            - name: punctuation.definition.bracket.square.end.ebnf
+              match: '\]'
+            - name: punctuation.definition.bracket.curly.begin.ebnf
+              match: '\{'
+            - name: punctuation.definition.bracket.curly.end.ebnf
+              match: '\}'
+
+    special-characters:
+        patterns:
+            - name: punctuation.terminator.ebnf
+              match: '[;\.]'
+            - name: punctuation.separator.ebnf
+              match: ':'
+
     concatenate-symbol:
         name: keyword.operator.concatenate.ebnf
         match: ','
@@ -29,21 +51,41 @@ repository:
 
     integer:
         name: constant.numeric.ebnf
-        match: '[0-9]+'
+        match: '\b[0-9]+\b'
 
     meta-identifier:
-        comment: A <meta identifier> is the name of a syntactic element of the language being defined
-        name: entity.name.function.ebnf
-        match: '((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)'
+        comment: "A <meta identifier> is the name of a syntactic element of the language being defined"
+        name: variable.other.constant.ebnf
+        match: '\b(?:[a-zA-Z][a-zA-Z0-9_-]*)\b'
 
     terminal-string:
-        name: constant.string.ebnf
-        match: (\'([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~"])*\')|(\"([a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-\?;\. :\+_%@#\&\$\\\^~\'])*\")
+        name: string.quoted.ebnf
+        patterns:
+            - name: string.quoted.single.ebnf
+              begin: \'
+              end: \'
+              patterns:
+                - match: \\.
+                  name: constant.character.escape.ebnf
+            - name: string.quoted.double.ebnf
+              begin: \"
+              end: \"
+              patterns:
+                - match: \\.
+                  name: constant.character.escape.ebnf
 
     special-sequence:
-        comment: The meaning of a <special sequence> is not defined in the standard metalanguage.
-        name: constant.string.ebnf
-        match: (\?[a-zA-Z0-9,=\|/!\(\)\[\]\{\}\<\>\*\-;\. :\+_%@#\&\$\\\^~\'\"]\?)
+        comment: "The meaning of a <special sequence> is not defined in the standard metalanguage."
+        name: keyword.control.special.ebnf
+        begin: '\?'
+        beginCaptures:
+            '0': { name: punctuation.definition.special-sequence.begin.ebnf }
+        end: '\?'
+        endCaptures:
+            '0': { name: punctuation.definition.special-sequence.end.ebnf }
+        patterns:
+            - match: '[^?]+'
+              name: keyword.control.special.content.ebnf
 
     syntax:
         name: meta.syntax.ebnf
@@ -52,93 +94,120 @@ repository:
             - include: '#syntax-rule'
 
     comment-block:
-        comment: A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>
-        name: comment.ebnf
+        comment: "A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>"
+        name: comment.block.ebnf
         begin: '\(\*'
+        beginCaptures:
+            '0': { name: punctuation.definition.comment.begin.ebnf }
         end: '\*\)'
-    
+        endCaptures:
+            '0': { name: punctuation.definition.comment.end.ebnf }
+        patterns:
+            - include: '#comment-content'
+
+    comment-content:
+        patterns:
+            - include: '#comment-block'
+            - name: comment.block.content.ebnf
+              match: '.'
+
     syntax-rule:
-        comment: A <syntax rule> defines the sequences of symbols represented by a <meta identifier>
+        comment: "A <syntax rule> defines the sequences of symbols represented by a <meta identifier>"
         name: meta.syntax.rule.ebnf
-        begin: '((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\s)*(=)*(?:\s)*'
-        beginCaptures: 
-            '1': { name: keyword.syntax.rule.ebnf }
+        begin: '^((?:[a-zA-Z])(?:[a-zA-Z0-9_-])*)(?:\s)*(=)*(?:\s)*'
+        beginCaptures:
+            '1': { name: entity.name.function.rule.ebnf }
             '2': { name: keyword.operator.assignment.ebnf }
         end: '[;\.]'
+        endCaptures:
+            '0': { name: punctuation.terminator.ebnf }
         patterns:
+            - include: '#comment-block'
             - include: '#definitions-list'
 
     definitions-list:
-        comment: Vertical bar separates alternative <single definitions>
+        comment: "Vertical bar separates alternative <single definitions>"
         name: meta.definitions.list.ebnf
         patterns:
             - include: '#single-definition'
             - include: '#definition-separator-symbol'
 
     single-definition:
-        comment: Comma separates successive <terms>
+        comment: "Comma separates successive <terms>"
         name: meta.definitions.single.ebnf
         patterns:
             - include: '#term'
             - include: '#concatenate-symbol'
 
     term:
-        comment: A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception>
+        comment: "A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception>"
         name: meta.term.ebnf
         patterns:
             - include: '#factor'
             - include: '#except-symbol'
+            - include: '#exception-rule'
+
+    exception-rule:
+        name: meta.exception.ebnf
+        patterns:
+            - include: '#factor'
 
     factor:
-        comment: The <integer> specifies the number of repetitions of the <primary> 
+        comment: "The <integer> specifies the number of repetitions of the <primary>"
         name: meta.factor.ebnf
         patterns:
             - include: '#integer'
-            - include: '#primary'
             - include: '#repetition-symbol'
+            - include: '#primary'
 
     primary:
         name: meta.primary.ebnf
         patterns:
             - include: '#optional-sequence'
             - include: '#repeated-sequence'
-            - include: '#special-sequence'
             - include: '#grouped-sequence'
             - include: '#meta-identifier'
             - include: '#terminal-string'
+            - include: '#special-sequence'
 
     optional-sequence:
-        comment: The brackets [ and ] enclose symbols which are optional
+        comment: "The brackets [ and ] or (/ and /) enclose symbols which are optional"
         name: meta.sequence.optional.ebnf
-        begin: '\['
+        begin: '(\[|\(\/)'
         beginCaptures: 
-            '1': { name: meta.brace.square.ebnf }
-        end: '\]'
+            '1': { name: punctuation.definition.optional.begin.ebnf }
+        end: '(\]|\/\))'
         endCaptures: 
-            '1': { name: meta.brace.square.ebnf }
+            '1': { name: punctuation.definition.optional.end.ebnf }
         patterns:
             - include: '#definitions-list'
+            - include: '#brackets'
+            - include: '#special-characters'
 
     repeated-sequence:
-        comment: The brackets { and } enclose symbols which may be repeated any number of times
+        comment: "The brackets { and } or (: and :) enclose symbols which may be repeated any number of times"
         name: meta.sequence.repeated.ebnf
-        begin: '\{'
+        begin: '(\{|\(:)'
         beginCaptures: 
-            '1': { name: meta.brace.curly.ebnf }
-        end: '\}'
+            '1': { name: punctuation.definition.repeated.begin.ebnf }
+        end: '(\}|:\))'
         endCaptures: 
-            '1': { name: meta.brace.curly.ebnf }
+            '1': { name: punctuation.definition.repeated.end.ebnf }
         patterns:
             - include: '#definitions-list'
+            - include: '#brackets'
+            - include: '#special-characters'
 
     grouped-sequence:
-        comment: The brackets ( and ) allow any <definitions list> to be a <primary>
+        comment: "The brackets ( and ) allow any <definitions list> to be a <primary>"
         name: meta.sequence.grouped.ebnf
         begin: '\('
         beginCaptures: 
-            '1': { name: meta.brace.round.ebnf }
+            '0': { name: punctuation.definition.group.begin.ebnf }
         end: '\)'
         endCaptures: 
-            '1': { name: meta.brace.round.ebnf }
+            '0': { name: punctuation.definition.group.end.ebnf }
         patterns:
             - include: '#definitions-list'
+            - include: '#brackets'
+            - include: '#special-characters'
