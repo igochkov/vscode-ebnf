@@ -2,7 +2,7 @@
     "name": "vscode-ebnf",
     "displayName": "EBNF Tools",
     "description": "EBNF Tools for Visual Studio Code",
-    "version": "1.3.1",
+    "version": "1.4.0",
     "publisher": "igochkov",
     "author": {
         "name": "Ivaylo Gochkov",
@@ -15,7 +15,7 @@
     "license": "MIT",
     "categories": [
         "Programming Languages",
-        "Education", 
+        "Education",
         "Formatters"
     ],
     "keywords": [
@@ -67,77 +67,90 @@
         "configuration": {
             "title": "EBNF",
             "properties": {
-                "EBNF.format.enable" : {
+                "EBNF.format.enable": {
                     "type": "boolean",
                     "default": true,
                     "description": "Enable/disable default EBNF formatter.",
                     "order": 0
                 },
-                "EBNF.format.definingSymbolOnNewLine" : {
+                "EBNF.format.definingSymbolOnNewLine": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Place defining symbol `\"=\"` on new line.",
                     "order": 1
                 },
-                "EBNF.format.indentDefiningSymbol" : {
+                "EBNF.format.indentDefiningSymbol": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Indent defining symbol `\"=\"` when on new line.\n\n`#editor.tabSize#` and `#editor.insertSpaces#` can be configured in the **Commonly Used** section.",
-                    "order": 2                   
+                    "order": 2
                 },
-                "EBNF.format.terminatorSymbolOnNewLine" : {
+                "EBNF.format.terminatorSymbolOnNewLine": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Place terminator symbol (`\";\"` or `\".\"`) on new line.",
                     "order": 3
                 },
-                "EBNF.format.definitionSeparatorSymbolOnNewLine" : {
+                "EBNF.format.definitionSeparatorSymbolOnNewLine": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Place definition separator symbol (`\"|\"`, `\"/\"` or `\"!\"`)  on new line.",
                     "order": 4
                 },
-                "EBNF.format.insertSpaceBeforeConcatenateSymbol" : {
+                "EBNF.format.insertSpaceBeforeConcatenateSymbol": {
                     "type": "boolean",
                     "default": false,
                     "markdownDescription": "Insert space before concatenate symbol `\",\"`.",
                     "order": 5
                 },
-                "EBNF.format.insertSpaceAtSequenceSymbols" : {
+                "EBNF.format.insertSpaceAtSequenceSymbols": {
                     "type": "boolean",
                     "default": true,
                     "markdownDescription": "Insert space at sequence symbols (`\"{\"`, `\"}\"`, `\"(\"`, `\")\"`, `\"[\"`, `\"]\"`).",
                     "order": 6
                 },
-                "EBNF.format.defaultDefinitionSeparatorSymbol" : {
+                "EBNF.format.defaultDefinitionSeparatorSymbol": {
                     "type": "string",
                     "default": "|",
-                    "enum": ["|", "/", "!"],
+                    "enum": [
+                        "|",
+                        "/",
+                        "!"
+                    ],
                     "order": 10
                 },
-                "EBNF.format.defaultOptionSymbols" : {
+                "EBNF.format.defaultOptionSymbols": {
                     "type": "string",
                     "default": "[ ]",
-                    "enum": ["[ ]", "(/ /)"],
+                    "enum": [
+                        "[ ]",
+                        "(/ /)"
+                    ],
                     "order": 11
                 },
-                "EBNF.format.defaultRepeatSymbols" : {
+                "EBNF.format.defaultRepeatSymbols": {
                     "type": "string",
                     "default": "{ }",
-                    "enum": ["{ }", "(: :)"],
+                    "enum": [
+                        "{ }",
+                        "(: :)"
+                    ],
                     "order": 12
                 },
-                "EBNF.format.defaultTerminatorSymbol" : {
+                "EBNF.format.defaultTerminatorSymbol": {
                     "type": "string",
                     "default": ";",
-                    "enum": [";", "."],
+                    "enum": [
+                        ";",
+                        "."
+                    ],
                     "order": 13
                 }
             }
         }
-    }, 
+    },
     "dependencies": {
-        "antlr4ts": "^0.5.0-alpha.4",
+        "antlr4ng": "^3.0.7",
         "assert": "^2.0.0",
         "util": "^0.12.5"
     },
@@ -152,6 +165,6 @@
         "webpack-cli": "^5.1.4",
         "@types/node": "^20.3.3",
         "@types/vscode": "^1.79.1",
-        "antlr4ts-cli": "^0.5.0-alpha.4"
+        "antlr4ng-cli": "^2.0.0"
     }
 }

@@ -23,9 +23,9 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
             uri: document.uri,
             range: new vscode.Range(
                 def.line - 1,
-                def.charPositionInLine,
+                def.column,
                 def.line - 1,
-                def.charPositionInLine + def.text.length
+                def.column + def.text.length
             )
         };
 
