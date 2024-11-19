@@ -7,7 +7,7 @@ Current behavior
 Adds C-style line comment // ... to the beginning of the line
 
 Expected behavior
-Ideally it should add (* ... *\) style comment to the line
+Ideally it should add (* ... *) style comment to the line
 
 ---
 Note: 
