@@ -12,6 +12,12 @@ All the code before the broken syntax is formatted properly, but everything afte
 
 Expected behavior
 Formatting a file with invalid syntax should not do anything to the file.
+
+Notes
+---
+Most likely the parser is not error tolerant and has to be rewritten.
+https://code.visualstudio.com/api/language-extensions/language-server-extension-guide#error-tolerant-parser-for-language-server
+
 *)
 
 program

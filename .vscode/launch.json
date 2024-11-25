@@ -9,10 +9,16 @@
             "args": ["--extensionDevelopmentPath=${workspaceRoot}" ],
             "sourceMaps": true,
             "outFiles": [
-                "${workspaceRoot}/out/**/*.js"
+                "${workspaceRoot}/dist/**/*.js",
+                "${workspaceRoot}/dist/**/*.js.map"
             ],
             "preLaunchTask": "Compile extension",
-            "trace": false
+            "trace": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/**",
+                "!**/node_modules/**"
+            ]
         },
         {
             "name": "Production",
