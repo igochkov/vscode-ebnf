@@ -157,6 +157,7 @@
     "main": "./dist/extension.js",
     "scripts": {
         "vscode:prepublish": "npm run package",
+        "build": "webpack --mode development",
         "package": "webpack --mode production"
     },
     "devDependencies": {
