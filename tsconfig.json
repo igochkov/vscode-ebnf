@@ -3,8 +3,7 @@
       "target": "ES6",
       "module": "commonjs",
       "esModuleInterop": true,
-      "sourceRoot": "${workspaceRoot}",
-      "outDir": "./out",
+      "outDir": "./dist",
       "sourceMap": true
     },
     "include": ["src"]

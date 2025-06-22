@@ -13,9 +13,12 @@ const config = {
     path: path.resolve(__dirname, 'dist'),
     filename: 'extension.js',
     libraryTarget: 'commonjs2',
-    devtoolModuleFilenameTemplate: '../[resource-path]'
+    devtoolModuleFilenameTemplate: (info) => {
+      const relativePath = path.relative(__dirname, info.absoluteResourcePath);
+      return `webpack:///${relativePath}`;
+    }
   },
-  devtool: false,
+  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
   externals: {
     vscode: 'commonjs vscode'
   },
