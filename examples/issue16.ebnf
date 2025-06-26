@@ -1,0 +1,30 @@
+(* 
+Steps to recreate
+- Open this EBNF file
+- Press ctrl+/ (or cmd+/ on macOS)
+
+Current behavior
+Adds C-style line comment // ... to the beginning of the line
+
+Expected behavior
+Ideally it should add (* ... *) style comment to the line
+
+---
+Note: 
+ebnf.configuration.json defines single line comment.
+Block comment doesnt function properly.
+*)
+
+program
+    = { item };
+
+item
+    = fn-defn
+    | fn-decl;
+
+fn-defn
+    = "typed-ident";
+
+param-list
+    = "void"
+    | { typed-ident, "," }, typed-ident;
