@@ -8,6 +8,12 @@ test('should find 3 rules in input "[ test ]"', () => {
     expect(context.children).toHaveLength(3)
 });
 
+test('should find optional sequence rule in input "(/ test /)"', () => {
+    const input = "(/ test /)";
+    const context: OptionalSequenceContext = parseRule('optionalSequence', input)
+    expect(context.ruleIndex).toEqual(EBNFParser.RULE_optionalSequence)
+});
+
 describe('Start option symbol', () => {
     function getStartOptionalSymbol(input: string): TerminalNode  {
         const context: OptionalSequenceContext = parseRule('optionalSequence', input);
