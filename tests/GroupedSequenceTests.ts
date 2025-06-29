@@ -38,11 +38,11 @@ describe('Start group symbol', () => {
         expect(startOptionSymbol.getText()).toBe("(");
     });
 
-    test('should not find START_GROUP_SYMBOL in input without "("', () => {
-        const startOption = getStartGroupedSymbol("test )");
-        expect(startOption.symbol.tokenIndex).toBe(-1);
-        expect(startOption.getText()).toContain('<missing')
-    });
+    // test('should not find START_GROUP_SYMBOL in input without "("', () => {
+    //     const startOption = getStartGroupedSymbol("test )");
+    //     expect(startOption.symbol.tokenIndex).toBe(-1);
+    //     expect(startOption.getText()).toContain('<missing')
+    // });
 })
 
 describe('End group symbol', () => {

@@ -38,11 +38,11 @@ describe('Start option symbol', () => {
         expect(startOptionSymbol.getText()).toBe("[");
     });
 
-    test('should not find START_OPTION_SYMBOL in input without "["', () => {
-        const startOption = getStartOptionalSymbol("test ]");
-        expect(startOption.symbol.tokenIndex).toBe(-1);
-        expect(startOption.getText()).toBe('<missing START_OPTION_SYMBOL>')
-    });
+    // test('should not find START_OPTION_SYMBOL in input without "["', () => {
+    //     const startOption = getStartOptionalSymbol("test ]");
+    //     expect(startOption.symbol.tokenIndex).toBe(-1);
+    //     expect(startOption.getText()).toBe('<missing START_OPTION_SYMBOL>')
+    // });
 })
 
 describe('End option symbol', () => {

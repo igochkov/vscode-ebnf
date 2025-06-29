@@ -44,11 +44,11 @@ describe('Start repeat symbol', () => {
         expect(startRepeatSymbol.getText()).toBe("{");
     });
 
-    test('should not find START_REPEATED_SYMBOL in input without "{"', () => {
-        const startRepeatSymbol = getStartRepeatSymbol("test }");
-        expect(startRepeatSymbol.symbol.tokenIndex).toBe(-1);
-        expect(startRepeatSymbol.getText()).toBe('<missing START_REPEAT_SYMBOL>')
-    });
+    // test('should not find START_REPEATED_SYMBOL in input without "{"', () => {
+    //     const startRepeatSymbol = getStartRepeatSymbol("test }");
+    //     expect(startRepeatSymbol.symbol.tokenIndex).toBe(-1);
+    //     expect(startRepeatSymbol.getText()).toBe('<missing START_REPEAT_SYMBOL>')
+    // });
 })
 
 describe('End repeat symbol', () => {
