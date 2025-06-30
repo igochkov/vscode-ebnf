@@ -11,7 +11,7 @@ export function parseRule(rule: keyof EBNFParser, input: string) {
     return parser[rule]();
 }
 
-export function collectErrorNodes(parseRule: ParserRuleContext | undefined): ErrorNode[] {
+export function collectErrorNodes(parseRule: ParserRuleContext | null | undefined): ErrorNode[] {
     if (!parseRule || !parseRule.children) return [];
 
     let errors: ErrorNode[] = [];
