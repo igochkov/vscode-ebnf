@@ -1,17 +1,13 @@
-parser grammar EBNFParser81_4;
+parser grammar EBNFParser;
 
 options {
 	tokenVocab = EBNFLexer;
 }
 
-// Source: ISO/IEC 14977 : 1996(E) 
-// 8.1 Part 4: defines the abstract syntax of Extended BNF, 
-// i.e. the structure in terms of the commentless symbols.
-
 // 4.2
 // The syntax of a language consists of one or more syntax-rules.
 syntax
-	: syntaxRule+
+	: syntaxRule+ EOF
 	;
 
 // 4.3
@@ -73,7 +69,7 @@ syntacticExceptionPrimary
 	| repeatedSequence
 	| groupedSequence
 	| TERMINAL_STRING
-	| SPECIAL_SEQUENCE
+    | SPECIAL_SEQUENCE
 	| emptySequence
 	;
 
@@ -100,7 +96,7 @@ syntacticPrimary
 	| groupedSequence
 	| META_IDENTIFIER
 	| TERMINAL_STRING
-	| SPECIAL_SEQUENCE
+    | SPECIAL_SEQUENCE
 	| emptySequence
 	;
 	
