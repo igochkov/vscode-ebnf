@@ -1,0 +1,6 @@
+register = "%", letter, { letter | digit };
+immediate = "$", [ "0x" ], digit, { digit };
+address = [ "0x" ], digit, { digit };
+identifier = letter, { letter | digit };
+whitespace = { " " | "\\t" };
+line_terminator = { "\\n" | ";" };

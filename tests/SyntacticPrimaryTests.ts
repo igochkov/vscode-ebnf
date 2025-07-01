@@ -75,6 +75,18 @@ describe('Terminal string', () => {
         expect(terminalString).not.toBeNull();
         expect(terminalString?.symbol.type).toEqual(EBNFParser.TERMINAL_STRING);
     });
+
+    test('should fail on multiline terminal string - single quote', () => {
+        const terminalString = getTerminalString(`'terminal 
+            string'`);
+        expect(terminalString).toBeNull();
+    });
+
+    test('should fail on multiline terminal string - double quote', () => {
+        const terminalString = getTerminalString(`"terminal 
+            string"`);
+        expect(terminalString).toBeNull();
+    });
 });
 
 describe('Special sequence', () => {
@@ -87,6 +99,12 @@ describe('Special sequence', () => {
         const specialSequence = getSpecialSequence("? special sequence ?");
         expect(specialSequence).not.toBeNull();
         expect(specialSequence?.symbol.type).toEqual(EBNFParser.SPECIAL_SEQUENCE);
+    });
+
+    test('should fail on multiline special sequence', () => {
+        const specialSequence = getSpecialSequence(`? special 
+            sequence ?`);
+        expect(specialSequence).toBeNull();
     });
 });
 

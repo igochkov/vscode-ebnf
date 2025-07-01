@@ -55,3 +55,22 @@ test('issue #18', () => {
         expect(collectErrorNodes(syntaxRule)).toHaveLength(0);
     });
 });
+
+test('issue #21', () => {
+    const input = `
+    register = "%", letter, { letter | digit };
+    immediate = "$", [ "0x" ], digit, { digit };
+    address = [ "0x" ], digit, { digit };
+    identifier = letter, { letter | digit };
+    whitespace = { " " | "\\t" };
+    line_terminator = { "\\n" | ";" };
+    `;
+
+    const context: SyntaxContext = parseRule('syntax', input);
+    const syntaxRules = context.syntaxRule();
+
+    syntaxRules.forEach((syntaxRule: SyntaxRuleContext) => {
+        expect(syntaxRule?.ruleIndex).toEqual(EBNFParser.RULE_syntaxRule);
+        expect(collectErrorNodes(syntaxRule)).toHaveLength(0);
+    });
+});
