@@ -23,4 +23,3 @@ operand_list = [whitespace], operand, {",", [whitespace], operand};
 instruction = identifier, [operand_list];
 
 instruction_list = [whitespace], instruction, {line_terminator, [whitespace], instruction};
-
