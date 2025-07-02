@@ -4,7 +4,7 @@ import { ParserContext } from './ParserContext';
 // import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
 // import { EBNFReferenceProvider } from './providers/ReferenceProvider';
 import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
-import { EBNFFormattingProvider } from './providers/FormattingProvider';
+import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 
 let formattingRegistrations: vscode.Disposable;
 
