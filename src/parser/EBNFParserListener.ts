@@ -7,18 +7,16 @@ import { SyntaxContext } from "./EBNFParser.js";
 import { SyntaxRuleContext } from "./EBNFParser.js";
 import { DefinitionsListContext } from "./EBNFParser.js";
 import { SingleDefinitionContext } from "./EBNFParser.js";
-import { TermContext } from "./EBNFParser.js";
-import { ExceptionRuleContext } from "./EBNFParser.js";
-import { FactorContext } from "./EBNFParser.js";
-import { PrimaryContext } from "./EBNFParser.js";
-import { EmptyContext } from "./EBNFParser.js";
+import { SyntacticTermContext } from "./EBNFParser.js";
+import { SyntacticExceptionContext } from "./EBNFParser.js";
+import { SyntacticExceptionFactorContext } from "./EBNFParser.js";
+import { SyntacticExceptionPrimaryContext } from "./EBNFParser.js";
+import { SyntacticFactorContext } from "./EBNFParser.js";
+import { SyntacticPrimaryContext } from "./EBNFParser.js";
 import { OptionalSequenceContext } from "./EBNFParser.js";
 import { RepeatedSequenceContext } from "./EBNFParser.js";
 import { GroupedSequenceContext } from "./EBNFParser.js";
-import { TerminalStringContext } from "./EBNFParser.js";
-import { SpecialSequenceContext } from "./EBNFParser.js";
-import { CommentContext } from "./EBNFParser.js";
-import { Comment_symbolContext } from "./EBNFParser.js";
+import { EmptySequenceContext } from "./EBNFParser.js";
 
 
 /**
@@ -67,55 +65,65 @@ export class EBNFParserListener implements ParseTreeListener {
      */
     exitSingleDefinition?: (ctx: SingleDefinitionContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.term`.
+     * Enter a parse tree produced by `EBNFParser.syntacticTerm`.
      * @param ctx the parse tree
      */
-    enterTerm?: (ctx: TermContext) => void;
+    enterSyntacticTerm?: (ctx: SyntacticTermContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.term`.
+     * Exit a parse tree produced by `EBNFParser.syntacticTerm`.
      * @param ctx the parse tree
      */
-    exitTerm?: (ctx: TermContext) => void;
+    exitSyntacticTerm?: (ctx: SyntacticTermContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.exceptionRule`.
+     * Enter a parse tree produced by `EBNFParser.syntacticException`.
      * @param ctx the parse tree
      */
-    enterExceptionRule?: (ctx: ExceptionRuleContext) => void;
+    enterSyntacticException?: (ctx: SyntacticExceptionContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.exceptionRule`.
+     * Exit a parse tree produced by `EBNFParser.syntacticException`.
      * @param ctx the parse tree
      */
-    exitExceptionRule?: (ctx: ExceptionRuleContext) => void;
+    exitSyntacticException?: (ctx: SyntacticExceptionContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.factor`.
+     * Enter a parse tree produced by `EBNFParser.syntacticExceptionFactor`.
      * @param ctx the parse tree
      */
-    enterFactor?: (ctx: FactorContext) => void;
+    enterSyntacticExceptionFactor?: (ctx: SyntacticExceptionFactorContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.factor`.
+     * Exit a parse tree produced by `EBNFParser.syntacticExceptionFactor`.
      * @param ctx the parse tree
      */
-    exitFactor?: (ctx: FactorContext) => void;
+    exitSyntacticExceptionFactor?: (ctx: SyntacticExceptionFactorContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.primary`.
+     * Enter a parse tree produced by `EBNFParser.syntacticExceptionPrimary`.
      * @param ctx the parse tree
      */
-    enterPrimary?: (ctx: PrimaryContext) => void;
+    enterSyntacticExceptionPrimary?: (ctx: SyntacticExceptionPrimaryContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.primary`.
+     * Exit a parse tree produced by `EBNFParser.syntacticExceptionPrimary`.
      * @param ctx the parse tree
      */
-    exitPrimary?: (ctx: PrimaryContext) => void;
+    exitSyntacticExceptionPrimary?: (ctx: SyntacticExceptionPrimaryContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.empty`.
+     * Enter a parse tree produced by `EBNFParser.syntacticFactor`.
      * @param ctx the parse tree
      */
-    enterEmpty?: (ctx: EmptyContext) => void;
+    enterSyntacticFactor?: (ctx: SyntacticFactorContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.empty`.
+     * Exit a parse tree produced by `EBNFParser.syntacticFactor`.
      * @param ctx the parse tree
      */
-    exitEmpty?: (ctx: EmptyContext) => void;
+    exitSyntacticFactor?: (ctx: SyntacticFactorContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.syntacticPrimary`.
+     * @param ctx the parse tree
+     */
+    enterSyntacticPrimary?: (ctx: SyntacticPrimaryContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.syntacticPrimary`.
+     * @param ctx the parse tree
+     */
+    exitSyntacticPrimary?: (ctx: SyntacticPrimaryContext) => void;
     /**
      * Enter a parse tree produced by `EBNFParser.optionalSequence`.
      * @param ctx the parse tree
@@ -147,45 +155,15 @@ export class EBNFParserListener implements ParseTreeListener {
      */
     exitGroupedSequence?: (ctx: GroupedSequenceContext) => void;
     /**
-     * Enter a parse tree produced by `EBNFParser.terminalString`.
+     * Enter a parse tree produced by `EBNFParser.emptySequence`.
      * @param ctx the parse tree
      */
-    enterTerminalString?: (ctx: TerminalStringContext) => void;
+    enterEmptySequence?: (ctx: EmptySequenceContext) => void;
     /**
-     * Exit a parse tree produced by `EBNFParser.terminalString`.
+     * Exit a parse tree produced by `EBNFParser.emptySequence`.
      * @param ctx the parse tree
      */
-    exitTerminalString?: (ctx: TerminalStringContext) => void;
-    /**
-     * Enter a parse tree produced by `EBNFParser.specialSequence`.
-     * @param ctx the parse tree
-     */
-    enterSpecialSequence?: (ctx: SpecialSequenceContext) => void;
-    /**
-     * Exit a parse tree produced by `EBNFParser.specialSequence`.
-     * @param ctx the parse tree
-     */
-    exitSpecialSequence?: (ctx: SpecialSequenceContext) => void;
-    /**
-     * Enter a parse tree produced by `EBNFParser.comment`.
-     * @param ctx the parse tree
-     */
-    enterComment?: (ctx: CommentContext) => void;
-    /**
-     * Exit a parse tree produced by `EBNFParser.comment`.
-     * @param ctx the parse tree
-     */
-    exitComment?: (ctx: CommentContext) => void;
-    /**
-     * Enter a parse tree produced by `EBNFParser.comment_symbol`.
-     * @param ctx the parse tree
-     */
-    enterComment_symbol?: (ctx: Comment_symbolContext) => void;
-    /**
-     * Exit a parse tree produced by `EBNFParser.comment_symbol`.
-     * @param ctx the parse tree
-     */
-    exitComment_symbol?: (ctx: Comment_symbolContext) => void;
+    exitEmptySequence?: (ctx: EmptySequenceContext) => void;
 
     visitTerminal(node: TerminalNode): void {}
     visitErrorNode(node: ErrorNode): void {}

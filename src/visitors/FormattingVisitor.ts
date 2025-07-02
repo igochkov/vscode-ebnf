@@ -1,5 +1,5 @@
 import { AbstractParseTreeVisitor } from 'antlr4ng';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, TermContext, ExceptionRuleContext, FactorContext, PrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, TerminalStringContext, SpecialSequenceContext, CommentContext, Comment_symbolContext} from "../parser/EBNFParser";
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext } from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -32,14 +32,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     public visitSyntaxRule(ctx: SyntaxRuleContext): string {
         var result: string = "";
 
-        if (ctx.comment().length > 0) {
-            for (var cmt of ctx.comment()) { 
-                result += cmt.comment_symbol.toString();
-                result += "\n";
-            }
-        }
-
-        result += ctx.IDENTIFIER().symbol.text;
+        result += ctx.META_IDENTIFIER().symbol.text;
         result += this.options.definingSymbolOnNewLine ? "\n" : " ";
         result += (this.options.definingSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
         result += ctx.DEFINING_SYMBOL().symbol.text;
@@ -55,7 +48,6 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     public visitDefinitionsList(ctx: DefinitionsListContext): string {
         var result: string = "";
         var first: boolean = true;
-        //var i: number = 0;
 
         for (var def of ctx.singleDefinition()) {
             if (!first) {
@@ -63,7 +55,6 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
                 result += (this.options.definitionSeparatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
                 result += this.options.defaultDefinitionSeparatorSymbol; // ctx.DEFINITION_SEPARATOR_SYMBOL()[i].symbol.text;
                 result += " ";
-                //i += 1;
             }
 
             result += this.visit(def);
@@ -78,7 +69,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var first: boolean = true;
         var i: number = 0;
 
-        for (var term of ctx.term()) {
+        for (var term of ctx.syntacticTerm()) {
             if (!first) {
                 result += this.options.insertSpaceBeforeConcatenateSymbol ? " " : "";
                 result += ctx.CONCATENATE_SYMBOL()[i].symbol.text;
@@ -93,10 +84,10 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
-    public visitTerm(ctx: TermContext): string {
+    public visitSyntacticTerm(ctx: SyntacticTermContext): string {
         var result: string = "";
 
-        result += this.visit(ctx.factor());
+        result += this.visit(ctx.syntacticFactor());
 
         const exceptSymbol = ctx.EXCEPT_SYMBOL();
         if (exceptSymbol) {
@@ -104,20 +95,20 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             result += exceptSymbol.symbol.text;
         }
 
-        const exceptionRule = ctx.exceptionRule();
-        if (exceptionRule) {
+        const syntaxticException = ctx.syntacticException();
+        if (syntaxticException) {
             result += " ";
-            result += this.visit(exceptionRule);
+            result += this.visit(syntaxticException);
         }
 
         return result;
     }
 
-    public visitExceptionRule(ctx: ExceptionRuleContext): string {
-        return this.visit(ctx.factor());
+    public visitSyntacticException(ctx: SyntacticExceptionContext): string {
+        return this.visit(ctx.syntacticExceptionFactor());
     }
 
-    public visitFactor(ctx: FactorContext): string {
+    public visitSyntacticExceptionFactor(ctx: SyntacticExceptionFactorContext): string {
         var result: string = "";
 
         const integer = ctx.INTEGER();
@@ -132,20 +123,20 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             result += " ";
         }
 
-        result += this.visit(ctx.primary());
+        result += this.visit(ctx.syntacticExceptionPrimary());
 
         return result;
     }
 
-    public visitPrimary(ctx: PrimaryContext): string {
+    public visitSyntacticExceptionPrimary(ctx: SyntacticExceptionPrimaryContext): string {
         var result: string = "";
 
         const os = ctx.optionalSequence();
         const rs = ctx.repeatedSequence();
-        const ss = ctx.specialSequence();
         const gs = ctx.groupedSequence();
-        const identifier = ctx.IDENTIFIER();
-        const ts = ctx.terminalString();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
+        const es = ctx.emptySequence();
 
         if (os) {
             result += this.visit(os);
@@ -153,17 +144,73 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         else if (rs) {
             result += this.visit(rs);
         }
+        else if (gs) {
+            result += this.visit(gs);
+        }
+        else if (ts) {
+            result += ts.symbol.text;
+        }
         else if (ss) {
-            result += this.visit(ss);
+            result += ss.symbol.text;
+        }
+        else if (es) {
+            result += this.visit(es);
+        }
+
+        return result;
+    }
+
+    public visitSyntacticFactor(ctx: SyntacticFactorContext): string {
+        var result: string = "";
+
+        const integer = ctx.INTEGER();
+        if (integer) {
+            result += integer.symbol.text;
+            result += " ";
+        }
+
+        const rs = ctx.REPETITION_SYMBOL();
+        if (rs) {
+            result += rs.symbol.text;
+            result += " ";
+        }
+
+        result += this.visit(ctx.syntacticPrimary());
+
+        return result;
+    }
+
+    public visitSyntacticPrimary(ctx: SyntacticPrimaryContext): string {
+        var result: string = "";
+
+        const os = ctx.optionalSequence();
+        const rs = ctx.repeatedSequence();
+        const gs = ctx.groupedSequence();
+        const mi = ctx.META_IDENTIFIER();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
+        const es = ctx.emptySequence();
+
+        if (os) {
+            result += this.visit(os);
+        }
+        else if (rs) {
+            result += this.visit(rs);
         }
         else if (gs) {
             result += this.visit(gs);
         }
-        else if (identifier) {
-            result += identifier.symbol.text;
+        else if (mi) {
+            result += mi.symbol.text;
         }
         else if (ts) {
-            result += this.visit(ts);
+            result += ts.symbol.text;
+        }
+        else if (ss) {
+            result += ss.symbol.text;
+        }
+        else if (es) {
+            result += this.visit(es);
         }
 
         return result;
@@ -211,99 +258,107 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
-    public visitTerminalString(ctx: TerminalStringContext): string {
-        var result: string = "";
-
-        const hasFqs = ctx.FIRST_QUOTE_SYMBOL().length;
-        const hasSqs = ctx.SECOND_QUOTE_SYMBOL().length;
-
-        if (hasFqs > 0) {
-            for (var child of ctx.children) {
-                result += child.getText();
-            }
-        }
-        else if (hasSqs > 0) {
-            for (var child of ctx.children) {
-                result += child.getText();
-            }
-        }
-
-        return result;
+    public visitEmptySequence(ctx: EmptySequenceContext): string {
+        return "";
     }
 
-    public visitSpecialSequence(ctx: SpecialSequenceContext): string {
-        var result: string = "";
+    // // public visitTerminalString(ctx: TerminalStringContext): string {
+    // //     var result: string = "";
 
-        const hasSss = ctx.SPECIAL_SEQUENCE_SYMBOL().length;
+    // //     const hasFqs = ctx.FIRST_QUOTE_SYMBOL().length;
+    // //     const hasSqs = ctx.SECOND_QUOTE_SYMBOL().length;
 
-        if (hasSss > 0) {
-            //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[0];
-            var first: boolean = true;
+    // //     if (hasFqs > 0) {
+    // //         for (var child of ctx.children) {
+    // //             result += child.getText();
+    // //         }
+    // //     }
+    // //     else if (hasSqs > 0) {
+    // //         for (var child of ctx.children) {
+    // //             result += child.getText();
+    // //         }
+    // //     }
 
-            for (var child of ctx.children) {
-                if (!first) {
-                    result += " ";
-                }
+    // //     return result;
+    // // }
 
-                result += child.getText();
-                first = false;
-            }
+    // // public visitSpecialSequence(ctx: SpecialSequenceContext): string {
+    // //     var result: string = "";
 
-            //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[1];
-        }
+    // //     const hasSss = ctx.SPECIAL_SEQUENCE_SYMBOL().length;
 
-        return result;
-    }
+    // //     if (hasSss > 0) {
+    // //         //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[0];
+    // //         var first: boolean = true;
 
-    public visitComment(ctx: CommentContext): string {
-        var result: string = "";
+    // //         for (var child of ctx.children) {
+    // //             if (!first) {
+    // //                 result += " ";
+    // //             }
 
-        result += ctx.START_COMMENT_SYMBOL().symbol.text;
+    // //             result += child.getText();
+    // //             first = false;
+    // //         }
 
-        for (var cs of ctx.comment_symbol()) {
-            result += this.visit(cs);
-        }
+    // //         //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[1];
+    // //     }
+
+    // //     return result;
+    // // }
+
+    // public visitComment(ctx: CommentContext): string {
+    //     var result: string = "";
+
+    //     result += ctx.START_COMMENT_SYMBOL().symbol.text;
+
+    //     for (var cs of ctx.commentSymbol()) {
+    //         result += this.visit(cs);
+    //     }
         
-        result += ctx.END_COMMENT_SYMBOL().symbol.text;
+    //     result += ctx.END_COMMENT_SYMBOL().symbol.text;
         
-        return result;
-    }
+    //     return result;
+    // }
 
-    public visitComment_symbol(ctx: Comment_symbolContext): string {
-        var result: string = "";
+    // public visitCommentSymbol(ctx: CommentSymbolContext): string {
+    //     var result: string = "";
 
-        const cmt = ctx.comment();
-        const ts = ctx.terminalString();
-        const ss = ctx.specialSequence();
+    //     const cmt = ctx.comment();
+    //     const cs = ctx.COMMENTLESS_SYMBOL();
+    //     // const ts = ctx.terminalString();
+    //     // const ss = ctx.specialSequence();
         
-        if (cmt) {
-            result += this.visit(cmt);
-        }
-        else if (ts) {
-            result += this.visit(ts);
-        }
-        else if (ss) {
-            result += this.visit(ss);
-        }
-        // else { 
-        //     for (var chr of ctx.CHARACTER()) { 
-        //         result += chr.text;
-        //     }
-        // }
+    //     if (cmt) {
+    //         result += this.visit(cmt);
+    //     }
+    //     else if (cs) {
+    //         result += cs.symbol.text
+    //     }
+    //     // else if (ts) {
+    //     //     result += this.visit(ts);
+    //     // }
+    //     // else if (ss) {
+    //     //     result += this.visit(ss);
+    //     // }
+    //     // else { 
+    //     //     for (var chr of ctx.CHARACTER()) { 
+    //     //         result += chr.text;
+    //     //     }
+    //     // }
+        
+    //     // var first: boolean = true;
 
-        // var first: boolean = true;
+    //     // for (var child of ctx.children) {
+    //     //     if (!first) {
+    //     //         result += " ";
+    //     //     }
 
-        // for (var child of ctx.children) {
-        //     if (!first) {
-        //         result += " ";
-        //     }
+    //     //     result += child.text;
+    //     //     first = false;
+    //     // }
 
-        //     result += child.text;
-        //     first = false;
-        // }
-
-        return result;
-    }
+    //     return result;
+    // }
 
     private indent(times: number = 1): string {
         var result = "";

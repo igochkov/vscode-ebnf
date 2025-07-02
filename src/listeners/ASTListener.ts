@@ -1,5 +1,5 @@
 import { ErrorNode, ParserRuleContext, TerminalNode, Token } from 'antlr4ng/dist';
-import { PrimaryContext, SyntaxRuleContext } from '../parser/EBNFParser';
+import { SyntacticPrimaryContext, SyntaxRuleContext } from '../parser/EBNFParser';
 import { EBNFParserListener } from '../parser/EBNFParserListener';
 
 export class ASTListener implements EBNFParserListener {
@@ -7,7 +7,7 @@ export class ASTListener implements EBNFParserListener {
     public definitions: Token[] = [];
 
     exitSyntaxRule(ctx: SyntaxRuleContext) {
-        const terminalNode = ctx.IDENTIFIER();
+        const terminalNode = ctx.META_IDENTIFIER();
 
         if (terminalNode !== undefined) {
             this.symbols.push(terminalNode.symbol);
@@ -15,8 +15,8 @@ export class ASTListener implements EBNFParserListener {
         }
     }
 
-    exitPrimary(ctx: PrimaryContext) {
-        const terminalNode = ctx.IDENTIFIER();
+    exitPrimary(ctx: SyntacticPrimaryContext) {
+        const terminalNode = ctx.META_IDENTIFIER();
 
         if (terminalNode !== undefined) {
             this.symbols.push(terminalNode.symbol);
