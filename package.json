@@ -23,6 +23,9 @@
         "bnf"
     ],
     "capabilities": {
+        "documentFormattingProvider" : "false",
+        "documentRangeFormattingProvider" : "false",
+        "renameProvider" : "false",
         "codeActionProvider" : "true"
     },
     "repository": {

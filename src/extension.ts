@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
 import { ParserContext } from './ParserContext';
-import { EBNFRenameProvider } from './providers/RenameProvider';
-import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
-import { EBNFReferenceProvider } from './providers/ReferenceProvider';
+// import { EBNFRenameProvider } from './providers/RenameProvider';
+// import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
+// import { EBNFReferenceProvider } from './providers/ReferenceProvider';
 import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/FormattingProvider';
 
