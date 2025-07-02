@@ -4,6 +4,7 @@ import { CharStream, CommonTokenStream, ParseTreeListener } from 'antlr4ng';
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
+//import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -43,8 +44,15 @@ export class ParserContext {
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);
+
         ParserContext.listener = new ASTListener();
+        parser.removeParseListeners();
         parser.addParseListener(ParserContext.listener as ParseTreeListener);
+        
+        // const errorListener = new EBNFErrorListener();
+        // parser.removeErrorListeners();
+        // parser.addErrorListener(errorListener)
+
         parser.syntax();
     }
 }
