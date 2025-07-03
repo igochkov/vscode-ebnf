@@ -16,7 +16,7 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Find All References**: Find every reference to a specific symbol in your EBNF code.
 - [x] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **Hover**: Show information about the symbol/object that's below the mouse cursor.
-- [ ] **Diagnostic**: Indicate issues with the grammar.
+- [x] **Diagnostic**: Indicate issues with the grammar.
 - [ ] **Actions on Errors or Warnings**: Possible corrective actions right next to an error or warning.
 - [ ] **Commands (Transpile to tmLanguage)**: A planned command for compiling EBNF code to tmLanguage.
 - [ ] **Railroad diagram generation**: Generate railroad diagrams from your EBNF code for visualization and documentation purposes.
@@ -30,6 +30,7 @@ The change log lists the updates for each version that has been released on the 
 ### Version 1.4
 **Released on 2025-07-01**
 
+- _Diagnostic Messages_
 - Bug fix: Formatting deletes string contents (see [issue 21](https://github.com/igochkov/vscode-ebnf/issues/21))
 - Bug fix: Problem with coloring (see [issue 18](https://github.com/igochkov/vscode-ebnf/issues/18))
 - Bug fix: "Toggle Line Comment" command creates C-style comment (see [issue 16](https://github.com/igochkov/vscode-ebnf/issues/16))
