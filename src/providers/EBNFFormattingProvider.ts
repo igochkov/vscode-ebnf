@@ -54,7 +54,7 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     }
 
     private formattingOptions(vsOptions: vscode.FormattingOptions): EBNFFormattingOptions {
-        const settings = vscode.workspace.getConfiguration(ParserContext.ebnfConfigurationName);
+        const settings = vscode.workspace.getConfiguration(ParserContext.ebnfName);
 
         var options = new EBNFFormattingOptions();
         options.enable = settings.get("format.enable");

@@ -3,7 +3,7 @@ import { ParserContext } from './ParserContext';
 // import { EBNFRenameProvider } from './providers/RenameProvider';
 // import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
 // import { EBNFReferenceProvider } from './providers/ReferenceProvider';
-import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
+// import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 
 let formattingRegistrations: vscode.Disposable;
@@ -12,13 +12,18 @@ export function activate(context: vscode.ExtensionContext) {
     // context.subscriptions.push(vscode.languages.registerRenameProvider(ParserContext.ebnfSelector, new EBNFRenameProvider()));
     // context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
     // context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
-    context.subscriptions.push(vscode.languages.registerCodeActionsProvider(ParserContext.ebnfSelector, new EBNFCodeActionsProvider()));
+    // context.subscriptions.push(vscode.languages.registerCodeActionsProvider(ParserContext.ebnfSelector, new EBNFCodeActionsProvider()));
+
+    if (vscode.window.activeTextEditor) {
+        ParserContext.parse(vscode.window.activeTextEditor.document);
+	}
 
     context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(ParserContext.OnDocumentOpen));
     context.subscriptions.push(vscode.workspace.onDidChangeTextDocument(ParserContext.OnDocumentChange));
     context.subscriptions.push(vscode.workspace.onDidCloseTextDocument(ParserContext.OnDocumentClose));
-
-    const settings = vscode.workspace.getConfiguration(ParserContext.ebnfConfigurationName);
+    context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor(ParserContext.OnActiveTextEditorChanged));
+    
+    const settings = vscode.workspace.getConfiguration(ParserContext.ebnfName);
 
     if (settings.format.enable) {
         formattingRegistrations = registerFormatting();
@@ -27,11 +32,19 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(handleSettingChange));
 }
 
-export function deactivate() { }
+export function deactivate() { 
+    if (formattingRegistrations) {
+        formattingRegistrations.dispose();
+        formattingRegistrations = undefined;
+    }
+
+    ParserContext.diagnosticsCollection.clear();
+    ParserContext.diagnosticsCollection.dispose();
+}
 
 function handleSettingChange(event: vscode.ConfigurationChangeEvent) {
-    if (event.affectsConfiguration(ParserContext.ebnfConfigurationName)) {
-        const settings = vscode.workspace.getConfiguration(ParserContext.ebnfConfigurationName);
+    if (event.affectsConfiguration(ParserContext.ebnfName)) {
+        const settings = vscode.workspace.getConfiguration(ParserContext.ebnfName);
 
         if (settings.format.enable && !formattingRegistrations) {
             formattingRegistrations = registerFormatting();

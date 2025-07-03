@@ -9,7 +9,8 @@ Certain strings are emptied
 Expected behavior
 String contents should always be preserved
 *)
-register        = "%", letter. { letter | digit };
+
+register        = "%", letter, { letter | digit };
 immediate       = "$", ["0x"], digit, {digit};
 address         = [ "0x" ], digit, {digit};
 identifier      = letter, { letter | digit };
