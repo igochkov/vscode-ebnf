@@ -17,7 +17,7 @@ SECOND_QUOTE_SYMBOL     	: '"' ;
 SPECIAL_SEQUENCE_SYMBOL 	: '?' ;
 END_GROUP_SYMBOL            : ')' ;
 START_GROUP_SYMBOL          : '(' ;
-START_COMMENT_SYMBOL        : '(*';
+START_COMMENT_SYMBOL        : '(*'; // -> pushMode(COMMENT) ;
 END_COMMENT_SYMBOL          : '*)';
 END_OPTION_SYMBOL           : ']' | '/)';
 END_REPEAT_SYMBOL           : '}' | ':)';
@@ -34,7 +34,7 @@ fragment VERTICAL_TABULATION_CHARACTER   : '\u000B';
 fragment LETTER                          :  [a-zA-Z];
 fragment DECIMAL_DIGIT                   :  [0-9];
 
-// OTHER_CHARACTER                          : [:+_%@&#$<>\\^`~]; // Removed SPACE here to avoid ambiguity with GAP_SEPARATOR 
+// OTHER_CHARACTER                          : [ :+_%@&#$<>\\^`~]; // Removed SPACE here to avoid ambiguity with GAP_SEPARATOR 
 
 // 8.1 Part 2: Defining the removal of unnecessary nonprinting characters
 // ------------------------------------------------------------------
@@ -101,6 +101,7 @@ fragment DECIMAL_DIGIT                   :  [0-9];
 // a) before a syntax, and
 // b) between any two gap-free-symbols of a syntax, and
 // c) after a syntax without affecting the language defined by the syntax.
+// channel(WHITESPACE_CHANNEL)
 GAP_SEPARATOR
     : 
     ( SPACE_CHARACTER
@@ -108,7 +109,7 @@ GAP_SEPARATOR
     | NEW_LINE
     | VERTICAL_TABULATION_CHARACTER
     | FORM_FEED
-    )+ -> channel(WHITESPACE_CHANNEL)
+    )+ -> skip 
     ;
 
 // Part 3: Defining the removal of textual comments
@@ -235,6 +236,9 @@ SPECIAL_SEQUENCE : SPECIAL_SEQUENCE_SYMBOL SPECIAL_SEQUENCE_CHARACTER* SPECIAL_S
 //     | SPACE_CHARACTER // Added to avoid ambiguity with GAP_SEPARATOR
 //     ;
 
+// mode COMMENT;
+
+// WHITESPACE                  : [ \t\r\n\f]+ -> channel(WHITESPACE_CHANNEL) ;
 
 // // 6.5
 // // A commentless-symbol is one of the following:
@@ -298,3 +302,5 @@ BRACKETED_TEXTUAL_COMMENT
     : START_COMMENT_SYMBOL COMMENT_SYMBOL* END_COMMENT_SYMBOL 
     -> channel(COMMENTS_CHANNEL)
     ;
+
+// END_COMMENT_SYMBOL : '*)' -> popMode ;
