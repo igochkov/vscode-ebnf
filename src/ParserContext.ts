@@ -62,7 +62,7 @@ export class ParserContext {
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener)
 
-        parser.syntax();
+        parser.syntax();        
 
         ParserContext.diagnosticsCollection.set(document.uri, errorListener.diagnostics);
     }

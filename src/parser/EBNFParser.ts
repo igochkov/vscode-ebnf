@@ -34,8 +34,9 @@ export class EBNFParser extends antlr.Parser {
     public static readonly META_IDENTIFIER = 20;
     public static readonly TERMINAL_STRING = 21;
     public static readonly SPECIAL_SEQUENCE = 22;
-    public static readonly COMMENT_SYMBOL = 23;
-    public static readonly BRACKETED_TEXTUAL_COMMENT = 24;
+    public static readonly COMMENTLESS_SYMBOL = 23;
+    public static readonly COMMENT_SYMBOL = 24;
+    public static readonly BRACKETED_TEXTUAL_COMMENT = 25;
     public static readonly RULE_syntax = 0;
     public static readonly RULE_syntaxRule = 1;
     public static readonly RULE_definitionsList = 2;
@@ -64,7 +65,7 @@ export class EBNFParser extends antlr.Parser {
         "END_REPEAT_SYMBOL", "START_OPTION_SYMBOL", "START_REPEAT_SYMBOL", 
         "DEFINITION_SEPARATOR_SYMBOL", "TERMINATOR_SYMBOL", "GAP_SEPARATOR", 
         "INTEGER", "META_IDENTIFIER", "TERMINAL_STRING", "SPECIAL_SEQUENCE", 
-        "COMMENT_SYMBOL", "BRACKETED_TEXTUAL_COMMENT"
+        "COMMENTLESS_SYMBOL", "COMMENT_SYMBOL", "BRACKETED_TEXTUAL_COMMENT"
     ];
     public static readonly ruleNames = [
         "syntax", "syntaxRule", "definitionsList", "singleDefinition", "syntacticTerm", 
@@ -620,7 +621,7 @@ export class EBNFParser extends antlr.Parser {
     }
 
     public static readonly _serializedATN: number[] = [
-        4,1,24,107,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,25,107,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         1,0,4,0,30,8,0,11,0,12,0,31,1,0,1,0,1,1,1,1,1,1,1,1,1,1,1,2,1,2,
         1,2,5,2,44,8,2,10,2,12,2,47,9,2,1,3,1,3,1,3,5,3,52,8,3,10,3,12,3,
