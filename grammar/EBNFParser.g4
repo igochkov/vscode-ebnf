@@ -4,16 +4,44 @@ options {
 	tokenVocab = EBNFLexer;
 }
 
+comment : START_COMMENT_SYMBOL commentSymbol* END_COMMENT_SYMBOL;
+
+commentSymbol
+    : comment
+    | commentlessSymbol
+	| OTHER_CHARACTER
+	;
+
+commentlessSymbol
+    : CONCATENATE_SYMBOL
+    | DEFINING_SYMBOL
+    | DEFINITION_SEPARATOR_SYMBOL
+    | END_GROUP_SYMBOL
+    | END_OPTION_SYMBOL
+    | END_REPEAT_SYMBOL
+    | EXCEPT_SYMBOL
+    | REPETITION_SYMBOL
+    | START_GROUP_SYMBOL
+    | START_OPTION_SYMBOL
+    | START_REPEAT_SYMBOL
+    | TERMINATOR_SYMBOL
+    // -------------------
+    | META_IDENTIFIER
+    | INTEGER
+    | TERMINAL_STRING
+    | SPECIAL_SEQUENCE
+    ;
+
 syntax
-	: syntaxRule+ EOF
+	: (comment | syntaxRule)+ EOF
 	;
 
 syntaxRule
-	: META_IDENTIFIER DEFINING_SYMBOL definitionsList TERMINATOR_SYMBOL
+	: META_IDENTIFIER comment* DEFINING_SYMBOL definitionsList comment* TERMINATOR_SYMBOL
 	;
 
 definitionsList
-	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL singleDefinition)*
+	: singleDefinition (comment* DEFINITION_SEPARATOR_SYMBOL singleDefinition)*
 	;
 
 singleDefinition
