@@ -26,11 +26,10 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
-
 ### Version 1.4
 **Released on 2025-07-01**
 
-- _Diagnostic Messages_
+- Feature: _Diagnostic Messages_
 - Bug fix: Formatting deletes string contents (see [issue 21](https://github.com/igochkov/vscode-ebnf/issues/21))
 - Bug fix: Problem with coloring (see [issue 18](https://github.com/igochkov/vscode-ebnf/issues/18))
 - Bug fix: "Toggle Line Comment" command creates C-style comment (see [issue 16](https://github.com/igochkov/vscode-ebnf/issues/16))
@@ -44,21 +43,21 @@ The change log lists the updates for each version that has been released on the 
 ### Version 1.3
 **Released on 2023-07-04**
 
-- _Find All References_
-- _Formatting_ and formatting settings
+- Feature: _Find All References_
+- Feature: _Formatting_ and formatting settings
 
 ### Version 1.2
 **Released on 2023-06-22**
 
-- _Go to definition_
-- _Code folding (by markers)_
-- Added support for syntax highlighting in _Markdown fenced code blocks_. Big thanks to [Brendan Doney](https://github.com/brdoney) for providing *[codeblock.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/codeblock.json)*
+- Feature: _Go to definition_
+- Feature: _Code folding (by markers)_
+- Feature: _Markdown fenced code blocks_. Big thanks to [Brendan Doney](https://github.com/brdoney) for providing *[codeblock.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/codeblock.json)*
 
 ### Version 1.1
 **Released on 2023-06-17**
 
-- _Rename symbol_
-- Fixed broken links to images.
+- Feature: _Rename symbol_
+- Bug fix: Fixed broken links to images.
 
 ### Version 1.0
 **Released on 2016-09-02**
