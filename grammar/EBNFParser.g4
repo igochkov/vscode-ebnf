@@ -37,19 +37,19 @@ syntax
 	;
 
 syntaxRule
-	: META_IDENTIFIER comment* DEFINING_SYMBOL definitionsList comment* TERMINATOR_SYMBOL
+	: META_IDENTIFIER comment* DEFINING_SYMBOL comment* definitionsList comment* TERMINATOR_SYMBOL
 	;
 
 definitionsList
-	: singleDefinition (comment* DEFINITION_SEPARATOR_SYMBOL singleDefinition)*
+	: singleDefinition comment* (DEFINITION_SEPARATOR_SYMBOL comment* singleDefinition)*
 	;
 
 singleDefinition
-	: syntacticTerm (CONCATENATE_SYMBOL syntacticTerm)*
+	: syntacticTerm comment* (CONCATENATE_SYMBOL comment* syntacticTerm)*
 	;
 
 syntacticTerm
-	: syntacticFactor (EXCEPT_SYMBOL syntacticException)?
+	: syntacticFactor comment* (EXCEPT_SYMBOL comment* syntacticException)?
 	;
 
 syntacticException
@@ -86,15 +86,15 @@ syntacticPrimary
 	;
 	
 optionalSequence
-	: START_OPTION_SYMBOL definitionsList END_OPTION_SYMBOL
+	: START_OPTION_SYMBOL comment* definitionsList comment* END_OPTION_SYMBOL
 	;
 
 repeatedSequence
-	: START_REPEAT_SYMBOL definitionsList END_REPEAT_SYMBOL
+	: START_REPEAT_SYMBOL comment* definitionsList comment* END_REPEAT_SYMBOL
 	;
 
 groupedSequence
-	: START_GROUP_SYMBOL definitionsList END_GROUP_SYMBOL
+	: START_GROUP_SYMBOL comment* definitionsList comment* END_GROUP_SYMBOL
 	;
 
 emptySequence
