@@ -7,7 +7,7 @@ It now for some reason removed all the spaces before the |
 So now it would be letter = "A"| "B"| "C"| "D"| "E"| "F";
 
 Not being able to write "\"
-Write a term like "\\", "\\\\\\", '\\', "\", '\', '\\\\', it literally doesn't matter how many backslashes
+Write a term like "\\", "\\\\\\", '\\', "\", '\', '\\\\', it literally doesn`t matter how many backslashes
 Press Alt+Shift+F
 Now it just completely deleted all the \ inside the terms
 ---------------------------------
