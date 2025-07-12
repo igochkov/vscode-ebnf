@@ -1,5 +1,5 @@
-import { AbstractParseTreeVisitor } from 'antlr4ng';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext } from "../parser/EBNFParser";
+import { AbstractParseTreeVisitor, TerminalNode } from 'antlr4ng';
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, CommentSymbolContext, CommentlessSymbolContext } from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -13,9 +13,122 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         this.options = options;
     }
 
+    public visitComment(ctx: CommentContext): string {
+        var result: string = "";
+
+        result += ctx.START_COMMENT_SYMBOL().symbol.text;
+
+        for (var cs of ctx.commentSymbol()) {
+            result += " " + this.visit(cs);
+        }
+        
+        result += " " + ctx.END_COMMENT_SYMBOL().symbol.text;
+        
+        return result;
+    }
+
+    public visitCommentSymbol(ctx: CommentSymbolContext): string {
+        var result: string = "";
+
+        const cmt = ctx.comment();
+        const cs = ctx.commentlessSymbol();
+        const os = ctx.OTHER_CHARACTER();
+        
+        if (cmt) {
+            result += this.visit(cmt);
+        }
+        else if (cs) {
+            result += this.visit(cs);
+        }
+        else if (os) {
+            result += os.symbol.text;
+        }
+
+        return result;
+    }
+
+    public visitCommentlessSymbol(ctx: CommentlessSymbolContext): string {
+        var result: string = "";
+
+        const cs = ctx.CONCATENATE_SYMBOL();
+        const ds = ctx.DEFINING_SYMBOL();
+        const dss = ctx.DEFINITION_SEPARATOR_SYMBOL();
+        const egs = ctx.END_GROUP_SYMBOL();
+        const eos = ctx.END_OPTION_SYMBOL();
+        const ers = ctx.END_REPEAT_SYMBOL();
+        const es = ctx.EXCEPT_SYMBOL();
+        const rs = ctx.REPETITION_SYMBOL();
+        const sgs = ctx.START_GROUP_SYMBOL();
+        const sos = ctx.START_OPTION_SYMBOL();
+        const srs = ctx.START_REPEAT_SYMBOL();
+        const tsy = ctx.TERMINATOR_SYMBOL();
+        const mi = ctx.META_IDENTIFIER();
+        const itg = ctx.INTEGER();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
+
+        if (cs) {
+            result += cs.symbol.text;
+        }
+        else if (ds) {
+            result += ds.symbol.text;
+        }
+        else if (dss) {
+            result += dss.symbol.text;
+        }
+        else if (egs) {
+            result += egs.symbol.text;
+        }
+        else if (eos) {
+            result += eos.symbol.text;
+        }
+        else if (ers) {
+            result += ers.symbol.text;
+        }
+        else if (es) {
+            result += es.symbol.text;
+        }
+        else if (rs) {
+            result += rs.symbol.text;
+        }
+        else if (sgs) {
+            result += sgs.symbol.text;
+        }
+        else if (sos) {
+            result += sos.symbol.text;
+        }
+        else if (srs) {
+            result += srs.symbol.text;
+        }
+        else if (tsy) {
+            result += tsy.symbol.text;
+        }
+        else if (mi) {
+            result += mi.symbol.text;
+        }
+        else if (itg) {
+            result += itg.symbol.text;
+        }
+        else if (ts) {
+            result += ts.symbol.text;
+        }
+        else if (ss) {
+            result += ss.symbol.text;
+        }
+
+        return result;
+    }
+
     public visitSyntax(ctx: SyntaxContext): string {
         var result: string = "";
         var first: boolean = true;
+
+        for (var cmt of ctx.comment()) {
+            if (cmt) {
+                result += this.visit(cmt);
+                result += "\n";
+            }
+        }
 
         for (var rule of ctx.syntaxRule()) {
             if (!first) {
@@ -258,107 +371,19 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
+    // public visitSingleQuoteString(ctx: SingleQuoteStringContext): string {
+    //     const content = ctx.FIRST_TERMINAL_CHARACTER().map(c => c.symbol.text).join("");
+    //     return "'" + content + "'";
+    // }
+
+    // public visitDoubleQuoteString(ctx: DoubleQuoteStringContext): string {
+    //     const content = ctx.SECOND_TERMINAL_CHARACTER().map(c => c.symbol.text).join("");
+    //     return '"' + content + '"';
+    // }
+
     public visitEmptySequence(ctx: EmptySequenceContext): string {
         return "";
     }
-
-    // // public visitTerminalString(ctx: TerminalStringContext): string {
-    // //     var result: string = "";
-
-    // //     const hasFqs = ctx.FIRST_QUOTE_SYMBOL().length;
-    // //     const hasSqs = ctx.SECOND_QUOTE_SYMBOL().length;
-
-    // //     if (hasFqs > 0) {
-    // //         for (var child of ctx.children) {
-    // //             result += child.getText();
-    // //         }
-    // //     }
-    // //     else if (hasSqs > 0) {
-    // //         for (var child of ctx.children) {
-    // //             result += child.getText();
-    // //         }
-    // //     }
-
-    // //     return result;
-    // // }
-
-    // // public visitSpecialSequence(ctx: SpecialSequenceContext): string {
-    // //     var result: string = "";
-
-    // //     const hasSss = ctx.SPECIAL_SEQUENCE_SYMBOL().length;
-
-    // //     if (hasSss > 0) {
-    // //         //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[0];
-    // //         var first: boolean = true;
-
-    // //         for (var child of ctx.children) {
-    // //             if (!first) {
-    // //                 result += " ";
-    // //             }
-
-    // //             result += child.getText();
-    // //             first = false;
-    // //         }
-
-    // //         //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[1];
-    // //     }
-
-    // //     return result;
-    // // }
-
-    // public visitComment(ctx: CommentContext): string {
-    //     var result: string = "";
-
-    //     result += ctx.START_COMMENT_SYMBOL().symbol.text;
-
-    //     for (var cs of ctx.commentSymbol()) {
-    //         result += this.visit(cs);
-    //     }
-        
-    //     result += ctx.END_COMMENT_SYMBOL().symbol.text;
-        
-    //     return result;
-    // }
-
-    // public visitCommentSymbol(ctx: CommentSymbolContext): string {
-    //     var result: string = "";
-
-    //     const cmt = ctx.comment();
-    //     const cs = ctx.COMMENTLESS_SYMBOL();
-    //     // const ts = ctx.terminalString();
-    //     // const ss = ctx.specialSequence();
-        
-    //     if (cmt) {
-    //         result += this.visit(cmt);
-    //     }
-    //     else if (cs) {
-    //         result += cs.symbol.text
-    //     }
-    //     // else if (ts) {
-    //     //     result += this.visit(ts);
-    //     // }
-    //     // else if (ss) {
-    //     //     result += this.visit(ss);
-    //     // }
-    //     // else { 
-    //     //     for (var chr of ctx.CHARACTER()) { 
-    //     //         result += chr.text;
-    //     //     }
-    //     // }
-        
-    //     // var first: boolean = true;
-
-    //     // for (var child of ctx.children) {
-    //     //     if (!first) {
-    //     //         result += " ";
-    //     //     }
-
-    //     //     result += child.text;
-    //     //     first = false;
-    //     // }
-
-    //     return result;
-    // }
 
     private indent(times: number = 1): string {
         var result = "";
