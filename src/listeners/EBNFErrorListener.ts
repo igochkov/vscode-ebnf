@@ -44,17 +44,24 @@ export class EBNFErrorListener implements ANTLRErrorListener {
     }
 
     reportAmbiguity(recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, exact: boolean, ambigAlts: BitSet | undefined, configs: ATNConfigSet): void {
-        //vscode.DiagnosticSeverity.Warning
-        throw new Error("Method not implemented.");
+        // let range = new vscode.Range(recognizer.context.start.line, recognizer.context.start.column, recognizer.context.stop.line, recognizer.context.stop.column);
+        // let diagnostic = new vscode.Diagnostic(range, "a full-context prediction results in an ambiguity.", vscode.DiagnosticSeverity.Warning);
+        // diagnostic.code = "SyntaxWarning";
+
+	    // this.diagnostics.push(diagnostic);
     }
 
     reportAttemptingFullContext(recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, conflictingAlts: BitSet | undefined, configs: ATNConfigSet): void {
-        //vscode.DiagnosticSeverity.Warning
-        throw new Error("Method not implemented.");
+        // //vscode.DiagnosticSeverity.Warning
+        // let range = new vscode.Range(recognizer.context.start.line, recognizer.context.start.column, recognizer.context.stop.line, recognizer.context.stop.column);
+        // let diagnostic = new vscode.Diagnostic(range, "Parser is about to use the full context information to make an LL decision.", vscode.DiagnosticSeverity.Warning);
+        // diagnostic.code = "SyntaxWarning";
+
+	    // this.diagnostics.push(diagnostic);
     }
 
     reportContextSensitivity(recognizer: Parser, dfa: DFA, startIndex: number, stopIndex: number, prediction: number, configs: ATNConfigSet): void {
         //vscode.DiagnosticSeverity.Warning
-        throw new Error("Method not implemented.");
+        // throw new Error("Method not implemented.");
     }  
 }

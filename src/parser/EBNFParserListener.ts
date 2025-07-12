@@ -3,6 +3,9 @@
 import { ErrorNode, ParseTreeListener, ParserRuleContext, TerminalNode } from "antlr4ng";
 
 
+import { CommentContext } from "./EBNFParser.js";
+import { CommentSymbolContext } from "./EBNFParser.js";
+import { CommentlessSymbolContext } from "./EBNFParser.js";
 import { SyntaxContext } from "./EBNFParser.js";
 import { SyntaxRuleContext } from "./EBNFParser.js";
 import { DefinitionsListContext } from "./EBNFParser.js";
@@ -24,6 +27,36 @@ import { EmptySequenceContext } from "./EBNFParser.js";
  * `EBNFParser`.
  */
 export class EBNFParserListener implements ParseTreeListener {
+    /**
+     * Enter a parse tree produced by `EBNFParser.comment`.
+     * @param ctx the parse tree
+     */
+    enterComment?: (ctx: CommentContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.comment`.
+     * @param ctx the parse tree
+     */
+    exitComment?: (ctx: CommentContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.commentSymbol`.
+     * @param ctx the parse tree
+     */
+    enterCommentSymbol?: (ctx: CommentSymbolContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.commentSymbol`.
+     * @param ctx the parse tree
+     */
+    exitCommentSymbol?: (ctx: CommentSymbolContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.commentlessSymbol`.
+     * @param ctx the parse tree
+     */
+    enterCommentlessSymbol?: (ctx: CommentlessSymbolContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.commentlessSymbol`.
+     * @param ctx the parse tree
+     */
+    exitCommentlessSymbol?: (ctx: CommentlessSymbolContext) => void;
     /**
      * Enter a parse tree produced by `EBNFParser.syntax`.
      * @param ctx the parse tree
