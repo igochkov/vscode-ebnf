@@ -37,18 +37,20 @@ export class EBNFParser extends antlr.Parser {
     public static readonly RULE_commentlessSymbol = 2;
     public static readonly RULE_syntax = 3;
     public static readonly RULE_syntaxRule = 4;
-    public static readonly RULE_definitionsList = 5;
-    public static readonly RULE_singleDefinition = 6;
-    public static readonly RULE_syntacticTerm = 7;
-    public static readonly RULE_syntacticException = 8;
-    public static readonly RULE_syntacticExceptionFactor = 9;
-    public static readonly RULE_syntacticExceptionPrimary = 10;
-    public static readonly RULE_syntacticFactor = 11;
-    public static readonly RULE_syntacticPrimary = 12;
-    public static readonly RULE_optionalSequence = 13;
-    public static readonly RULE_repeatedSequence = 14;
-    public static readonly RULE_groupedSequence = 15;
-    public static readonly RULE_emptySequence = 16;
+    public static readonly RULE_metaWithComments = 5;
+    public static readonly RULE_defintitionSymbolWithComments = 6;
+    public static readonly RULE_definitionsList = 7;
+    public static readonly RULE_singleDefinition = 8;
+    public static readonly RULE_syntacticTerm = 9;
+    public static readonly RULE_syntacticException = 10;
+    public static readonly RULE_syntacticExceptionFactor = 11;
+    public static readonly RULE_syntacticExceptionPrimary = 12;
+    public static readonly RULE_syntacticFactor = 13;
+    public static readonly RULE_syntacticPrimary = 14;
+    public static readonly RULE_optionalSequence = 15;
+    public static readonly RULE_repeatedSequence = 16;
+    public static readonly RULE_groupedSequence = 17;
+    public static readonly RULE_emptySequence = 18;
 
     public static readonly literalNames = [
         null, "','", "'='", "'-'", "'*'", "')'", "'('", "'(*'", "'*)'"
@@ -64,10 +66,10 @@ export class EBNFParser extends antlr.Parser {
     ];
     public static readonly ruleNames = [
         "comment", "commentSymbol", "commentlessSymbol", "syntax", "syntaxRule", 
-        "definitionsList", "singleDefinition", "syntacticTerm", "syntacticException", 
-        "syntacticExceptionFactor", "syntacticExceptionPrimary", "syntacticFactor", 
-        "syntacticPrimary", "optionalSequence", "repeatedSequence", "groupedSequence", 
-        "emptySequence",
+        "metaWithComments", "defintitionSymbolWithComments", "definitionsList", 
+        "singleDefinition", "syntacticTerm", "syntacticException", "syntacticExceptionFactor", 
+        "syntacticExceptionPrimary", "syntacticFactor", "syntacticPrimary", 
+        "optionalSequence", "repeatedSequence", "groupedSequence", "emptySequence",
     ];
 
     public get grammarFileName(): string { return "EBNFParser.g4"; }
@@ -91,23 +93,23 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 34;
-            this.match(EBNFParser.START_COMMENT_SYMBOL);
             this.state = 38;
+            this.match(EBNFParser.START_COMMENT_SYMBOL);
+            this.state = 42;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 1834750) !== 0)) {
                 {
                 {
-                this.state = 35;
+                this.state = 39;
                 this.commentSymbol();
                 }
                 }
-                this.state = 40;
+                this.state = 44;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
-            this.state = 41;
+            this.state = 45;
             this.match(EBNFParser.END_COMMENT_SYMBOL);
             }
         }
@@ -128,13 +130,13 @@ export class EBNFParser extends antlr.Parser {
         let localContext = new CommentSymbolContext(this.context, this.state);
         this.enterRule(localContext, 2, EBNFParser.RULE_commentSymbol);
         try {
-            this.state = 46;
+            this.state = 50;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_COMMENT_SYMBOL:
                 this.enterOuterAlt(localContext, 1);
                 {
-                this.state = 43;
+                this.state = 47;
                 this.comment();
                 }
                 break;
@@ -156,14 +158,14 @@ export class EBNFParser extends antlr.Parser {
             case EBNFParser.SPECIAL_SEQUENCE:
                 this.enterOuterAlt(localContext, 2);
                 {
-                this.state = 44;
+                this.state = 48;
                 this.commentlessSymbol();
                 }
                 break;
             case EBNFParser.OTHER_CHARACTER:
                 this.enterOuterAlt(localContext, 3);
                 {
-                this.state = 45;
+                this.state = 49;
                 this.match(EBNFParser.OTHER_CHARACTER);
                 }
                 break;
@@ -191,7 +193,7 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 48;
+            this.state = 52;
             _la = this.tokenStream.LA(1);
             if(!((((_la) & ~0x1F) === 0 && ((1 << _la) & 1801854) !== 0))) {
             this.errorHandler.recoverInline(this);
@@ -220,37 +222,44 @@ export class EBNFParser extends antlr.Parser {
         this.enterRule(localContext, 6, EBNFParser.RULE_syntax);
         let _la: number;
         try {
+            let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 52;
+            this.state = 55;
             this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
+            alternative = 1;
             do {
-                {
-                this.state = 52;
-                this.errorHandler.sync(this);
-                switch (this.tokenStream.LA(1)) {
-                case EBNFParser.START_COMMENT_SYMBOL:
+                switch (alternative) {
+                case 1:
                     {
-                    this.state = 50;
-                    this.comment();
-                    }
-                    break;
-                case EBNFParser.META_IDENTIFIER:
                     {
-                    this.state = 51;
+                    this.state = 54;
                     this.syntaxRule();
+                    }
                     }
                     break;
                 default:
                     throw new antlr.NoViableAltException(this);
                 }
+                this.state = 57;
+                this.errorHandler.sync(this);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 2, this.context);
+            } while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER);
+            this.state = 62;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 7) {
+                {
+                {
+                this.state = 59;
+                this.comment();
                 }
-                this.state = 54;
+                }
+                this.state = 64;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
-            } while (_la === 7 || _la === 17);
-            this.state = 56;
+            }
+            this.state = 65;
             this.match(EBNFParser.EOF);
             }
         }
@@ -272,61 +281,108 @@ export class EBNFParser extends antlr.Parser {
         this.enterRule(localContext, 8, EBNFParser.RULE_syntaxRule);
         let _la: number;
         try {
-            let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 58;
-            this.match(EBNFParser.META_IDENTIFIER);
-            this.state = 62;
+            this.state = 70;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7) {
                 {
                 {
-                this.state = 59;
+                this.state = 67;
                 this.comment();
                 }
                 }
-                this.state = 64;
+                this.state = 72;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
-            this.state = 65;
-            this.match(EBNFParser.DEFINING_SYMBOL);
-            this.state = 69;
+            this.state = 73;
+            this.metaWithComments();
+            this.state = 74;
+            this.defintitionSymbolWithComments();
+            this.state = 75;
+            this.definitionsList();
+            this.state = 76;
+            this.match(EBNFParser.TERMINATOR_SYMBOL);
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public metaWithComments(): MetaWithCommentsContext {
+        let localContext = new MetaWithCommentsContext(this.context, this.state);
+        this.enterRule(localContext, 10, EBNFParser.RULE_metaWithComments);
+        let _la: number;
+        try {
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 78;
+            this.match(EBNFParser.META_IDENTIFIER);
+            this.state = 82;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 5, this.context);
+            _la = this.tokenStream.LA(1);
+            while (_la === 7) {
+                {
+                {
+                this.state = 79;
+                this.comment();
+                }
+                }
+                this.state = 84;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
+            }
+        }
+        catch (re) {
+            if (re instanceof antlr.RecognitionException) {
+                this.errorHandler.reportError(this, re);
+                this.errorHandler.recover(this, re);
+            } else {
+                throw re;
+            }
+        }
+        finally {
+            this.exitRule();
+        }
+        return localContext;
+    }
+    public defintitionSymbolWithComments(): DefintitionSymbolWithCommentsContext {
+        let localContext = new DefintitionSymbolWithCommentsContext(this.context, this.state);
+        this.enterRule(localContext, 12, EBNFParser.RULE_defintitionSymbolWithComments);
+        try {
+            let alternative: number;
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 85;
+            this.match(EBNFParser.DEFINING_SYMBOL);
+            this.state = 89;
+            this.errorHandler.sync(this);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 6, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 66;
+                    this.state = 86;
                     this.comment();
                     }
                     }
                 }
-                this.state = 71;
+                this.state = 91;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 5, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 6, this.context);
             }
-            this.state = 72;
-            this.definitionsList();
-            this.state = 76;
-            this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
-            while (_la === 7) {
-                {
-                {
-                this.state = 73;
-                this.comment();
-                }
-                }
-                this.state = 78;
-                this.errorHandler.sync(this);
-                _la = this.tokenStream.LA(1);
-            }
-            this.state = 79;
-            this.match(EBNFParser.TERMINATOR_SYMBOL);
             }
         }
         catch (re) {
@@ -344,59 +400,43 @@ export class EBNFParser extends antlr.Parser {
     }
     public definitionsList(): DefinitionsListContext {
         let localContext = new DefinitionsListContext(this.context, this.state);
-        this.enterRule(localContext, 10, EBNFParser.RULE_definitionsList);
+        this.enterRule(localContext, 14, EBNFParser.RULE_definitionsList);
         let _la: number;
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 81;
+            this.state = 92;
             this.singleDefinition();
-            this.state = 85;
-            this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
-            while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
-                if (alternative === 1) {
-                    {
-                    {
-                    this.state = 82;
-                    this.comment();
-                    }
-                    }
-                }
-                this.state = 87;
-                this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
-            }
-            this.state = 98;
+            this.state = 103;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 13) {
                 {
                 {
-                this.state = 88;
+                this.state = 93;
                 this.match(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
-                this.state = 92;
+                this.state = 97;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 89;
+                        this.state = 94;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 94;
+                    this.state = 99;
                     this.errorHandler.sync(this);
-                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 8, this.context);
+                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
                 }
-                this.state = 95;
+                this.state = 100;
                 this.singleDefinition();
                 }
                 }
-                this.state = 100;
+                this.state = 105;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -417,59 +457,43 @@ export class EBNFParser extends antlr.Parser {
     }
     public singleDefinition(): SingleDefinitionContext {
         let localContext = new SingleDefinitionContext(this.context, this.state);
-        this.enterRule(localContext, 12, EBNFParser.RULE_singleDefinition);
+        this.enterRule(localContext, 16, EBNFParser.RULE_singleDefinition);
         let _la: number;
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 101;
+            this.state = 106;
             this.syntacticTerm();
-            this.state = 105;
-            this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 10, this.context);
-            while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
-                if (alternative === 1) {
-                    {
-                    {
-                    this.state = 102;
-                    this.comment();
-                    }
-                    }
-                }
-                this.state = 107;
-                this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 10, this.context);
-            }
-            this.state = 118;
+            this.state = 117;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 1) {
                 {
                 {
-                this.state = 108;
+                this.state = 107;
                 this.match(EBNFParser.CONCATENATE_SYMBOL);
-                this.state = 112;
+                this.state = 111;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 9, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 109;
+                        this.state = 108;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 114;
+                    this.state = 113;
                     this.errorHandler.sync(this);
-                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
+                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 9, this.context);
                 }
-                this.state = 115;
+                this.state = 114;
                 this.syntacticTerm();
                 }
                 }
-                this.state = 120;
+                this.state = 119;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -490,54 +514,38 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticTerm(): SyntacticTermContext {
         let localContext = new SyntacticTermContext(this.context, this.state);
-        this.enterRule(localContext, 14, EBNFParser.RULE_syntacticTerm);
+        this.enterRule(localContext, 18, EBNFParser.RULE_syntacticTerm);
         let _la: number;
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 121;
+            this.state = 120;
             this.syntacticFactor();
-            this.state = 125;
-            this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 13, this.context);
-            while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
-                if (alternative === 1) {
-                    {
-                    {
-                    this.state = 122;
-                    this.comment();
-                    }
-                    }
-                }
-                this.state = 127;
-                this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 13, this.context);
-            }
-            this.state = 136;
+            this.state = 129;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 3) {
                 {
-                this.state = 128;
+                this.state = 121;
                 this.match(EBNFParser.EXCEPT_SYMBOL);
-                this.state = 132;
+                this.state = 125;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 129;
+                        this.state = 122;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 134;
+                    this.state = 127;
                     this.errorHandler.sync(this);
-                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 14, this.context);
+                    alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
                 }
-                this.state = 135;
+                this.state = 128;
                 this.syntacticException();
                 }
             }
@@ -559,11 +567,11 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticException(): SyntacticExceptionContext {
         let localContext = new SyntacticExceptionContext(this.context, this.state);
-        this.enterRule(localContext, 16, EBNFParser.RULE_syntacticException);
+        this.enterRule(localContext, 20, EBNFParser.RULE_syntacticException);
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 138;
+            this.state = 131;
             this.syntacticExceptionFactor();
             }
         }
@@ -582,24 +590,24 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticExceptionFactor(): SyntacticExceptionFactorContext {
         let localContext = new SyntacticExceptionFactorContext(this.context, this.state);
-        this.enterRule(localContext, 18, EBNFParser.RULE_syntacticExceptionFactor);
+        this.enterRule(localContext, 22, EBNFParser.RULE_syntacticExceptionFactor);
         let _la: number;
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 142;
+            this.state = 135;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 16) {
                 {
-                this.state = 140;
+                this.state = 133;
                 this.match(EBNFParser.INTEGER);
-                this.state = 141;
+                this.state = 134;
                 this.match(EBNFParser.REPETITION_SYMBOL);
                 }
             }
 
-            this.state = 144;
+            this.state = 137;
             this.syntacticExceptionPrimary();
             }
         }
@@ -618,43 +626,41 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticExceptionPrimary(): SyntacticExceptionPrimaryContext {
         let localContext = new SyntacticExceptionPrimaryContext(this.context, this.state);
-        this.enterRule(localContext, 20, EBNFParser.RULE_syntacticExceptionPrimary);
+        this.enterRule(localContext, 24, EBNFParser.RULE_syntacticExceptionPrimary);
+        let _la: number;
         try {
-            this.state = 152;
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 145;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_OPTION_SYMBOL:
-                this.enterOuterAlt(localContext, 1);
                 {
-                this.state = 146;
+                this.state = 139;
                 this.optionalSequence();
                 }
                 break;
             case EBNFParser.START_REPEAT_SYMBOL:
-                this.enterOuterAlt(localContext, 2);
                 {
-                this.state = 147;
+                this.state = 140;
                 this.repeatedSequence();
                 }
                 break;
             case EBNFParser.START_GROUP_SYMBOL:
-                this.enterOuterAlt(localContext, 3);
                 {
-                this.state = 148;
+                this.state = 141;
                 this.groupedSequence();
                 }
                 break;
             case EBNFParser.TERMINAL_STRING:
-                this.enterOuterAlt(localContext, 4);
                 {
-                this.state = 149;
+                this.state = 142;
                 this.match(EBNFParser.TERMINAL_STRING);
                 }
                 break;
             case EBNFParser.SPECIAL_SEQUENCE:
-                this.enterOuterAlt(localContext, 5);
                 {
-                this.state = 150;
+                this.state = 143;
                 this.match(EBNFParser.SPECIAL_SEQUENCE);
                 }
                 break;
@@ -665,14 +671,28 @@ export class EBNFParser extends antlr.Parser {
             case EBNFParser.END_REPEAT_SYMBOL:
             case EBNFParser.DEFINITION_SEPARATOR_SYMBOL:
             case EBNFParser.TERMINATOR_SYMBOL:
-                this.enterOuterAlt(localContext, 6);
                 {
-                this.state = 151;
+                this.state = 144;
                 this.emptySequence();
                 }
                 break;
             default:
                 throw new antlr.NoViableAltException(this);
+            }
+            this.state = 150;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 7) {
+                {
+                {
+                this.state = 147;
+                this.comment();
+                }
+                }
+                this.state = 152;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
             }
         }
         catch (re) {
@@ -690,24 +710,24 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticFactor(): SyntacticFactorContext {
         let localContext = new SyntacticFactorContext(this.context, this.state);
-        this.enterRule(localContext, 22, EBNFParser.RULE_syntacticFactor);
+        this.enterRule(localContext, 26, EBNFParser.RULE_syntacticFactor);
         let _la: number;
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 156;
+            this.state = 155;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 16) {
                 {
-                this.state = 154;
+                this.state = 153;
                 this.match(EBNFParser.INTEGER);
-                this.state = 155;
+                this.state = 154;
                 this.match(EBNFParser.REPETITION_SYMBOL);
                 }
             }
 
-            this.state = 158;
+            this.state = 157;
             this.syntacticPrimary();
             }
         }
@@ -726,50 +746,47 @@ export class EBNFParser extends antlr.Parser {
     }
     public syntacticPrimary(): SyntacticPrimaryContext {
         let localContext = new SyntacticPrimaryContext(this.context, this.state);
-        this.enterRule(localContext, 24, EBNFParser.RULE_syntacticPrimary);
+        this.enterRule(localContext, 28, EBNFParser.RULE_syntacticPrimary);
+        let _la: number;
         try {
-            this.state = 167;
+            this.enterOuterAlt(localContext, 1);
+            {
+            this.state = 166;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_OPTION_SYMBOL:
-                this.enterOuterAlt(localContext, 1);
                 {
-                this.state = 160;
+                this.state = 159;
                 this.optionalSequence();
                 }
                 break;
             case EBNFParser.START_REPEAT_SYMBOL:
-                this.enterOuterAlt(localContext, 2);
                 {
-                this.state = 161;
+                this.state = 160;
                 this.repeatedSequence();
                 }
                 break;
             case EBNFParser.START_GROUP_SYMBOL:
-                this.enterOuterAlt(localContext, 3);
                 {
-                this.state = 162;
+                this.state = 161;
                 this.groupedSequence();
                 }
                 break;
             case EBNFParser.META_IDENTIFIER:
-                this.enterOuterAlt(localContext, 4);
                 {
-                this.state = 163;
+                this.state = 162;
                 this.match(EBNFParser.META_IDENTIFIER);
                 }
                 break;
             case EBNFParser.TERMINAL_STRING:
-                this.enterOuterAlt(localContext, 5);
                 {
-                this.state = 164;
+                this.state = 163;
                 this.match(EBNFParser.TERMINAL_STRING);
                 }
                 break;
             case EBNFParser.SPECIAL_SEQUENCE:
-                this.enterOuterAlt(localContext, 6);
                 {
-                this.state = 165;
+                this.state = 164;
                 this.match(EBNFParser.SPECIAL_SEQUENCE);
                 }
                 break;
@@ -781,14 +798,28 @@ export class EBNFParser extends antlr.Parser {
             case EBNFParser.END_REPEAT_SYMBOL:
             case EBNFParser.DEFINITION_SEPARATOR_SYMBOL:
             case EBNFParser.TERMINATOR_SYMBOL:
-                this.enterOuterAlt(localContext, 7);
                 {
-                this.state = 166;
+                this.state = 165;
                 this.emptySequence();
                 }
                 break;
             default:
                 throw new antlr.NoViableAltException(this);
+            }
+            this.state = 171;
+            this.errorHandler.sync(this);
+            _la = this.tokenStream.LA(1);
+            while (_la === 7) {
+                {
+                {
+                this.state = 168;
+                this.comment();
+                }
+                }
+                this.state = 173;
+                this.errorHandler.sync(this);
+                _la = this.tokenStream.LA(1);
+            }
             }
         }
         catch (re) {
@@ -806,47 +837,32 @@ export class EBNFParser extends antlr.Parser {
     }
     public optionalSequence(): OptionalSequenceContext {
         let localContext = new OptionalSequenceContext(this.context, this.state);
-        this.enterRule(localContext, 26, EBNFParser.RULE_optionalSequence);
-        let _la: number;
+        this.enterRule(localContext, 30, EBNFParser.RULE_optionalSequence);
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 169;
+            this.state = 174;
             this.match(EBNFParser.START_OPTION_SYMBOL);
-            this.state = 173;
+            this.state = 178;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 20, this.context);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 19, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 170;
+                    this.state = 175;
                     this.comment();
                     }
                     }
                 }
-                this.state = 175;
+                this.state = 180;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 20, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 19, this.context);
             }
-            this.state = 176;
+            this.state = 181;
             this.definitionsList();
-            this.state = 180;
-            this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
-            while (_la === 7) {
-                {
-                {
-                this.state = 177;
-                this.comment();
-                }
-                }
-                this.state = 182;
-                this.errorHandler.sync(this);
-                _la = this.tokenStream.LA(1);
-            }
-            this.state = 183;
+            this.state = 182;
             this.match(EBNFParser.END_OPTION_SYMBOL);
             }
         }
@@ -865,47 +881,32 @@ export class EBNFParser extends antlr.Parser {
     }
     public repeatedSequence(): RepeatedSequenceContext {
         let localContext = new RepeatedSequenceContext(this.context, this.state);
-        this.enterRule(localContext, 28, EBNFParser.RULE_repeatedSequence);
-        let _la: number;
+        this.enterRule(localContext, 32, EBNFParser.RULE_repeatedSequence);
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 185;
+            this.state = 184;
             this.match(EBNFParser.START_REPEAT_SYMBOL);
-            this.state = 189;
+            this.state = 188;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 22, this.context);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 20, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 186;
+                    this.state = 185;
                     this.comment();
                     }
                     }
                 }
-                this.state = 191;
+                this.state = 190;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 22, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 20, this.context);
             }
-            this.state = 192;
+            this.state = 191;
             this.definitionsList();
-            this.state = 196;
-            this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
-            while (_la === 7) {
-                {
-                {
-                this.state = 193;
-                this.comment();
-                }
-                }
-                this.state = 198;
-                this.errorHandler.sync(this);
-                _la = this.tokenStream.LA(1);
-            }
-            this.state = 199;
+            this.state = 192;
             this.match(EBNFParser.END_REPEAT_SYMBOL);
             }
         }
@@ -924,47 +925,32 @@ export class EBNFParser extends antlr.Parser {
     }
     public groupedSequence(): GroupedSequenceContext {
         let localContext = new GroupedSequenceContext(this.context, this.state);
-        this.enterRule(localContext, 30, EBNFParser.RULE_groupedSequence);
-        let _la: number;
+        this.enterRule(localContext, 34, EBNFParser.RULE_groupedSequence);
         try {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 201;
+            this.state = 194;
             this.match(EBNFParser.START_GROUP_SYMBOL);
-            this.state = 205;
+            this.state = 198;
             this.errorHandler.sync(this);
-            alternative = this.interpreter.adaptivePredict(this.tokenStream, 24, this.context);
+            alternative = this.interpreter.adaptivePredict(this.tokenStream, 21, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 202;
+                    this.state = 195;
                     this.comment();
                     }
                     }
                 }
-                this.state = 207;
+                this.state = 200;
                 this.errorHandler.sync(this);
-                alternative = this.interpreter.adaptivePredict(this.tokenStream, 24, this.context);
+                alternative = this.interpreter.adaptivePredict(this.tokenStream, 21, this.context);
             }
-            this.state = 208;
+            this.state = 201;
             this.definitionsList();
-            this.state = 212;
-            this.errorHandler.sync(this);
-            _la = this.tokenStream.LA(1);
-            while (_la === 7) {
-                {
-                {
-                this.state = 209;
-                this.comment();
-                }
-                }
-                this.state = 214;
-                this.errorHandler.sync(this);
-                _la = this.tokenStream.LA(1);
-            }
-            this.state = 215;
+            this.state = 202;
             this.match(EBNFParser.END_GROUP_SYMBOL);
             }
         }
@@ -983,7 +969,7 @@ export class EBNFParser extends antlr.Parser {
     }
     public emptySequence(): EmptySequenceContext {
         let localContext = new EmptySequenceContext(this.context, this.state);
-        this.enterRule(localContext, 32, EBNFParser.RULE_emptySequence);
+        this.enterRule(localContext, 36, EBNFParser.RULE_emptySequence);
         try {
             this.enterOuterAlt(localContext, 1);
             // tslint:disable-next-line:no-empty
@@ -1005,84 +991,78 @@ export class EBNFParser extends antlr.Parser {
     }
 
     public static readonly _serializedATN: number[] = [
-        4,1,20,220,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,20,207,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
-        2,14,7,14,2,15,7,15,2,16,7,16,1,0,1,0,5,0,37,8,0,10,0,12,0,40,9,
-        0,1,0,1,0,1,1,1,1,1,1,3,1,47,8,1,1,2,1,2,1,3,1,3,4,3,53,8,3,11,3,
-        12,3,54,1,3,1,3,1,4,1,4,5,4,61,8,4,10,4,12,4,64,9,4,1,4,1,4,5,4,
-        68,8,4,10,4,12,4,71,9,4,1,4,1,4,5,4,75,8,4,10,4,12,4,78,9,4,1,4,
-        1,4,1,5,1,5,5,5,84,8,5,10,5,12,5,87,9,5,1,5,1,5,5,5,91,8,5,10,5,
-        12,5,94,9,5,1,5,5,5,97,8,5,10,5,12,5,100,9,5,1,6,1,6,5,6,104,8,6,
-        10,6,12,6,107,9,6,1,6,1,6,5,6,111,8,6,10,6,12,6,114,9,6,1,6,5,6,
-        117,8,6,10,6,12,6,120,9,6,1,7,1,7,5,7,124,8,7,10,7,12,7,127,9,7,
-        1,7,1,7,5,7,131,8,7,10,7,12,7,134,9,7,1,7,3,7,137,8,7,1,8,1,8,1,
-        9,1,9,3,9,143,8,9,1,9,1,9,1,10,1,10,1,10,1,10,1,10,1,10,3,10,153,
-        8,10,1,11,1,11,3,11,157,8,11,1,11,1,11,1,12,1,12,1,12,1,12,1,12,
-        1,12,1,12,3,12,168,8,12,1,13,1,13,5,13,172,8,13,10,13,12,13,175,
-        9,13,1,13,1,13,5,13,179,8,13,10,13,12,13,182,9,13,1,13,1,13,1,14,
-        1,14,5,14,188,8,14,10,14,12,14,191,9,14,1,14,1,14,5,14,195,8,14,
-        10,14,12,14,198,9,14,1,14,1,14,1,15,1,15,5,15,204,8,15,10,15,12,
-        15,207,9,15,1,15,1,15,5,15,211,8,15,10,15,12,15,214,9,15,1,15,1,
-        15,1,16,1,16,1,16,0,0,17,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,
-        30,32,0,1,4,0,1,6,9,14,16,17,19,20,238,0,34,1,0,0,0,2,46,1,0,0,0,
-        4,48,1,0,0,0,6,52,1,0,0,0,8,58,1,0,0,0,10,81,1,0,0,0,12,101,1,0,
-        0,0,14,121,1,0,0,0,16,138,1,0,0,0,18,142,1,0,0,0,20,152,1,0,0,0,
-        22,156,1,0,0,0,24,167,1,0,0,0,26,169,1,0,0,0,28,185,1,0,0,0,30,201,
-        1,0,0,0,32,217,1,0,0,0,34,38,5,7,0,0,35,37,3,2,1,0,36,35,1,0,0,0,
-        37,40,1,0,0,0,38,36,1,0,0,0,38,39,1,0,0,0,39,41,1,0,0,0,40,38,1,
-        0,0,0,41,42,5,8,0,0,42,1,1,0,0,0,43,47,3,0,0,0,44,47,3,4,2,0,45,
-        47,5,15,0,0,46,43,1,0,0,0,46,44,1,0,0,0,46,45,1,0,0,0,47,3,1,0,0,
-        0,48,49,7,0,0,0,49,5,1,0,0,0,50,53,3,0,0,0,51,53,3,8,4,0,52,50,1,
-        0,0,0,52,51,1,0,0,0,53,54,1,0,0,0,54,52,1,0,0,0,54,55,1,0,0,0,55,
-        56,1,0,0,0,56,57,5,0,0,1,57,7,1,0,0,0,58,62,5,17,0,0,59,61,3,0,0,
-        0,60,59,1,0,0,0,61,64,1,0,0,0,62,60,1,0,0,0,62,63,1,0,0,0,63,65,
-        1,0,0,0,64,62,1,0,0,0,65,69,5,2,0,0,66,68,3,0,0,0,67,66,1,0,0,0,
-        68,71,1,0,0,0,69,67,1,0,0,0,69,70,1,0,0,0,70,72,1,0,0,0,71,69,1,
-        0,0,0,72,76,3,10,5,0,73,75,3,0,0,0,74,73,1,0,0,0,75,78,1,0,0,0,76,
-        74,1,0,0,0,76,77,1,0,0,0,77,79,1,0,0,0,78,76,1,0,0,0,79,80,5,14,
-        0,0,80,9,1,0,0,0,81,85,3,12,6,0,82,84,3,0,0,0,83,82,1,0,0,0,84,87,
-        1,0,0,0,85,83,1,0,0,0,85,86,1,0,0,0,86,98,1,0,0,0,87,85,1,0,0,0,
-        88,92,5,13,0,0,89,91,3,0,0,0,90,89,1,0,0,0,91,94,1,0,0,0,92,90,1,
-        0,0,0,92,93,1,0,0,0,93,95,1,0,0,0,94,92,1,0,0,0,95,97,3,12,6,0,96,
-        88,1,0,0,0,97,100,1,0,0,0,98,96,1,0,0,0,98,99,1,0,0,0,99,11,1,0,
-        0,0,100,98,1,0,0,0,101,105,3,14,7,0,102,104,3,0,0,0,103,102,1,0,
-        0,0,104,107,1,0,0,0,105,103,1,0,0,0,105,106,1,0,0,0,106,118,1,0,
-        0,0,107,105,1,0,0,0,108,112,5,1,0,0,109,111,3,0,0,0,110,109,1,0,
-        0,0,111,114,1,0,0,0,112,110,1,0,0,0,112,113,1,0,0,0,113,115,1,0,
-        0,0,114,112,1,0,0,0,115,117,3,14,7,0,116,108,1,0,0,0,117,120,1,0,
-        0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,13,1,0,0,0,120,118,1,0,0,
-        0,121,125,3,22,11,0,122,124,3,0,0,0,123,122,1,0,0,0,124,127,1,0,
-        0,0,125,123,1,0,0,0,125,126,1,0,0,0,126,136,1,0,0,0,127,125,1,0,
-        0,0,128,132,5,3,0,0,129,131,3,0,0,0,130,129,1,0,0,0,131,134,1,0,
-        0,0,132,130,1,0,0,0,132,133,1,0,0,0,133,135,1,0,0,0,134,132,1,0,
-        0,0,135,137,3,16,8,0,136,128,1,0,0,0,136,137,1,0,0,0,137,15,1,0,
-        0,0,138,139,3,18,9,0,139,17,1,0,0,0,140,141,5,16,0,0,141,143,5,4,
-        0,0,142,140,1,0,0,0,142,143,1,0,0,0,143,144,1,0,0,0,144,145,3,20,
-        10,0,145,19,1,0,0,0,146,153,3,26,13,0,147,153,3,28,14,0,148,153,
-        3,30,15,0,149,153,5,19,0,0,150,153,5,20,0,0,151,153,3,32,16,0,152,
-        146,1,0,0,0,152,147,1,0,0,0,152,148,1,0,0,0,152,149,1,0,0,0,152,
-        150,1,0,0,0,152,151,1,0,0,0,153,21,1,0,0,0,154,155,5,16,0,0,155,
-        157,5,4,0,0,156,154,1,0,0,0,156,157,1,0,0,0,157,158,1,0,0,0,158,
-        159,3,24,12,0,159,23,1,0,0,0,160,168,3,26,13,0,161,168,3,28,14,0,
-        162,168,3,30,15,0,163,168,5,17,0,0,164,168,5,19,0,0,165,168,5,20,
-        0,0,166,168,3,32,16,0,167,160,1,0,0,0,167,161,1,0,0,0,167,162,1,
-        0,0,0,167,163,1,0,0,0,167,164,1,0,0,0,167,165,1,0,0,0,167,166,1,
-        0,0,0,168,25,1,0,0,0,169,173,5,11,0,0,170,172,3,0,0,0,171,170,1,
-        0,0,0,172,175,1,0,0,0,173,171,1,0,0,0,173,174,1,0,0,0,174,176,1,
-        0,0,0,175,173,1,0,0,0,176,180,3,10,5,0,177,179,3,0,0,0,178,177,1,
-        0,0,0,179,182,1,0,0,0,180,178,1,0,0,0,180,181,1,0,0,0,181,183,1,
-        0,0,0,182,180,1,0,0,0,183,184,5,9,0,0,184,27,1,0,0,0,185,189,5,12,
-        0,0,186,188,3,0,0,0,187,186,1,0,0,0,188,191,1,0,0,0,189,187,1,0,
-        0,0,189,190,1,0,0,0,190,192,1,0,0,0,191,189,1,0,0,0,192,196,3,10,
-        5,0,193,195,3,0,0,0,194,193,1,0,0,0,195,198,1,0,0,0,196,194,1,0,
-        0,0,196,197,1,0,0,0,197,199,1,0,0,0,198,196,1,0,0,0,199,200,5,10,
-        0,0,200,29,1,0,0,0,201,205,5,6,0,0,202,204,3,0,0,0,203,202,1,0,0,
-        0,204,207,1,0,0,0,205,203,1,0,0,0,205,206,1,0,0,0,206,208,1,0,0,
-        0,207,205,1,0,0,0,208,212,3,10,5,0,209,211,3,0,0,0,210,209,1,0,0,
-        0,211,214,1,0,0,0,212,210,1,0,0,0,212,213,1,0,0,0,213,215,1,0,0,
-        0,214,212,1,0,0,0,215,216,5,5,0,0,216,31,1,0,0,0,217,218,1,0,0,0,
-        218,33,1,0,0,0,26,38,46,52,54,62,69,76,85,92,98,105,112,118,125,
-        132,136,142,152,156,167,173,180,189,196,205,212
+        2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,1,0,1,0,5,0,41,
+        8,0,10,0,12,0,44,9,0,1,0,1,0,1,1,1,1,1,1,3,1,51,8,1,1,2,1,2,1,3,
+        4,3,56,8,3,11,3,12,3,57,1,3,5,3,61,8,3,10,3,12,3,64,9,3,1,3,1,3,
+        1,4,5,4,69,8,4,10,4,12,4,72,9,4,1,4,1,4,1,4,1,4,1,4,1,5,1,5,5,5,
+        81,8,5,10,5,12,5,84,9,5,1,6,1,6,5,6,88,8,6,10,6,12,6,91,9,6,1,7,
+        1,7,1,7,5,7,96,8,7,10,7,12,7,99,9,7,1,7,5,7,102,8,7,10,7,12,7,105,
+        9,7,1,8,1,8,1,8,5,8,110,8,8,10,8,12,8,113,9,8,1,8,5,8,116,8,8,10,
+        8,12,8,119,9,8,1,9,1,9,1,9,5,9,124,8,9,10,9,12,9,127,9,9,1,9,3,9,
+        130,8,9,1,10,1,10,1,11,1,11,3,11,136,8,11,1,11,1,11,1,12,1,12,1,
+        12,1,12,1,12,1,12,3,12,146,8,12,1,12,5,12,149,8,12,10,12,12,12,152,
+        9,12,1,13,1,13,3,13,156,8,13,1,13,1,13,1,14,1,14,1,14,1,14,1,14,
+        1,14,1,14,3,14,167,8,14,1,14,5,14,170,8,14,10,14,12,14,173,9,14,
+        1,15,1,15,5,15,177,8,15,10,15,12,15,180,9,15,1,15,1,15,1,15,1,16,
+        1,16,5,16,187,8,16,10,16,12,16,190,9,16,1,16,1,16,1,16,1,17,1,17,
+        5,17,197,8,17,10,17,12,17,200,9,17,1,17,1,17,1,17,1,18,1,18,1,18,
+        0,0,19,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,0,1,4,
+        0,1,6,9,14,16,17,19,20,219,0,38,1,0,0,0,2,50,1,0,0,0,4,52,1,0,0,
+        0,6,55,1,0,0,0,8,70,1,0,0,0,10,78,1,0,0,0,12,85,1,0,0,0,14,92,1,
+        0,0,0,16,106,1,0,0,0,18,120,1,0,0,0,20,131,1,0,0,0,22,135,1,0,0,
+        0,24,145,1,0,0,0,26,155,1,0,0,0,28,166,1,0,0,0,30,174,1,0,0,0,32,
+        184,1,0,0,0,34,194,1,0,0,0,36,204,1,0,0,0,38,42,5,7,0,0,39,41,3,
+        2,1,0,40,39,1,0,0,0,41,44,1,0,0,0,42,40,1,0,0,0,42,43,1,0,0,0,43,
+        45,1,0,0,0,44,42,1,0,0,0,45,46,5,8,0,0,46,1,1,0,0,0,47,51,3,0,0,
+        0,48,51,3,4,2,0,49,51,5,15,0,0,50,47,1,0,0,0,50,48,1,0,0,0,50,49,
+        1,0,0,0,51,3,1,0,0,0,52,53,7,0,0,0,53,5,1,0,0,0,54,56,3,8,4,0,55,
+        54,1,0,0,0,56,57,1,0,0,0,57,55,1,0,0,0,57,58,1,0,0,0,58,62,1,0,0,
+        0,59,61,3,0,0,0,60,59,1,0,0,0,61,64,1,0,0,0,62,60,1,0,0,0,62,63,
+        1,0,0,0,63,65,1,0,0,0,64,62,1,0,0,0,65,66,5,0,0,1,66,7,1,0,0,0,67,
+        69,3,0,0,0,68,67,1,0,0,0,69,72,1,0,0,0,70,68,1,0,0,0,70,71,1,0,0,
+        0,71,73,1,0,0,0,72,70,1,0,0,0,73,74,3,10,5,0,74,75,3,12,6,0,75,76,
+        3,14,7,0,76,77,5,14,0,0,77,9,1,0,0,0,78,82,5,17,0,0,79,81,3,0,0,
+        0,80,79,1,0,0,0,81,84,1,0,0,0,82,80,1,0,0,0,82,83,1,0,0,0,83,11,
+        1,0,0,0,84,82,1,0,0,0,85,89,5,2,0,0,86,88,3,0,0,0,87,86,1,0,0,0,
+        88,91,1,0,0,0,89,87,1,0,0,0,89,90,1,0,0,0,90,13,1,0,0,0,91,89,1,
+        0,0,0,92,103,3,16,8,0,93,97,5,13,0,0,94,96,3,0,0,0,95,94,1,0,0,0,
+        96,99,1,0,0,0,97,95,1,0,0,0,97,98,1,0,0,0,98,100,1,0,0,0,99,97,1,
+        0,0,0,100,102,3,16,8,0,101,93,1,0,0,0,102,105,1,0,0,0,103,101,1,
+        0,0,0,103,104,1,0,0,0,104,15,1,0,0,0,105,103,1,0,0,0,106,117,3,18,
+        9,0,107,111,5,1,0,0,108,110,3,0,0,0,109,108,1,0,0,0,110,113,1,0,
+        0,0,111,109,1,0,0,0,111,112,1,0,0,0,112,114,1,0,0,0,113,111,1,0,
+        0,0,114,116,3,18,9,0,115,107,1,0,0,0,116,119,1,0,0,0,117,115,1,0,
+        0,0,117,118,1,0,0,0,118,17,1,0,0,0,119,117,1,0,0,0,120,129,3,26,
+        13,0,121,125,5,3,0,0,122,124,3,0,0,0,123,122,1,0,0,0,124,127,1,0,
+        0,0,125,123,1,0,0,0,125,126,1,0,0,0,126,128,1,0,0,0,127,125,1,0,
+        0,0,128,130,3,20,10,0,129,121,1,0,0,0,129,130,1,0,0,0,130,19,1,0,
+        0,0,131,132,3,22,11,0,132,21,1,0,0,0,133,134,5,16,0,0,134,136,5,
+        4,0,0,135,133,1,0,0,0,135,136,1,0,0,0,136,137,1,0,0,0,137,138,3,
+        24,12,0,138,23,1,0,0,0,139,146,3,30,15,0,140,146,3,32,16,0,141,146,
+        3,34,17,0,142,146,5,19,0,0,143,146,5,20,0,0,144,146,3,36,18,0,145,
+        139,1,0,0,0,145,140,1,0,0,0,145,141,1,0,0,0,145,142,1,0,0,0,145,
+        143,1,0,0,0,145,144,1,0,0,0,146,150,1,0,0,0,147,149,3,0,0,0,148,
+        147,1,0,0,0,149,152,1,0,0,0,150,148,1,0,0,0,150,151,1,0,0,0,151,
+        25,1,0,0,0,152,150,1,0,0,0,153,154,5,16,0,0,154,156,5,4,0,0,155,
+        153,1,0,0,0,155,156,1,0,0,0,156,157,1,0,0,0,157,158,3,28,14,0,158,
+        27,1,0,0,0,159,167,3,30,15,0,160,167,3,32,16,0,161,167,3,34,17,0,
+        162,167,5,17,0,0,163,167,5,19,0,0,164,167,5,20,0,0,165,167,3,36,
+        18,0,166,159,1,0,0,0,166,160,1,0,0,0,166,161,1,0,0,0,166,162,1,0,
+        0,0,166,163,1,0,0,0,166,164,1,0,0,0,166,165,1,0,0,0,167,171,1,0,
+        0,0,168,170,3,0,0,0,169,168,1,0,0,0,170,173,1,0,0,0,171,169,1,0,
+        0,0,171,172,1,0,0,0,172,29,1,0,0,0,173,171,1,0,0,0,174,178,5,11,
+        0,0,175,177,3,0,0,0,176,175,1,0,0,0,177,180,1,0,0,0,178,176,1,0,
+        0,0,178,179,1,0,0,0,179,181,1,0,0,0,180,178,1,0,0,0,181,182,3,14,
+        7,0,182,183,5,9,0,0,183,31,1,0,0,0,184,188,5,12,0,0,185,187,3,0,
+        0,0,186,185,1,0,0,0,187,190,1,0,0,0,188,186,1,0,0,0,188,189,1,0,
+        0,0,189,191,1,0,0,0,190,188,1,0,0,0,191,192,3,14,7,0,192,193,5,10,
+        0,0,193,33,1,0,0,0,194,198,5,6,0,0,195,197,3,0,0,0,196,195,1,0,0,
+        0,197,200,1,0,0,0,198,196,1,0,0,0,198,199,1,0,0,0,199,201,1,0,0,
+        0,200,198,1,0,0,0,201,202,3,14,7,0,202,203,5,5,0,0,203,35,1,0,0,
+        0,204,205,1,0,0,0,205,37,1,0,0,0,22,42,50,57,62,70,82,89,97,103,
+        111,117,125,129,135,145,150,155,166,171,178,188,198
     ];
 
     private static __ATN: antlr.ATN;
@@ -1264,15 +1244,6 @@ export class SyntaxContext extends antlr.ParserRuleContext {
     public EOF(): antlr.TerminalNode {
         return this.getToken(EBNFParser.EOF, 0)!;
     }
-    public comment(): CommentContext[];
-    public comment(i: number): CommentContext | null;
-    public comment(i?: number): CommentContext[] | CommentContext | null {
-        if (i === undefined) {
-            return this.getRuleContexts(CommentContext);
-        }
-
-        return this.getRuleContext(i, CommentContext);
-    }
     public syntaxRule(): SyntaxRuleContext[];
     public syntaxRule(i: number): SyntaxRuleContext | null;
     public syntaxRule(i?: number): SyntaxRuleContext[] | SyntaxRuleContext | null {
@@ -1281,6 +1252,15 @@ export class SyntaxContext extends antlr.ParserRuleContext {
         }
 
         return this.getRuleContext(i, SyntaxRuleContext);
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
     }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_syntax;
@@ -1309,11 +1289,11 @@ export class SyntaxRuleContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
     }
-    public META_IDENTIFIER(): antlr.TerminalNode {
-        return this.getToken(EBNFParser.META_IDENTIFIER, 0)!;
+    public metaWithComments(): MetaWithCommentsContext {
+        return this.getRuleContext(0, MetaWithCommentsContext)!;
     }
-    public DEFINING_SYMBOL(): antlr.TerminalNode {
-        return this.getToken(EBNFParser.DEFINING_SYMBOL, 0)!;
+    public defintitionSymbolWithComments(): DefintitionSymbolWithCommentsContext {
+        return this.getRuleContext(0, DefintitionSymbolWithCommentsContext)!;
     }
     public definitionsList(): DefinitionsListContext {
         return this.getRuleContext(0, DefinitionsListContext)!;
@@ -1353,6 +1333,84 @@ export class SyntaxRuleContext extends antlr.ParserRuleContext {
 }
 
 
+export class MetaWithCommentsContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public META_IDENTIFIER(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.META_IDENTIFIER, 0)!;
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_metaWithComments;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterMetaWithComments) {
+             listener.enterMetaWithComments(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitMetaWithComments) {
+             listener.exitMetaWithComments(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitMetaWithComments) {
+            return visitor.visitMetaWithComments(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
+export class DefintitionSymbolWithCommentsContext extends antlr.ParserRuleContext {
+    public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
+        super(parent, invokingState);
+    }
+    public DEFINING_SYMBOL(): antlr.TerminalNode {
+        return this.getToken(EBNFParser.DEFINING_SYMBOL, 0)!;
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
+    }
+    public override get ruleIndex(): number {
+        return EBNFParser.RULE_defintitionSymbolWithComments;
+    }
+    public override enterRule(listener: EBNFParserListener): void {
+        if(listener.enterDefintitionSymbolWithComments) {
+             listener.enterDefintitionSymbolWithComments(this);
+        }
+    }
+    public override exitRule(listener: EBNFParserListener): void {
+        if(listener.exitDefintitionSymbolWithComments) {
+             listener.exitDefintitionSymbolWithComments(this);
+        }
+    }
+    public override accept<Result>(visitor: EBNFParserVisitor<Result>): Result | null {
+        if (visitor.visitDefintitionSymbolWithComments) {
+            return visitor.visitDefintitionSymbolWithComments(this);
+        } else {
+            return visitor.visitChildren(this);
+        }
+    }
+}
+
+
 export class DefinitionsListContext extends antlr.ParserRuleContext {
     public constructor(parent: antlr.ParserRuleContext | null, invokingState: number) {
         super(parent, invokingState);
@@ -1366,15 +1424,6 @@ export class DefinitionsListContext extends antlr.ParserRuleContext {
 
         return this.getRuleContext(i, SingleDefinitionContext);
     }
-    public comment(): CommentContext[];
-    public comment(i: number): CommentContext | null;
-    public comment(i?: number): CommentContext[] | CommentContext | null {
-        if (i === undefined) {
-            return this.getRuleContexts(CommentContext);
-        }
-
-        return this.getRuleContext(i, CommentContext);
-    }
     public DEFINITION_SEPARATOR_SYMBOL(): antlr.TerminalNode[];
     public DEFINITION_SEPARATOR_SYMBOL(i: number): antlr.TerminalNode | null;
     public DEFINITION_SEPARATOR_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
@@ -1383,6 +1432,15 @@ export class DefinitionsListContext extends antlr.ParserRuleContext {
     	} else {
     		return this.getToken(EBNFParser.DEFINITION_SEPARATOR_SYMBOL, i);
     	}
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
     }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_definitionsList;
@@ -1420,15 +1478,6 @@ export class SingleDefinitionContext extends antlr.ParserRuleContext {
 
         return this.getRuleContext(i, SyntacticTermContext);
     }
-    public comment(): CommentContext[];
-    public comment(i: number): CommentContext | null;
-    public comment(i?: number): CommentContext[] | CommentContext | null {
-        if (i === undefined) {
-            return this.getRuleContexts(CommentContext);
-        }
-
-        return this.getRuleContext(i, CommentContext);
-    }
     public CONCATENATE_SYMBOL(): antlr.TerminalNode[];
     public CONCATENATE_SYMBOL(i: number): antlr.TerminalNode | null;
     public CONCATENATE_SYMBOL(i?: number): antlr.TerminalNode | null | antlr.TerminalNode[] {
@@ -1437,6 +1486,15 @@ export class SingleDefinitionContext extends antlr.ParserRuleContext {
     	} else {
     		return this.getToken(EBNFParser.CONCATENATE_SYMBOL, i);
     	}
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
     }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_singleDefinition;
@@ -1468,6 +1526,12 @@ export class SyntacticTermContext extends antlr.ParserRuleContext {
     public syntacticFactor(): SyntacticFactorContext {
         return this.getRuleContext(0, SyntacticFactorContext)!;
     }
+    public EXCEPT_SYMBOL(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.EXCEPT_SYMBOL, 0);
+    }
+    public syntacticException(): SyntacticExceptionContext | null {
+        return this.getRuleContext(0, SyntacticExceptionContext);
+    }
     public comment(): CommentContext[];
     public comment(i: number): CommentContext | null;
     public comment(i?: number): CommentContext[] | CommentContext | null {
@@ -1476,12 +1540,6 @@ export class SyntacticTermContext extends antlr.ParserRuleContext {
         }
 
         return this.getRuleContext(i, CommentContext);
-    }
-    public EXCEPT_SYMBOL(): antlr.TerminalNode | null {
-        return this.getToken(EBNFParser.EXCEPT_SYMBOL, 0);
-    }
-    public syntacticException(): SyntacticExceptionContext | null {
-        return this.getRuleContext(0, SyntacticExceptionContext);
     }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_syntacticTerm;
@@ -1594,6 +1652,15 @@ export class SyntacticExceptionPrimaryContext extends antlr.ParserRuleContext {
     public emptySequence(): EmptySequenceContext | null {
         return this.getRuleContext(0, EmptySequenceContext);
     }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
+    }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_syntacticExceptionPrimary;
     }
@@ -1677,6 +1744,15 @@ export class SyntacticPrimaryContext extends antlr.ParserRuleContext {
     }
     public emptySequence(): EmptySequenceContext | null {
         return this.getRuleContext(0, EmptySequenceContext);
+    }
+    public comment(): CommentContext[];
+    public comment(i: number): CommentContext | null;
+    public comment(i?: number): CommentContext[] | CommentContext | null {
+        if (i === undefined) {
+            return this.getRuleContexts(CommentContext);
+        }
+
+        return this.getRuleContext(i, CommentContext);
     }
     public override get ruleIndex(): number {
         return EBNFParser.RULE_syntacticPrimary;

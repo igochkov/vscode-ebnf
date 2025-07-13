@@ -97,6 +97,7 @@ test('allow comments', () => {
     [ (* comment *) option1 (* comment *)
     ] (* comment *)
     ;
+    (* comment *)
     `;
 
     const context: SyntaxContext = parseRule('syntax', input);

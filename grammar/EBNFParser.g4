@@ -33,23 +33,31 @@ commentlessSymbol
     ;
 
 syntax
-	: (comment | syntaxRule)+ EOF
+	: syntaxRule+ comment* EOF
 	;
 
 syntaxRule
-	: META_IDENTIFIER comment* DEFINING_SYMBOL comment* definitionsList comment* TERMINATOR_SYMBOL
+	: comment* metaWithComments defintitionSymbolWithComments definitionsList TERMINATOR_SYMBOL
+	;
+
+metaWithComments
+	: META_IDENTIFIER comment*
+	;
+
+defintitionSymbolWithComments
+	: DEFINING_SYMBOL comment*
 	;
 
 definitionsList
-	: singleDefinition comment* (DEFINITION_SEPARATOR_SYMBOL comment* singleDefinition)*
+	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL comment* singleDefinition)*
 	;
 
 singleDefinition
-	: syntacticTerm comment* (CONCATENATE_SYMBOL comment* syntacticTerm)*
+	: syntacticTerm (CONCATENATE_SYMBOL comment* syntacticTerm)*
 	;
 
 syntacticTerm
-	: syntacticFactor comment* (EXCEPT_SYMBOL comment* syntacticException)?
+	: syntacticFactor (EXCEPT_SYMBOL comment* syntacticException)?
 	;
 
 syntacticException
@@ -63,12 +71,14 @@ syntacticExceptionFactor
 
 // syntactic-primary containing no meta-identifiers
 syntacticExceptionPrimary
-	: optionalSequence
+	: 
+	( optionalSequence
 	| repeatedSequence
-	| groupedSequence
-	| TERMINAL_STRING
+	| groupedSequence 
+	| TERMINAL_STRING 
     | SPECIAL_SEQUENCE
 	| emptySequence
+	) comment*
 	;
 
 syntacticFactor
@@ -76,25 +86,27 @@ syntacticFactor
 	;
 
 syntacticPrimary
-	: optionalSequence
+	: 
+	( optionalSequence
 	| repeatedSequence
-	| groupedSequence
-	| META_IDENTIFIER
-	| TERMINAL_STRING
+	| groupedSequence 
+	| META_IDENTIFIER 
+	| TERMINAL_STRING 
     | SPECIAL_SEQUENCE
 	| emptySequence
+	) comment*   
 	;
 	
 optionalSequence
-	: START_OPTION_SYMBOL comment* definitionsList comment* END_OPTION_SYMBOL
+	: START_OPTION_SYMBOL comment* definitionsList END_OPTION_SYMBOL
 	;
 
 repeatedSequence
-	: START_REPEAT_SYMBOL comment* definitionsList comment* END_REPEAT_SYMBOL
+	: START_REPEAT_SYMBOL comment* definitionsList END_REPEAT_SYMBOL
 	;
 
 groupedSequence
-	: START_GROUP_SYMBOL comment* definitionsList comment* END_GROUP_SYMBOL
+	: START_GROUP_SYMBOL comment* definitionsList END_GROUP_SYMBOL
 	;
 
 emptySequence

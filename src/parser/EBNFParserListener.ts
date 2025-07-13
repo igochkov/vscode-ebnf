@@ -8,6 +8,8 @@ import { CommentSymbolContext } from "./EBNFParser.js";
 import { CommentlessSymbolContext } from "./EBNFParser.js";
 import { SyntaxContext } from "./EBNFParser.js";
 import { SyntaxRuleContext } from "./EBNFParser.js";
+import { MetaWithCommentsContext } from "./EBNFParser.js";
+import { DefintitionSymbolWithCommentsContext } from "./EBNFParser.js";
 import { DefinitionsListContext } from "./EBNFParser.js";
 import { SingleDefinitionContext } from "./EBNFParser.js";
 import { SyntacticTermContext } from "./EBNFParser.js";
@@ -77,6 +79,26 @@ export class EBNFParserListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSyntaxRule?: (ctx: SyntaxRuleContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.metaWithComments`.
+     * @param ctx the parse tree
+     */
+    enterMetaWithComments?: (ctx: MetaWithCommentsContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.metaWithComments`.
+     * @param ctx the parse tree
+     */
+    exitMetaWithComments?: (ctx: MetaWithCommentsContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.defintitionSymbolWithComments`.
+     * @param ctx the parse tree
+     */
+    enterDefintitionSymbolWithComments?: (ctx: DefintitionSymbolWithCommentsContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.defintitionSymbolWithComments`.
+     * @param ctx the parse tree
+     */
+    exitDefintitionSymbolWithComments?: (ctx: DefintitionSymbolWithCommentsContext) => void;
     /**
      * Enter a parse tree produced by `EBNFParser.definitionsList`.
      * @param ctx the parse tree

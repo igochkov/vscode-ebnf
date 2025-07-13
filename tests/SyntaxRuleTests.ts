@@ -9,8 +9,8 @@ test('should find empty syntax rule', () => {
     const input = "emptySequence = ;";
     const context: SyntaxRuleContext = parseRule('syntaxRule', input);
 
-    const metaIdentifier = context.META_IDENTIFIER();
-    const definingSymbol = context.DEFINING_SYMBOL();
+    const metaIdentifier = context.metaWithComments().META_IDENTIFIER();
+    const definingSymbol = context.defintitionSymbolWithComments().DEFINING_SYMBOL();
     const definitionList = context.definitionsList();
     const terminatorSymbol = context.TERMINATOR_SYMBOL();
 
@@ -33,8 +33,8 @@ test('should find full syntax rule with 2 syntactic terms', () => {
     const input = "syntacticPrimary = optionalSequence | repeatedSequence;";
     const context: SyntaxRuleContext = parseRule('syntaxRule', input);
 
-    const metaIdentifier = context.META_IDENTIFIER();
-    const definingSymbol = context.DEFINING_SYMBOL();
+    const metaIdentifier = context.metaWithComments().META_IDENTIFIER();
+    const definingSymbol = context.defintitionSymbolWithComments().DEFINING_SYMBOL();
     const definitionList = context.definitionsList();
     const terminatorSymbol = context.TERMINATOR_SYMBOL();
 

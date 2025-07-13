@@ -1,5 +1,5 @@
 import { AbstractParseTreeVisitor, TerminalNode } from 'antlr4ng';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, CommentSymbolContext, CommentlessSymbolContext } from "../parser/EBNFParser";
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, CommentSymbolContext, CommentlessSymbolContext, MetaWithCommentsContext, DefintitionSymbolWithCommentsContext } from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -123,13 +123,6 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var result: string = "";
         var first: boolean = true;
 
-        for (var cmt of ctx.comment()) {
-            if (cmt) {
-                result += this.visit(cmt);
-                result += "\n";
-            }
-        }
-
         for (var rule of ctx.syntaxRule()) {
             if (!first) {
                 result += "\n\n";
@@ -139,21 +132,55 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             first = false;
         }
 
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += "\n\n" + this.visit(comment);
+        });
+
         return result;
     }
 
     public visitSyntaxRule(ctx: SyntaxRuleContext): string {
         var result: string = "";
 
-        result += ctx.META_IDENTIFIER().symbol.text;
-        result += this.options.definingSymbolOnNewLine ? "\n" : " ";
-        result += (this.options.definingSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
-        result += ctx.DEFINING_SYMBOL().symbol.text;
-        result += " ";
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += this.visit(comment) + "\n";
+        });
+        
+        result += this.visit(ctx.metaWithComments());
+        result += this.visit(ctx.defintitionSymbolWithComments());
         result += this.visit(ctx.definitionsList());
         result += this.options.terminatorSymbolOnNewLine ? "\n" : "";
         result += (this.options.terminatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
         result += this.options.defaultTerminatorSymbol; // ctx.TERMINATOR_SYMBOL().symbol.text;
+
+        return result;
+    }
+
+    public visitMetaWithComments(ctx: MetaWithCommentsContext): string {
+        var result: string = "";
+
+        result += ctx.META_IDENTIFIER().symbol.text;
+        
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        result += this.options.definingSymbolOnNewLine ? "\n" : " ";
+        result += (this.options.definingSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
+        
+        return result;
+    }
+
+    public visitDefintitionSymbolWithComments(ctx: DefintitionSymbolWithCommentsContext): string {
+        var result: string = "";
+
+        result += ctx.DEFINING_SYMBOL().symbol.text;
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        result += " ";
 
         return result;
     }
@@ -167,6 +194,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
                 result += this.options.definitionSeparatorSymbolOnNewLine ? "\n" : " ";
                 result += (this.options.definitionSeparatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
                 result += this.options.defaultDefinitionSeparatorSymbol; // ctx.DEFINITION_SEPARATOR_SYMBOL()[i].symbol.text;
+                ctx.comment().forEach((comment: CommentContext) => {
+                    result += " " + this.visit(comment);
+                });
                 result += " ";
             }
 
@@ -186,6 +216,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             if (!first) {
                 result += this.options.insertSpaceBeforeConcatenateSymbol ? " " : "";
                 result += ctx.CONCATENATE_SYMBOL()[i].symbol.text;
+                ctx.comment().forEach((comment: CommentContext) => {
+                    result += " " + this.visit(comment);
+                });
                 result += " ";
                 i += 1;
             }
@@ -206,12 +239,16 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         if (exceptSymbol) {
             result += " ";
             result += exceptSymbol.symbol.text;
-        }
 
-        const syntaxticException = ctx.syntacticException();
-        if (syntaxticException) {
-            result += " ";
-            result += this.visit(syntaxticException);
+            ctx.comment().forEach((comment: CommentContext) => {
+                result += " " + this.visit(comment);
+            });
+       
+            const syntaxticException = ctx.syntacticException();
+            if (syntaxticException) {
+                result += " ";
+                result += this.visit(syntaxticException);
+            }
         }
 
         return result;
@@ -270,6 +307,10 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             result += this.visit(es);
         }
 
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
         return result;
     }
 
@@ -292,7 +333,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
 
         return result;
     }
-
+    
     public visitSyntacticPrimary(ctx: SyntacticPrimaryContext): string {
         var result: string = "";
 
@@ -326,6 +367,10 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             result += this.visit(es);
         }
 
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
         return result;
     }
 
@@ -336,6 +381,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         const endOptionSymbol: string = this.options.defaultOptionSymbols === "[ ]" ? "]" : "/)";
 
         result += startOptionSymbol; //ctx.START_OPTION_SYMBOL().symbol.text;
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -351,6 +399,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         const endRepeatSymbol: string = this.options.defaultRepeatSymbols === "{ }" ? "}" : ":)";
 
         result += startRepeatSymbol; // ctx.START_REPEAT_SYMBOL();
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -363,6 +414,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var result: string = "";
 
         result += ctx.START_GROUP_SYMBOL();
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -370,16 +424,6 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
 
         return result;
     }
-
-    // public visitSingleQuoteString(ctx: SingleQuoteStringContext): string {
-    //     const content = ctx.FIRST_TERMINAL_CHARACTER().map(c => c.symbol.text).join("");
-    //     return "'" + content + "'";
-    // }
-
-    // public visitDoubleQuoteString(ctx: DoubleQuoteStringContext): string {
-    //     const content = ctx.SECOND_TERMINAL_CHARACTER().map(c => c.symbol.text).join("");
-    //     return '"' + content + '"';
-    // }
 
     public visitEmptySequence(ctx: EmptySequenceContext): string {
         return "";

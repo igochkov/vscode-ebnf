@@ -6,22 +6,22 @@ export class ASTListener implements EBNFParserListener {
     public symbols: Token[] = [];
     public definitions: Token[] = [];
 
-    exitSyntaxRule(ctx: SyntaxRuleContext) {
-        const terminalNode = ctx.META_IDENTIFIER();
+    // exitSyntaxRule(ctx: SyntaxRuleContext) {
+    //     const terminalNode = ctx.META_IDENTIFIER();
 
-        if (terminalNode !== undefined) {
-            this.symbols.push(terminalNode.symbol);
-            this.definitions.push(terminalNode.symbol);
-        }
-    }
+    //     if (terminalNode !== undefined) {
+    //         this.symbols.push(terminalNode.symbol);
+    //         this.definitions.push(terminalNode.symbol);
+    //     }
+    // }
 
-    exitPrimary(ctx: SyntacticPrimaryContext) {
-        const terminalNode = ctx.META_IDENTIFIER();
+    // exitPrimary(ctx: SyntacticPrimaryContext) {
+    //     const terminalNode = ctx.META_IDENTIFIER();
 
-        if (terminalNode !== undefined) {
-            this.symbols.push(terminalNode.symbol);
-        }
-    }
+    //     if (terminalNode !== undefined) {
+    //         this.symbols.push(terminalNode.symbol);
+    //     }
+    // }
 
     visitTerminal(node: TerminalNode): void {}
     visitErrorNode(node: ErrorNode): void {}
