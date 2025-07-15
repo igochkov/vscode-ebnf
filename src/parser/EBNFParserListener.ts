@@ -15,6 +15,8 @@ import { SingleDefinitionContext } from "./EBNFParser.js";
 import { SyntacticTermContext } from "./EBNFParser.js";
 import { SyntacticExceptionContext } from "./EBNFParser.js";
 import { SyntacticExceptionFactorContext } from "./EBNFParser.js";
+import { IntegerWithCommentsContext } from "./EBNFParser.js";
+import { RepetitionSymbolWithCommentsContext } from "./EBNFParser.js";
 import { SyntacticExceptionPrimaryContext } from "./EBNFParser.js";
 import { SyntacticFactorContext } from "./EBNFParser.js";
 import { SyntacticPrimaryContext } from "./EBNFParser.js";
@@ -149,6 +151,26 @@ export class EBNFParserListener implements ParseTreeListener {
      * @param ctx the parse tree
      */
     exitSyntacticExceptionFactor?: (ctx: SyntacticExceptionFactorContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.integerWithComments`.
+     * @param ctx the parse tree
+     */
+    enterIntegerWithComments?: (ctx: IntegerWithCommentsContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.integerWithComments`.
+     * @param ctx the parse tree
+     */
+    exitIntegerWithComments?: (ctx: IntegerWithCommentsContext) => void;
+    /**
+     * Enter a parse tree produced by `EBNFParser.repetitionSymbolWithComments`.
+     * @param ctx the parse tree
+     */
+    enterRepetitionSymbolWithComments?: (ctx: RepetitionSymbolWithCommentsContext) => void;
+    /**
+     * Exit a parse tree produced by `EBNFParser.repetitionSymbolWithComments`.
+     * @param ctx the parse tree
+     */
+    exitRepetitionSymbolWithComments?: (ctx: RepetitionSymbolWithCommentsContext) => void;
     /**
      * Enter a parse tree produced by `EBNFParser.syntacticExceptionPrimary`.
      * @param ctx the parse tree

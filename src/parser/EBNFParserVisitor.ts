@@ -15,6 +15,8 @@ import { SingleDefinitionContext } from "./EBNFParser.js";
 import { SyntacticTermContext } from "./EBNFParser.js";
 import { SyntacticExceptionContext } from "./EBNFParser.js";
 import { SyntacticExceptionFactorContext } from "./EBNFParser.js";
+import { IntegerWithCommentsContext } from "./EBNFParser.js";
+import { RepetitionSymbolWithCommentsContext } from "./EBNFParser.js";
 import { SyntacticExceptionPrimaryContext } from "./EBNFParser.js";
 import { SyntacticFactorContext } from "./EBNFParser.js";
 import { SyntacticPrimaryContext } from "./EBNFParser.js";
@@ -104,6 +106,18 @@ export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> 
      * @return the visitor result
      */
     visitSyntacticExceptionFactor?: (ctx: SyntacticExceptionFactorContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.integerWithComments`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitIntegerWithComments?: (ctx: IntegerWithCommentsContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.repetitionSymbolWithComments`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitRepetitionSymbolWithComments?: (ctx: RepetitionSymbolWithCommentsContext) => Result;
     /**
      * Visit a parse tree produced by `EBNFParser.syntacticExceptionPrimary`.
      * @param ctx the parse tree

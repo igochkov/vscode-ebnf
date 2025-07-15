@@ -98,6 +98,8 @@ test('allow comments', () => {
     ] (* comment *)
     ;
     (* comment *)
+    rule4 = (* comment *) 4 (* comment *) * (* comment *) ( (* comment *) item1 (* comment *) ) ;
+    (* comment *)
     `;
 
     const context: SyntaxContext = parseRule('syntax', input);

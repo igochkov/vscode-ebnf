@@ -1,5 +1,5 @@
 import { AbstractParseTreeVisitor, TerminalNode } from 'antlr4ng';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, CommentSymbolContext, CommentlessSymbolContext, MetaWithCommentsContext, DefintitionSymbolWithCommentsContext } from "../parser/EBNFParser";
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, CommentSymbolContext, CommentlessSymbolContext, MetaWithCommentsContext, DefintitionSymbolWithCommentsContext, IntegerWithCommentsContext, RepetitionSymbolWithCommentsContext } from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -255,25 +255,69 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     }
 
     public visitSyntacticException(ctx: SyntacticExceptionContext): string {
-        return this.visit(ctx.syntacticExceptionFactor());
+        var result: string = "";
+
+        result += this.visit(ctx.syntacticExceptionFactor());
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        return result;
     }
 
     public visitSyntacticExceptionFactor(ctx: SyntacticExceptionFactorContext): string {
         var result: string = "";
 
+        const ic = ctx.integerWithComments()
+        if (ic) {
+            result += this.visit(ic);
+        }
+
+        const rsc = ctx.repetitionSymbolWithComments()
+        if (rsc) {
+            result += this.visit(rsc);
+        }
+
+        result += this.visit(ctx.syntacticExceptionPrimary());
+
+        return result;
+    }
+
+    public visitIntegerWithComments(ctx: IntegerWithCommentsContext): string {
+        var result: string = "";
+
         const integer = ctx.INTEGER();
         if (integer) {
             result += integer.symbol.text;
+        }
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        if (integer) {
             result += " ";
         }
+
+        return result;
+    }
+
+    public visitRepetitionSymbolWithComments(ctx: RepetitionSymbolWithCommentsContext): string {
+        var result: string = "";
 
         const rs = ctx.REPETITION_SYMBOL();
         if (rs) {
             result += rs.symbol.text;
-            result += " ";
         }
 
-        result += this.visit(ctx.syntacticExceptionPrimary());
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        if (rs) {
+            result += " ";
+        }
 
         return result;
     }
@@ -317,16 +361,14 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     public visitSyntacticFactor(ctx: SyntacticFactorContext): string {
         var result: string = "";
 
-        const integer = ctx.INTEGER();
-        if (integer) {
-            result += integer.symbol.text;
-            result += " ";
+        const ic = ctx.integerWithComments()
+        if (ic) {
+            result += this.visit(ic);
         }
 
-        const rs = ctx.REPETITION_SYMBOL();
-        if (rs) {
-            result += rs.symbol.text;
-            result += " ";
+        const rsc = ctx.repetitionSymbolWithComments()
+        if (rsc) {
+            result += this.visit(rsc);
         }
 
         result += this.visit(ctx.syntacticPrimary());

@@ -61,12 +61,20 @@ syntacticTerm
 	;
 
 syntacticException
-	:  syntacticExceptionFactor
+	:  syntacticExceptionFactor comment*
 	;
 
 // syntactic-factor containing no meta-identifiers.
 syntacticExceptionFactor
-	: (INTEGER REPETITION_SYMBOL)? syntacticExceptionPrimary
+	: (integerWithComments repetitionSymbolWithComments)? syntacticExceptionPrimary
+	;
+
+integerWithComments
+	: INTEGER comment*
+	;
+
+repetitionSymbolWithComments
+	: REPETITION_SYMBOL comment*
 	;
 
 // syntactic-primary containing no meta-identifiers
@@ -82,7 +90,7 @@ syntacticExceptionPrimary
 	;
 
 syntacticFactor
-	: (INTEGER REPETITION_SYMBOL)? syntacticPrimary
+	: (integerWithComments repetitionSymbolWithComments)? syntacticPrimary
 	;
 
 syntacticPrimary
