@@ -8,8 +8,9 @@ import { ParserContext } from "../ParserContext";
 
 export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider, vscode.OnTypeFormattingEditProvider {
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+        const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
         const content: string = document.getText();
-        const formattedText = this.format(content, options);
+        const formattedText = this.format(content, options, hasDiagnostics);
 
         var fullRange = new vscode.Range(
             document.positionAt(0),
@@ -27,8 +28,9 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
             endLine.range.end
         );
 
+        const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
         const content: string = document.getText(extendedRange);
-        const formattedText = this.format(content, options);
+        const formattedText = this.format(content, options, hasDiagnostics);
 
         return [vscode.TextEdit.replace(extendedRange, formattedText)];
     };
@@ -37,13 +39,19 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
         let line = document.lineAt(position.line);
         let lineRange = line.range;
 
+        const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
         const content: string = document.getText(lineRange);
-        const formattedText = this.format(content, options);
+        const formattedText = this.format(content, options, hasDiagnostics);
 
         return [vscode.TextEdit.replace(lineRange, formattedText)];
     }
 
-    private format(content: string, options: vscode.FormattingOptions): string {
+    private format(content: string, options: vscode.FormattingOptions, hasDiagnostics: boolean): string {
+        if (hasDiagnostics) {
+            // If there are diagnostics, we don't format the document
+            return content;
+        }
+
         const inputStream = CharStream.fromString(content);
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
