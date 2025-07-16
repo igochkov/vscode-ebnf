@@ -133,14 +133,14 @@
       "name": "meta.syntax.ebnf",
       "patterns": [
         {
-          "include": "#comment-block"
+          "include": "#syntax-rule"
         },
         {
-          "include": "#syntax-rule"
+          "include": "#comment"
         }
       ]
     },
-    "comment-block": {
+    "comment": {
       "comment": "A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>",
       "name": "comment.block.ebnf",
       "begin": "\\(\\*",
@@ -164,7 +164,7 @@
     "comment-content": {
       "patterns": [
         {
-          "include": "#comment-block"
+          "include": "#comment"
         },
         {
           "name": "comment.block.content.ebnf",
@@ -192,7 +192,7 @@
       },
       "patterns": [
         {
-          "include": "#comment-block"
+          "include": "#comment"
         },
         {
           "include": "#definitions-list"
@@ -203,6 +203,9 @@
       "comment": "Vertical bar separates alternative <single definitions>",
       "name": "meta.definitions.list.ebnf",
       "patterns": [
+        {
+          "include": "#comment"
+        },
         {
           "include": "#single-definition"
         },
@@ -216,6 +219,9 @@
       "name": "meta.definitions.single.ebnf",
       "patterns": [
         {
+          "include": "#comment"
+        },
+        {
           "include": "#term"
         },
         {
@@ -227,6 +233,9 @@
       "comment": "A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception>",
       "name": "meta.term.ebnf",
       "patterns": [
+        {
+          "include": "#comment"
+        },
         {
           "include": "#factor"
         },
@@ -242,6 +251,9 @@
       "name": "meta.exception.ebnf",
       "patterns": [
         {
+          "include": "#comment"
+        },
+        {
           "include": "#factor"
         }
       ]
@@ -250,6 +262,9 @@
       "comment": "The <integer> specifies the number of repetitions of the <primary>",
       "name": "meta.factor.ebnf",
       "patterns": [
+        {
+          "include": "#comment"
+        },
         {
           "include": "#integer"
         },
@@ -264,6 +279,9 @@
     "primary": {
       "name": "meta.primary.ebnf",
       "patterns": [
+        {
+          "include": "#comment"
+        },
         {
           "include": "#optional-sequence"
         },
@@ -301,6 +319,9 @@
       },
       "patterns": [
         {
+          "include": "#comment"
+        },
+        {
           "include": "#definitions-list"
         },
         {
@@ -328,6 +349,9 @@
       },
       "patterns": [
         {
+          "include": "#comment"
+        },
+        {
           "include": "#definitions-list"
         },
         {
@@ -354,6 +378,9 @@
         }
       },
       "patterns": [
+        {
+          "include": "#comment"
+        },
         {
           "include": "#definitions-list"
         },
