@@ -6,8 +6,7 @@ EXCEPT_SYMBOL           	: '-' ;
 REPETITION_SYMBOL       	: '*' ;
 END_GROUP_SYMBOL            : ')' ;
 START_GROUP_SYMBOL          : '(' ;
-START_COMMENT_SYMBOL        : '(*';
-END_COMMENT_SYMBOL          : '*)';
+START_COMMENT_SYMBOL        : '(*' -> pushMode(COMMENT);
 END_OPTION_SYMBOL           : ']' | '/)';
 END_REPEAT_SYMBOL           : '}' | ':)';
 START_OPTION_SYMBOL         : '[' | '(/';
@@ -34,7 +33,6 @@ fragment META_IDENTIFIER_CHARACTER       : LETTER
                                          | '_' | '-' // Added to allow modern identifier patterns
                                          ;
 
-OTHER_CHARACTER                          : [:+_%@&#$<>\\^`~]; // Removed SPACE here to avoid ambiguity with GAP_SEPARATOR 
 INTEGER : DECIMAL_DIGIT+;
 META_IDENTIFIER : LETTER META_IDENTIFIER_CHARACTER*;
 GAP_SEPARATOR
@@ -53,3 +51,8 @@ TERMINAL_STRING
     ;
 
 SPECIAL_SEQUENCE : SPECIAL_SEQUENCE_SYMBOL SPECIAL_SEQUENCE_CHARACTER* SPECIAL_SEQUENCE_SYMBOL;
+
+mode COMMENT;
+END_COMMENT_SYMBOL : '*)' -> popMode;
+NESTED_START_COMMENT_SYMBOL : '(*' -> pushMode(COMMENT);
+OTHER_CHARACTER : .;

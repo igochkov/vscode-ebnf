@@ -5,7 +5,6 @@ import { AbstractParseTreeVisitor } from "antlr4ng";
 
 import { CommentContext } from "./EBNFParser.js";
 import { CommentSymbolContext } from "./EBNFParser.js";
-import { CommentlessSymbolContext } from "./EBNFParser.js";
 import { SyntaxContext } from "./EBNFParser.js";
 import { SyntaxRuleContext } from "./EBNFParser.js";
 import { MetaWithCommentsContext } from "./EBNFParser.js";
@@ -46,12 +45,6 @@ export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> 
      * @return the visitor result
      */
     visitCommentSymbol?: (ctx: CommentSymbolContext) => Result;
-    /**
-     * Visit a parse tree produced by `EBNFParser.commentlessSymbol`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitCommentlessSymbol?: (ctx: CommentlessSymbolContext) => Result;
     /**
      * Visit a parse tree produced by `EBNFParser.syntax`.
      * @param ctx the parse tree
