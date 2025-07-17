@@ -39,29 +39,29 @@ test('should find 2 syntax rules', () => {
 
 test('allow comments', () => {
     const input = `
-    (* comment *)
-    rule1 (* comment *)
-    = (* comment *) "a" (* comment *)
-    | (* comment *) "b" (* comment *)
-    | (* comment *) "c" (* comment *)
-    ;
-    (* comment *)(* comment *)
-    rule2 (* comment *)
-    = (* comment *) item1 (* comment *)
-    , (* comment *) 
-    { (* comment *) item2
-    , (* comment *) item3 (* comment *) 
-    } (* comment *) 
-    .
-    (* comment *)
-    rule3 (* comment *)
-    = (* comment *) 
-    [ (* comment *) option1 (* comment *)
-    ] (* comment *)
-    ;
-    (* comment *)
-    rule4 = (* comment *) 4 (* comment *) * (* comment *) ( (* comment *) item1 (* comment *) ) ;
-    (* comment *)
+(* comment *)
+rule1 (* comment *)
+= (* comment *) "a" (* comment *)
+| (* comment *) "b" (* comment *)
+| (* comment *) "c" (* comment *)
+;
+(* comment *)(* comment *)
+rule2 (* comment *)
+= (* comment *) item1 (* comment *)
+, (* comment *) 
+{ (* comment *) item2
+, (* comment *) item3 (* comment *) 
+} (* comment *) 
+.
+(* comment *)
+rule3 (* comment *)
+= (* comment *) 
+[ (* comment *) option1 (* comment *)
+] (* comment *)
+;
+(* comment *)
+rule4 = (* comment *) 4 (* comment *) * (* comment *) ( (* comment *) item1 (* comment *) ) ;
+(* comment *)
     `;
 
     const context: SyntaxContext = parseRule('syntax', input);

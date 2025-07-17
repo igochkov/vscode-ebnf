@@ -61,7 +61,7 @@ function registerFormatting(): vscode.Disposable {
 
     return vscode.Disposable.from(
         vscode.languages.registerDocumentFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider)
-        // vscode.languages.registerDocumentRangeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider),
-        // vscode.languages.registerOnTypeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider, ";", ".", "\n")); //, "}", ":)", "]", "/)", "*)", ","
+        // vscode.languages.registerDocumentRangeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider)
+        // vscode.languages.registerOnTypeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider, ";", ".", "\n") //, "}", ":)", "]", "/)", "*)", ","
     );
 }
