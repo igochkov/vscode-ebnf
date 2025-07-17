@@ -56,9 +56,9 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);
-        const tree = parser.syntax();
+        const syntax = parser.syntax();
         var visitor = new FormattingVisitor(this.formattingOptions(options));
-        return visitor.visit(tree);
+        return visitor.visit(syntax);
     }
 
     private formattingOptions(vsOptions: vscode.FormattingOptions): EBNFFormattingOptions {

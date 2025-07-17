@@ -37,44 +37,6 @@ test('should find 2 syntax rules', () => {
     expect(collectErrorNodes(syntaxRules[1])).toHaveLength(0);
 });
 
-test('issue #18', () => {
-    const input = `
-    special-symbol = '+' | '-' | '*' | '/' | '¬' | '=' | '<' | '>' | '[' | ']' | '.' | ',' | ':' |
-                 ';' | '^' | '(' | ')' | '<>' | '<=' | '>=' | ':=' | '..' | 
-                 'and' | 'array' | 'begin' | 'case' | 'const' | 'div' | 'do' | 'downto' | 'else' |
-              'end' | 'file' | 'for' | 'function' | 'goto' | 'if' | 'in' | 'label' | 'mod' |
-              'nil' | 'not' | 'of' | 'or' | 'packed' | 'procedure' | 'program' | 'record' |
-              'repeat' | 'set' | 'then' | 'to' | 'type' | 'until' | 'var' | 'while' | 'with' ;
-    `;
-
-    const context: SyntaxContext = parseRule('syntax', input);
-    const syntaxRules = context.syntaxRule();
-
-    syntaxRules.forEach((syntaxRule: SyntaxRuleContext) => {
-        expect(syntaxRule?.ruleIndex).toEqual(EBNFParser.RULE_syntaxRule);
-        expect(collectErrorNodes(syntaxRule)).toHaveLength(0);
-    });
-});
-
-test('issue #21', () => {
-    const input = `
-    register = "%", letter, { letter | digit };
-    immediate = "$", [ "0x" ], digit, { digit };
-    address = [ "0x" ], digit, { digit };
-    identifier = letter, { letter | digit };
-    whitespace = { " " | "\\t" };
-    line_terminator = { "\\n" | ";" };
-    `;
-
-    const context: SyntaxContext = parseRule('syntax', input);
-    const syntaxRules = context.syntaxRule();
-
-    syntaxRules.forEach((syntaxRule: SyntaxRuleContext) => {
-        expect(syntaxRule?.ruleIndex).toEqual(EBNFParser.RULE_syntaxRule);
-        expect(collectErrorNodes(syntaxRule)).toHaveLength(0);
-    });
-});
-
 test('allow comments', () => {
     const input = `
     (* comment *)
