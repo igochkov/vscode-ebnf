@@ -4,19 +4,14 @@
     {
       "label": "Compile extension",
       "type": "shell",
-      "command": "tsc",
+      "command": "npm",
       "args": [
-        "-p",
-        "${workspaceFolder}/tsconfig.json"
+        "run",
+        "build"
       ],
       "group": {
         "kind": "build",
         "isDefault": true
-      },
-      "presentation": {
-        "reveal": "always",
-        "panel": "shared",
-        "focus": true
       }
     },
     {

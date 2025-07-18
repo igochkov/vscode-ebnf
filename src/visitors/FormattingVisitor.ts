@@ -1,5 +1,5 @@
 import { AbstractParseTreeVisitor } from 'antlr4ng';
-import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, TermContext, ExceptionRuleContext, FactorContext, PrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, TerminalStringContext, SpecialSequenceContext, CommentContext, Comment_symbolContext} from "../parser/EBNFParser";
+import { SyntaxContext, SyntaxRuleContext, DefinitionsListContext, SingleDefinitionContext, SyntacticTermContext, SyntacticExceptionContext, SyntacticExceptionFactorContext, SyntacticExceptionPrimaryContext, SyntacticFactorContext, SyntacticPrimaryContext, OptionalSequenceContext, RepeatedSequenceContext, GroupedSequenceContext, EmptySequenceContext, CommentContext, MetaWithCommentsContext, DefintitionSymbolWithCommentsContext, IntegerWithCommentsContext, RepetitionSymbolWithCommentsContext, CommentSymbolContext } from "../parser/EBNFParser";
 import { EBNFParserVisitor } from "../parser/EBNFParserVisitor";
 import { EBNFFormattingOptions } from '../providers/EBNFFormattingOptions';
 
@@ -11,6 +11,36 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     constructor(options: EBNFFormattingOptions) {
         super();
         this.options = options;
+    }
+
+    public visitComment(ctx: CommentContext): string {
+        var result: string = "";
+
+        result += "(*";
+
+        for (var cs of ctx.commentSymbol()) {
+            result += this.visit(cs);
+        }
+        
+        result += "*)";
+        
+        return result;
+    }
+
+    public visitCommentSymbol(ctx: CommentSymbolContext): string {
+        var result: string = "";
+
+        const cmt = ctx.comment();
+        const os = ctx.OTHER_CHARACTER();
+        
+        if (cmt) {
+            result += this.visit(cmt);
+        }
+        else if (os) {
+            result += os.symbol.text;
+        }
+
+        return result;
     }
 
     public visitSyntax(ctx: SyntaxContext): string {
@@ -26,24 +56,22 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
             first = false;
         }
 
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += "\n\n" + this.visit(comment);
+        });
+
         return result;
     }
 
     public visitSyntaxRule(ctx: SyntaxRuleContext): string {
         var result: string = "";
 
-        if (ctx.comment().length > 0) {
-            for (var cmt of ctx.comment()) { 
-                result += cmt.comment_symbol.toString();
-                result += "\n";
-            }
-        }
-
-        result += ctx.IDENTIFIER().symbol.text;
-        result += this.options.definingSymbolOnNewLine ? "\n" : " ";
-        result += (this.options.definingSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
-        result += ctx.DEFINING_SYMBOL().symbol.text;
-        result += " ";
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += this.visit(comment) + "\n";
+        });
+        
+        result += this.visit(ctx.metaWithComments());
+        result += this.visit(ctx.defintitionSymbolWithComments());
         result += this.visit(ctx.definitionsList());
         result += this.options.terminatorSymbolOnNewLine ? "\n" : "";
         result += (this.options.terminatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
@@ -52,18 +80,48 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
+    public visitMetaWithComments(ctx: MetaWithCommentsContext): string {
+        var result: string = "";
+
+        result += ctx.META_IDENTIFIER().symbol.text;
+        
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        result += this.options.definingSymbolOnNewLine ? "\n" : " ";
+        result += (this.options.definingSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
+        
+        return result;
+    }
+
+    public visitDefintitionSymbolWithComments(ctx: DefintitionSymbolWithCommentsContext): string {
+        var result: string = "";
+
+        result += ctx.DEFINING_SYMBOL().symbol.text;
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        result += " ";
+
+        return result;
+    }
+
     public visitDefinitionsList(ctx: DefinitionsListContext): string {
         var result: string = "";
         var first: boolean = true;
-        //var i: number = 0;
 
         for (var def of ctx.singleDefinition()) {
             if (!first) {
                 result += this.options.definitionSeparatorSymbolOnNewLine ? "\n" : " ";
                 result += (this.options.definitionSeparatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
                 result += this.options.defaultDefinitionSeparatorSymbol; // ctx.DEFINITION_SEPARATOR_SYMBOL()[i].symbol.text;
+                ctx.comment().forEach((comment: CommentContext) => {
+                    result += " " + this.visit(comment);
+                });
                 result += " ";
-                //i += 1;
             }
 
             result += this.visit(def);
@@ -78,10 +136,13 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var first: boolean = true;
         var i: number = 0;
 
-        for (var term of ctx.term()) {
+        for (var term of ctx.syntacticTerm()) {
             if (!first) {
                 result += this.options.insertSpaceBeforeConcatenateSymbol ? " " : "";
                 result += ctx.CONCATENATE_SYMBOL()[i].symbol.text;
+                ctx.comment().forEach((comment: CommentContext) => {
+                    result += " " + this.visit(comment);
+                });
                 result += " ";
                 i += 1;
             }
@@ -93,59 +154,107 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
-    public visitTerm(ctx: TermContext): string {
+    public visitSyntacticTerm(ctx: SyntacticTermContext): string {
         var result: string = "";
 
-        result += this.visit(ctx.factor());
+        result += this.visit(ctx.syntacticFactor());
 
         const exceptSymbol = ctx.EXCEPT_SYMBOL();
         if (exceptSymbol) {
             result += " ";
             result += exceptSymbol.symbol.text;
-        }
 
-        const exceptionRule = ctx.exceptionRule();
-        if (exceptionRule) {
-            result += " ";
-            result += this.visit(exceptionRule);
+            ctx.comment().forEach((comment: CommentContext) => {
+                result += " " + this.visit(comment);
+            });
+       
+            const syntaxticException = ctx.syntacticException();
+            if (syntaxticException) {
+                result += " ";
+                result += this.visit(syntaxticException);
+            }
         }
 
         return result;
     }
 
-    public visitExceptionRule(ctx: ExceptionRuleContext): string {
-        return this.visit(ctx.factor());
+    public visitSyntacticException(ctx: SyntacticExceptionContext): string {
+        var result: string = "";
+
+        result += this.visit(ctx.syntacticExceptionFactor());
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        return result;
     }
 
-    public visitFactor(ctx: FactorContext): string {
+    public visitSyntacticExceptionFactor(ctx: SyntacticExceptionFactorContext): string {
+        var result: string = "";
+
+        const ic = ctx.integerWithComments()
+        if (ic) {
+            result += this.visit(ic);
+        }
+
+        const rsc = ctx.repetitionSymbolWithComments()
+        if (rsc) {
+            result += this.visit(rsc);
+        }
+
+        result += this.visit(ctx.syntacticExceptionPrimary());
+
+        return result;
+    }
+
+    public visitIntegerWithComments(ctx: IntegerWithCommentsContext): string {
         var result: string = "";
 
         const integer = ctx.INTEGER();
         if (integer) {
             result += integer.symbol.text;
-            result += " ";
         }
 
-        const rs = ctx.REPETITION_SYMBOL();
-        if (rs) {
-            result += rs.symbol.text;
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        if (integer) {
             result += " ";
         }
-
-        result += this.visit(ctx.primary());
 
         return result;
     }
 
-    public visitPrimary(ctx: PrimaryContext): string {
+    public visitRepetitionSymbolWithComments(ctx: RepetitionSymbolWithCommentsContext): string {
+        var result: string = "";
+
+        const rs = ctx.REPETITION_SYMBOL();
+        if (rs) {
+            result += rs.symbol.text;
+        }
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        if (rs) {
+            result += " ";
+        }
+
+        return result;
+    }
+
+    public visitSyntacticExceptionPrimary(ctx: SyntacticExceptionPrimaryContext): string {
         var result: string = "";
 
         const os = ctx.optionalSequence();
         const rs = ctx.repeatedSequence();
-        const ss = ctx.specialSequence();
         const gs = ctx.groupedSequence();
-        const identifier = ctx.IDENTIFIER();
-        const ts = ctx.terminalString();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
+        const es = ctx.emptySequence();
 
         if (os) {
             result += this.visit(os);
@@ -153,18 +262,80 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         else if (rs) {
             result += this.visit(rs);
         }
+        else if (gs) {
+            result += this.visit(gs);
+        }
+        else if (ts) {
+            result += ts.symbol.text;
+        }
         else if (ss) {
-            result += this.visit(ss);
+            result += ss.symbol.text;
+        }
+        else if (es) {
+            result += this.visit(es);
+        }
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
+
+        return result;
+    }
+
+    public visitSyntacticFactor(ctx: SyntacticFactorContext): string {
+        var result: string = "";
+
+        const ic = ctx.integerWithComments()
+        if (ic) {
+            result += this.visit(ic);
+        }
+
+        const rsc = ctx.repetitionSymbolWithComments()
+        if (rsc) {
+            result += this.visit(rsc);
+        }
+
+        result += this.visit(ctx.syntacticPrimary());
+
+        return result;
+    }
+    
+    public visitSyntacticPrimary(ctx: SyntacticPrimaryContext): string {
+        var result: string = "";
+
+        const os = ctx.optionalSequence();
+        const rs = ctx.repeatedSequence();
+        const gs = ctx.groupedSequence();
+        const mi = ctx.META_IDENTIFIER();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
+        const es = ctx.emptySequence();
+
+        if (os) {
+            result += this.visit(os);
+        }
+        else if (rs) {
+            result += this.visit(rs);
         }
         else if (gs) {
             result += this.visit(gs);
         }
-        else if (identifier) {
-            result += identifier.symbol.text;
+        else if (mi) {
+            result += mi.symbol.text;
         }
         else if (ts) {
-            result += this.visit(ts);
+            result += ts.symbol.text;
         }
+        else if (ss) {
+            result += ss.symbol.text;
+        }
+        else if (es) {
+            result += this.visit(es);
+        }
+
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
 
         return result;
     }
@@ -176,6 +347,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         const endOptionSymbol: string = this.options.defaultOptionSymbols === "[ ]" ? "]" : "/)";
 
         result += startOptionSymbol; //ctx.START_OPTION_SYMBOL().symbol.text;
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -191,6 +365,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         const endRepeatSymbol: string = this.options.defaultRepeatSymbols === "{ }" ? "}" : ":)";
 
         result += startRepeatSymbol; // ctx.START_REPEAT_SYMBOL();
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -203,6 +380,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var result: string = "";
 
         result += ctx.START_GROUP_SYMBOL();
+        ctx.comment().forEach((comment: CommentContext) => {
+            result += " " + this.visit(comment);
+        });
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
         result += this.visit(ctx.definitionsList());
         result += this.options.insertSpaceAtSequenceSymbols ? " " : "";
@@ -211,98 +391,8 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         return result;
     }
 
-    public visitTerminalString(ctx: TerminalStringContext): string {
-        var result: string = "";
-
-        const hasFqs = ctx.FIRST_QUOTE_SYMBOL().length;
-        const hasSqs = ctx.SECOND_QUOTE_SYMBOL().length;
-
-        if (hasFqs > 0) {
-            for (var child of ctx.children) {
-                result += child.getText();
-            }
-        }
-        else if (hasSqs > 0) {
-            for (var child of ctx.children) {
-                result += child.getText();
-            }
-        }
-
-        return result;
-    }
-
-    public visitSpecialSequence(ctx: SpecialSequenceContext): string {
-        var result: string = "";
-
-        const hasSss = ctx.SPECIAL_SEQUENCE_SYMBOL().length;
-
-        if (hasSss > 0) {
-            //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[0];
-            var first: boolean = true;
-
-            for (var child of ctx.children) {
-                if (!first) {
-                    result += " ";
-                }
-
-                result += child.getText();
-                first = false;
-            }
-
-            //result += ctx.SPECIAL_SEQUENCE_SYMBOL()[1];
-        }
-
-        return result;
-    }
-
-    public visitComment(ctx: CommentContext): string {
-        var result: string = "";
-
-        result += ctx.START_COMMENT_SYMBOL().symbol.text;
-
-        for (var cs of ctx.comment_symbol()) {
-            result += this.visit(cs);
-        }
-        
-        result += ctx.END_COMMENT_SYMBOL().symbol.text;
-        
-        return result;
-    }
-
-    public visitComment_symbol(ctx: Comment_symbolContext): string {
-        var result: string = "";
-
-        const cmt = ctx.comment();
-        const ts = ctx.terminalString();
-        const ss = ctx.specialSequence();
-        
-        if (cmt) {
-            result += this.visit(cmt);
-        }
-        else if (ts) {
-            result += this.visit(ts);
-        }
-        else if (ss) {
-            result += this.visit(ss);
-        }
-        // else { 
-        //     for (var chr of ctx.CHARACTER()) { 
-        //         result += chr.text;
-        //     }
-        // }
-
-        // var first: boolean = true;
-
-        // for (var child of ctx.children) {
-        //     if (!first) {
-        //         result += " ";
-        //     }
-
-        //     result += child.text;
-        //     first = false;
-        // }
-
-        return result;
+    public visitEmptySequence(ctx: EmptySequenceContext): string {
+        return "";
     }
 
     private indent(times: number = 1): string {

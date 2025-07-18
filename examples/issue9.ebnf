@@ -1,0 +1,7 @@
+primary
+    = optionalsequence
+    | repeatedsequence
+    | specialsequence
+    | groupedsequence
+    | meta_identifier
+    | terminalstring;

@@ -1,88 +1,58 @@
 lexer grammar EBNFLexer;
 
-fragment LETTER
-	: [a-zA-Z];
-fragment DECIMAL_DIGIT
-	: [0-9];
+CONCATENATE_SYMBOL      	: ',' ;
+DEFINING_SYMBOL         	: '=' ;
+EXCEPT_SYMBOL           	: '-' ;
+REPETITION_SYMBOL       	: '*' ;
+END_GROUP_SYMBOL            : ')' ;
+START_GROUP_SYMBOL          : '(' ;
+START_COMMENT_SYMBOL        : '(*' -> pushMode(COMMENT);
+END_OPTION_SYMBOL           : ']' | '/)';
+END_REPEAT_SYMBOL           : '}' | ':)';
+START_OPTION_SYMBOL         : '[' | '(/';
+START_REPEAT_SYMBOL         : '{' | '(:';
+DEFINITION_SEPARATOR_SYMBOL : '|' | '/' | '!';
+TERMINATOR_SYMBOL     		: ';' | '.' ;
 
-// Original specification doesn't allow underscore or hyphen in the meta identifier! In the official
-// examples a space is used, which is difficult to implement in the parser.
-IDENTIFIER
-	: LETTER (LETTER | DECIMAL_DIGIT | '_' | '-')*;
-INTEGER
-	: DECIMAL_DIGIT+;
+fragment SPACE_CHARACTER                 : ' ';
+fragment NEW_LINE                        : '\r'* '\n' '\r'*;
+fragment FORM_FEED                       : '\f';
+fragment HORIZONTAL_TABULATION_CHARACTER : '\t';
+fragment VERTICAL_TABULATION_CHARACTER   : '\u000B';
+fragment FIRST_QUOTE_SYMBOL      	     : '\'';
+fragment SECOND_QUOTE_SYMBOL     	     : '"' ;
+fragment SPECIAL_SEQUENCE_SYMBOL 	     : '?' ;
+fragment FIRST_TERMINAL_CHARACTER        : ~['\t\r\n\f]; 
+fragment SECOND_TERMINAL_CHARACTER       : ~["\t\r\n\f];
+fragment SPECIAL_SEQUENCE_CHARACTER      : ~[?\t\r\n\f]; 
+fragment LETTER                          :  [a-zA-Z];
+fragment DECIMAL_DIGIT                   :  [0-9];
 
-CONCATENATE_SYMBOL
-	: ',';
-DEFINING_SYMBOL
-	: '=';
-DEFINITION_SEPARATOR_SYMBOL
-	: '|'
-	| '/'
-	| '!';
+fragment META_IDENTIFIER_CHARACTER       : LETTER 
+                                         | DECIMAL_DIGIT 
+                                         | '_' | '-' // Added to allow modern identifier patterns
+                                         ;
 
-START_COMMENT_SYMBOL
-	: '(*';
-END_COMMENT_SYMBOL
-	: '*)';
-
-START_OPTION_SYMBOL
-	: '['
-	| '(/';
-END_OPTION_SYMBOL
-	: ']'
-	| '/)';
-
-START_REPEAT_SYMBOL
-	: '{'
-	| '(:';
-END_REPEAT_SYMBOL
-	: '}'
-	| ':)';
-
-START_GROUP_SYMBOL
-	: '(';
-END_GROUP_SYMBOL
-	: ')';
-
-EXCEPT_SYMBOL
-	: '-';
-REPETITION_SYMBOL
-	: '*';
-TERMINATOR_SYMBOL
-	: ';'
-	| '.';
-
-FIRST_QUOTE_SYMBOL
-	: '\'';
-SECOND_QUOTE_SYMBOL
-	: '"';
-SPECIAL_SEQUENCE_SYMBOL
-	: '?';
-
-ESC_SEQ
-	: '\\"'|'\\\''|'\\\\';
-
-fragment SPACE_CHARACTER
-	: ' ';
-fragment HORIZONTAL_TABULATION_CHARACTER
-	: '\t';
-fragment NEW_LINE
-	: '\r'* '\n' '\r'*;
-fragment VERTICAL_TABULATION_CHARACTER
-	: '\u000B';
-fragment FORM_FEED
-	: '\f';
-
+INTEGER : DECIMAL_DIGIT+;
+META_IDENTIFIER : LETTER META_IDENTIFIER_CHARACTER*;
 GAP_SEPARATOR
-	: (
-		SPACE_CHARACTER
-		| HORIZONTAL_TABULATION_CHARACTER
-		| NEW_LINE
-		| VERTICAL_TABULATION_CHARACTER
-		| FORM_FEED
-	)+ -> skip;
+    : 
+    ( SPACE_CHARACTER
+    | HORIZONTAL_TABULATION_CHARACTER
+    | NEW_LINE
+    | VERTICAL_TABULATION_CHARACTER
+    | FORM_FEED
+    )+ -> skip 
+    ;
 
-// Match any other character as a token
-CHARACTER
-	: . ; // Must be placed at the end to not override other tokens
+TERMINAL_STRING
+    : FIRST_QUOTE_SYMBOL FIRST_TERMINAL_CHARACTER+ FIRST_QUOTE_SYMBOL
+    | SECOND_QUOTE_SYMBOL SECOND_TERMINAL_CHARACTER+ SECOND_QUOTE_SYMBOL
+    ;
+
+SPECIAL_SEQUENCE : SPECIAL_SEQUENCE_SYMBOL SPECIAL_SEQUENCE_CHARACTER* SPECIAL_SEQUENCE_SYMBOL;
+
+mode COMMENT;
+END_COMMENT_SYMBOL : '*)' -> popMode;
+NESTED_START_COMMENT_SYMBOL : '(*' -> pushMode(COMMENT);
+OTHER_CHARACTER : .;

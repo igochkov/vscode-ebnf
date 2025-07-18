@@ -90,10 +90,10 @@ repository:
     syntax:
         name: meta.syntax.ebnf
         patterns:
-            - include: '#comment-block'
             - include: '#syntax-rule'
+            - include: '#comment'
 
-    comment-block:
+    comment:
         comment: "A comment is allowed anywhere outside a <terminal string>, <meta identifier>, <integer> or <special sequence>"
         name: comment.block.ebnf
         begin: '\(\*'
@@ -107,7 +107,7 @@ repository:
 
     comment-content:
         patterns:
-            - include: '#comment-block'
+            - include: '#comment'
             - name: comment.block.content.ebnf
               match: '.'
 
@@ -122,13 +122,14 @@ repository:
         endCaptures:
             '0': { name: punctuation.terminator.ebnf }
         patterns:
-            - include: '#comment-block'
+            - include: '#comment'
             - include: '#definitions-list'
 
     definitions-list:
         comment: "Vertical bar separates alternative <single definitions>"
         name: meta.definitions.list.ebnf
         patterns:
+            - include: '#comment'
             - include: '#single-definition'
             - include: '#definition-separator-symbol'
 
@@ -136,6 +137,7 @@ repository:
         comment: "Comma separates successive <terms>"
         name: meta.definitions.single.ebnf
         patterns:
+            - include: '#comment'
             - include: '#term'
             - include: '#concatenate-symbol'
 
@@ -143,6 +145,7 @@ repository:
         comment: "A <term> represents any sequence of symbols that is defined by the <factor> but not defined by the <exception>"
         name: meta.term.ebnf
         patterns:
+            - include: '#comment'
             - include: '#factor'
             - include: '#except-symbol'
             - include: '#exception-rule'
@@ -150,12 +153,14 @@ repository:
     exception-rule:
         name: meta.exception.ebnf
         patterns:
+            - include: '#comment'
             - include: '#factor'
 
     factor:
         comment: "The <integer> specifies the number of repetitions of the <primary>"
         name: meta.factor.ebnf
         patterns:
+            - include: '#comment'
             - include: '#integer'
             - include: '#repetition-symbol'
             - include: '#primary'
@@ -163,6 +168,7 @@ repository:
     primary:
         name: meta.primary.ebnf
         patterns:
+            - include: '#comment'
             - include: '#optional-sequence'
             - include: '#repeated-sequence'
             - include: '#grouped-sequence'
@@ -180,6 +186,7 @@ repository:
         endCaptures: 
             '1': { name: punctuation.definition.optional.end.ebnf }
         patterns:
+            - include: '#comment'
             - include: '#definitions-list'
             - include: '#brackets'
             - include: '#special-characters'
@@ -194,6 +201,7 @@ repository:
         endCaptures: 
             '1': { name: punctuation.definition.repeated.end.ebnf }
         patterns:
+            - include: '#comment'
             - include: '#definitions-list'
             - include: '#brackets'
             - include: '#special-characters'
@@ -208,6 +216,7 @@ repository:
         endCaptures: 
             '0': { name: punctuation.definition.group.end.ebnf }
         patterns:
+            - include: '#comment'
             - include: '#definitions-list'
             - include: '#brackets'
             - include: '#special-characters'

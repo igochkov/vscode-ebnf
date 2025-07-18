@@ -1,0 +1,35 @@
+(*
+Formatting code with partially invalid syntax causes code to be lost.
+
+Steps to recreate
+- Create a file with partially invalid syntax
+- Format the code
+
+Code after broken syntax is lost
+
+Current behavior
+All the code before the broken syntax is formatted properly, but everything after is deleted
+
+Expected behavior
+Formatting a file with invalid syntax should not do anything to the file.
+
+Notes
+---
+Most likely the parser is not error tolerant and has to be rewritten.
+https://code.visualstudio.com/api/language-extensions/language-server-extension-guide#error-tolerant-parser-for-language-server
+
+*)
+
+program
+    = { item };
+
+item
+    = fn-defn; (* invalid semicolumn *)
+    | fn-decl;
+
+fn-defn
+    = "typed-ident";
+
+param-list
+    = "void"
+    | { typed-ident, "," }, typed-ident;

@@ -3,22 +3,26 @@
 import { AbstractParseTreeVisitor } from "antlr4ng";
 
 
+import { CommentContext } from "./EBNFParser.js";
+import { CommentSymbolContext } from "./EBNFParser.js";
 import { SyntaxContext } from "./EBNFParser.js";
 import { SyntaxRuleContext } from "./EBNFParser.js";
+import { MetaWithCommentsContext } from "./EBNFParser.js";
+import { DefintitionSymbolWithCommentsContext } from "./EBNFParser.js";
 import { DefinitionsListContext } from "./EBNFParser.js";
 import { SingleDefinitionContext } from "./EBNFParser.js";
-import { TermContext } from "./EBNFParser.js";
-import { ExceptionRuleContext } from "./EBNFParser.js";
-import { FactorContext } from "./EBNFParser.js";
-import { PrimaryContext } from "./EBNFParser.js";
-import { EmptyContext } from "./EBNFParser.js";
+import { SyntacticTermContext } from "./EBNFParser.js";
+import { SyntacticExceptionContext } from "./EBNFParser.js";
+import { SyntacticExceptionFactorContext } from "./EBNFParser.js";
+import { IntegerWithCommentsContext } from "./EBNFParser.js";
+import { RepetitionSymbolWithCommentsContext } from "./EBNFParser.js";
+import { SyntacticExceptionPrimaryContext } from "./EBNFParser.js";
+import { SyntacticFactorContext } from "./EBNFParser.js";
+import { SyntacticPrimaryContext } from "./EBNFParser.js";
 import { OptionalSequenceContext } from "./EBNFParser.js";
 import { RepeatedSequenceContext } from "./EBNFParser.js";
 import { GroupedSequenceContext } from "./EBNFParser.js";
-import { TerminalStringContext } from "./EBNFParser.js";
-import { SpecialSequenceContext } from "./EBNFParser.js";
-import { CommentContext } from "./EBNFParser.js";
-import { Comment_symbolContext } from "./EBNFParser.js";
+import { EmptySequenceContext } from "./EBNFParser.js";
 
 
 /**
@@ -29,6 +33,18 @@ import { Comment_symbolContext } from "./EBNFParser.js";
  * operations with no return type.
  */
 export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> {
+    /**
+     * Visit a parse tree produced by `EBNFParser.comment`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitComment?: (ctx: CommentContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.commentSymbol`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitCommentSymbol?: (ctx: CommentSymbolContext) => Result;
     /**
      * Visit a parse tree produced by `EBNFParser.syntax`.
      * @param ctx the parse tree
@@ -42,6 +58,18 @@ export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> 
      */
     visitSyntaxRule?: (ctx: SyntaxRuleContext) => Result;
     /**
+     * Visit a parse tree produced by `EBNFParser.metaWithComments`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitMetaWithComments?: (ctx: MetaWithCommentsContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.defintitionSymbolWithComments`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitDefintitionSymbolWithComments?: (ctx: DefintitionSymbolWithCommentsContext) => Result;
+    /**
      * Visit a parse tree produced by `EBNFParser.definitionsList`.
      * @param ctx the parse tree
      * @return the visitor result
@@ -54,35 +82,53 @@ export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> 
      */
     visitSingleDefinition?: (ctx: SingleDefinitionContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.term`.
+     * Visit a parse tree produced by `EBNFParser.syntacticTerm`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitTerm?: (ctx: TermContext) => Result;
+    visitSyntacticTerm?: (ctx: SyntacticTermContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.exceptionRule`.
+     * Visit a parse tree produced by `EBNFParser.syntacticException`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitExceptionRule?: (ctx: ExceptionRuleContext) => Result;
+    visitSyntacticException?: (ctx: SyntacticExceptionContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.factor`.
+     * Visit a parse tree produced by `EBNFParser.syntacticExceptionFactor`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitFactor?: (ctx: FactorContext) => Result;
+    visitSyntacticExceptionFactor?: (ctx: SyntacticExceptionFactorContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.primary`.
+     * Visit a parse tree produced by `EBNFParser.integerWithComments`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitPrimary?: (ctx: PrimaryContext) => Result;
+    visitIntegerWithComments?: (ctx: IntegerWithCommentsContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.empty`.
+     * Visit a parse tree produced by `EBNFParser.repetitionSymbolWithComments`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitEmpty?: (ctx: EmptyContext) => Result;
+    visitRepetitionSymbolWithComments?: (ctx: RepetitionSymbolWithCommentsContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.syntacticExceptionPrimary`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitSyntacticExceptionPrimary?: (ctx: SyntacticExceptionPrimaryContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.syntacticFactor`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitSyntacticFactor?: (ctx: SyntacticFactorContext) => Result;
+    /**
+     * Visit a parse tree produced by `EBNFParser.syntacticPrimary`.
+     * @param ctx the parse tree
+     * @return the visitor result
+     */
+    visitSyntacticPrimary?: (ctx: SyntacticPrimaryContext) => Result;
     /**
      * Visit a parse tree produced by `EBNFParser.optionalSequence`.
      * @param ctx the parse tree
@@ -102,28 +148,10 @@ export class EBNFParserVisitor<Result> extends AbstractParseTreeVisitor<Result> 
      */
     visitGroupedSequence?: (ctx: GroupedSequenceContext) => Result;
     /**
-     * Visit a parse tree produced by `EBNFParser.terminalString`.
+     * Visit a parse tree produced by `EBNFParser.emptySequence`.
      * @param ctx the parse tree
      * @return the visitor result
      */
-    visitTerminalString?: (ctx: TerminalStringContext) => Result;
-    /**
-     * Visit a parse tree produced by `EBNFParser.specialSequence`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitSpecialSequence?: (ctx: SpecialSequenceContext) => Result;
-    /**
-     * Visit a parse tree produced by `EBNFParser.comment`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitComment?: (ctx: CommentContext) => Result;
-    /**
-     * Visit a parse tree produced by `EBNFParser.comment_symbol`.
-     * @param ctx the parse tree
-     * @return the visitor result
-     */
-    visitComment_symbol?: (ctx: Comment_symbolContext) => Result;
+    visitEmptySequence?: (ctx: EmptySequenceContext) => Result;
 }
 

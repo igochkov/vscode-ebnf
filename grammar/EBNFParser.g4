@@ -4,63 +4,98 @@ options {
 	tokenVocab = EBNFLexer;
 }
 
-// Source: ISO/IEC 14977 : 1996(E) 
-// 8.2 Extended BNF used to define itself informally
+comment : (START_COMMENT_SYMBOL | NESTED_START_COMMENT_SYMBOL) commentSymbol* END_COMMENT_SYMBOL;
+
+commentSymbol
+    : comment
+	| OTHER_CHARACTER
+	;
 
 syntax
-	: syntaxRule+;
+	: syntaxRule+ comment* EOF
+	;
 
 syntaxRule
-	: comment* IDENTIFIER comment* DEFINING_SYMBOL comment* definitionsList comment* TERMINATOR_SYMBOL;
+	: comment* metaWithComments defintitionSymbolWithComments definitionsList TERMINATOR_SYMBOL
+	;
+
+metaWithComments
+	: META_IDENTIFIER comment*
+	;
+
+defintitionSymbolWithComments
+	: DEFINING_SYMBOL comment*
+	;
 
 definitionsList
-	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL singleDefinition)*;
+	: singleDefinition (DEFINITION_SEPARATOR_SYMBOL comment* singleDefinition)*
+	;
 
 singleDefinition
-	: term (CONCATENATE_SYMBOL term)*;
+	: syntacticTerm (CONCATENATE_SYMBOL comment* syntacticTerm)*
+	;
 
-term
-	: factor (EXCEPT_SYMBOL exceptionRule)?;
+syntacticTerm
+	: syntacticFactor (EXCEPT_SYMBOL comment* syntacticException)?
+	;
 
-exceptionRule
-	: factor;
+syntacticException
+	:  syntacticExceptionFactor comment*
+	;
 
-factor
-	: (INTEGER REPETITION_SYMBOL)? primary;
+// syntactic-factor containing no meta-identifiers.
+syntacticExceptionFactor
+	: (integerWithComments repetitionSymbolWithComments)? syntacticExceptionPrimary
+	;
 
-primary
-	: optionalSequence
+integerWithComments
+	: INTEGER comment*
+	;
+
+repetitionSymbolWithComments
+	: REPETITION_SYMBOL comment*
+	;
+
+// syntactic-primary containing no meta-identifiers
+syntacticExceptionPrimary
+	: 
+	( optionalSequence
 	| repeatedSequence
-	| groupedSequence
-	| IDENTIFIER
-	| terminalString
-	| specialSequence
-	| empty;
+	| groupedSequence 
+	| TERMINAL_STRING 
+    | SPECIAL_SEQUENCE
+	| emptySequence
+	) comment*
+	;
 
-empty
-	:;
+syntacticFactor
+	: (integerWithComments repetitionSymbolWithComments)? syntacticPrimary
+	;
 
+syntacticPrimary
+	: 
+	( optionalSequence
+	| repeatedSequence
+	| groupedSequence 
+	| META_IDENTIFIER 
+	| TERMINAL_STRING 
+    | SPECIAL_SEQUENCE
+	| emptySequence
+	) comment*   
+	;
+	
 optionalSequence
-	: START_OPTION_SYMBOL definitionsList END_OPTION_SYMBOL;
+	: START_OPTION_SYMBOL comment* definitionsList END_OPTION_SYMBOL
+	;
 
 repeatedSequence
-	: START_REPEAT_SYMBOL definitionsList END_REPEAT_SYMBOL;
+	: START_REPEAT_SYMBOL comment* definitionsList END_REPEAT_SYMBOL
+	;
 
 groupedSequence
-	: START_GROUP_SYMBOL definitionsList END_GROUP_SYMBOL;
+	: START_GROUP_SYMBOL comment* definitionsList END_GROUP_SYMBOL
+	;
 
-terminalString
-	: FIRST_QUOTE_SYMBOL (~FIRST_QUOTE_SYMBOL | ESC_SEQ)* FIRST_QUOTE_SYMBOL
-	| SECOND_QUOTE_SYMBOL (~SECOND_QUOTE_SYMBOL | ESC_SEQ)* SECOND_QUOTE_SYMBOL;
-
-specialSequence
-	: SPECIAL_SEQUENCE_SYMBOL (~SPECIAL_SEQUENCE_SYMBOL)+ SPECIAL_SEQUENCE_SYMBOL; 
-
-comment
-	: START_COMMENT_SYMBOL comment_symbol* END_COMMENT_SYMBOL;
-
-comment_symbol
-	: comment			 // nested comments
-	| terminalString
-	| specialSequence
-	| CHARACTER;         // Any other character
+emptySequence
+	: /* empty */
+	;

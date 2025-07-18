@@ -5,7 +5,8 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
     public provideDefinition(
         document: vscode.TextDocument,
         position: vscode.Position,
-        _: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition | vscode.LocationLink[]> {
+        _: vscode.CancellationToken): vscode.ProviderResult<vscode.Definition | vscode.LocationLink[]>
+    {
         const range = document.getWordRangeAtPosition(position);
         const text = document.getText(range);
 

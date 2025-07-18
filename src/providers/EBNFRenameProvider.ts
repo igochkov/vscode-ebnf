@@ -7,20 +7,21 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
         document: vscode.TextDocument,
         position: vscode.Position,
         newName: string,
-        _: vscode.CancellationToken): vscode.ProviderResult<vscode.WorkspaceEdit> {
+        _: vscode.CancellationToken): vscode.ProviderResult<vscode.WorkspaceEdit>
+    {
         if (!ParserContext.listener) {
             ParserContext.parse(document);
         }
 
         var result: ISymbolInfo[] = [];
-        for (var symbol of ParserContext.listener.symbols) {
+        for (var rule of ParserContext.listener.symbols) {
             result.push({
-                name: symbol.text,
+                name: rule.text,
                 range: new vscode.Range(
-                    symbol.line - 1,
-                    symbol.column,
-                    symbol.line - 1,
-                    symbol.column + symbol.text.length
+                    rule.line - 1,
+                    rule.column,
+                    rule.line - 1,
+                    rule.column + rule.text.length
                 )
             });
         }
@@ -29,7 +30,7 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
             = result.find(symbol => symbol.range.contains(position));
 
         var edits: vscode.TextEdit[] = [];
-        if (currentSymbol !== undefined) {
+        if (currentSymbol) {
             edits
                 = result.filter(symbol => symbol.name == currentSymbol.name)
                     .map(symbol => new vscode.TextEdit(symbol.range, newName));
