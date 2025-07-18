@@ -6,7 +6,7 @@ import { FormattingVisitor } from "../visitors/FormattingVisitor";
 import { EBNFFormattingOptions } from "./EBNFFormattingOptions";
 import { ParserContext } from "../ParserContext";
 
-export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProvider, vscode.OnTypeFormattingEditProvider //, vscode.DocumentRangeFormattingEditProvider
+export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProvider //, vscode.OnTypeFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider
 {
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
         const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
@@ -86,21 +86,21 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     //     return edits;
     // };
 
-    provideOnTypeFormattingEdits(document: vscode.TextDocument, position: vscode.Position, ch: string, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-        const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
-        if (hasDiagnostics) {
-            // If there are diagnostics, we don't format the document
-            return [];
-        }
+    // provideOnTypeFormattingEdits(document: vscode.TextDocument, position: vscode.Position, ch: string, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+    //     const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
+    //     if (hasDiagnostics) {
+    //         // If there are diagnostics, we don't format the document
+    //         return [];
+    //     }
 
-        let line = document.lineAt(position.line);
-        let lineRange = line.range;
+    //     let line = document.lineAt(position.line);
+    //     let lineRange = line.range;
 
-        const content: string = document.getText(lineRange);
-        const formattedText = this.format(content, options);
+    //     const content: string = document.getText(lineRange);
+    //     const formattedText = this.format(content, options);
 
-        return [vscode.TextEdit.replace(lineRange, formattedText)];
-    }
+    //     return [vscode.TextEdit.replace(lineRange, formattedText)];
+    // }
 
     private format(content: string, options: vscode.FormattingOptions): string {
         const inputStream = CharStream.fromString(content);
