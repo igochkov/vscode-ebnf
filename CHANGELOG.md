@@ -27,15 +27,16 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
 ### Version 1.4
-**Released on 2025-07-01**
+**Released on 2025-07-18**
 
+- Feature: _Status Bar Item_
 - Feature: _Diagnostic Messages_
 - Bug fix: Formatting deletes string contents (see [issue 21](https://github.com/igochkov/vscode-ebnf/issues/21))
 - Bug fix: Problem with coloring (see [issue 18](https://github.com/igochkov/vscode-ebnf/issues/18))
 - Bug fix: "Toggle Line Comment" command creates C-style comment (see [issue 16](https://github.com/igochkov/vscode-ebnf/issues/16))
 - Bug fix: Code formatter breaks with partially invalid syntax (see [issue 15](https://github.com/igochkov/vscode-ebnf/issues/15))
-- Bug fix: parsing comments (see [issue 8](https://github.com/igochkov/vscode-ebnf/issues/8))
-- Bug fix: syntax highlighting non-terminals, terminals and strings (see [issue 17](https://github.com/igochkov/vscode-ebnf/issues/17))
+- Bug fix: Parsing comments (see [issue 8](https://github.com/igochkov/vscode-ebnf/issues/8))
+- Bug fix: Syntax highlighting non-terminals, terminals and strings (see [issue 17](https://github.com/igochkov/vscode-ebnf/issues/17))
 
 ### Version 1.3.1
 **Released on 2023-11-26**
