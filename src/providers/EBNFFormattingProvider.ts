@@ -11,7 +11,7 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
         const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
         if (hasDiagnostics) {
-            // If there are diagnostics, we don't format the document
+            vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
             return [];
         }
 
@@ -28,7 +28,7 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     // provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
     //     const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
     //     if (hasDiagnostics) {
-    //         // If there are diagnostics, we don't format the document
+    //         vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
     //         return [];
     //     }
 
@@ -89,7 +89,7 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
     // provideOnTypeFormattingEdits(document: vscode.TextDocument, position: vscode.Position, ch: string, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
     //     const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
     //     if (hasDiagnostics) {
-    //         // If there are diagnostics, we don't format the document
+    //         vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
     //         return [];
     //     }
 

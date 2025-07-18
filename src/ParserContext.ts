@@ -11,6 +11,7 @@ export class ParserContext {
     public static ebnfName: string = "EBNF";
     public static listener: ASTListener;
     public static diagnosticsCollection = vscode.languages.createDiagnosticCollection(ParserContext.ebnfName);
+    public static ebnfStatusBarItem =  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 500);
 
     public static OnDocumentOpen(document: vscode.TextDocument) {
         if (document && ParserContext.isEBNFFile(document)) {
@@ -21,14 +22,13 @@ export class ParserContext {
     public static OnDocumentChange(event: vscode.TextDocumentChangeEvent) {
         if (event && ParserContext.isEBNFFile(event.document)) {
             ParserContext.parse(event.document);
-            ParserContext.listener = undefined;
         }
     }
 
     public static OnDocumentClose(document: vscode.TextDocument) {
         if (document && ParserContext.isEBNFFile(document)) {
             ParserContext.diagnosticsCollection.delete(document.uri)
-            ParserContext.listener = undefined;
+            ParserContext.ebnfStatusBarItem.hide();
         }
     }
 
@@ -54,9 +54,9 @@ export class ParserContext {
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);
 
-        // ParserContext.listener = new ASTListener();
-        // parser.removeParseListeners();
-        // parser.addParseListener(ParserContext.listener as ParseTreeListener);
+        ParserContext.listener = new ASTListener();
+        parser.removeParseListeners();
+        parser.addParseListener(ParserContext.listener as ParseTreeListener);
         
         const errorListener = new EBNFErrorListener(document);
         parser.removeErrorListeners();
@@ -65,5 +65,13 @@ export class ParserContext {
         parser.syntax();        
 
         ParserContext.diagnosticsCollection.set(document.uri, errorListener.diagnostics);
+        ParserContext.updateStatusBarItem();
+    }
+
+    public static updateStatusBarItem() {
+        if (ParserContext.ebnfStatusBarItem && ParserContext.listener) {
+            ParserContext.ebnfStatusBarItem.text = `Rules: ${ParserContext.listener.definitions.length}`;
+            ParserContext.ebnfStatusBarItem.show();
+        }
     }
 }

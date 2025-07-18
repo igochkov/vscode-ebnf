@@ -1,18 +1,19 @@
 import * as vscode from 'vscode';
 import { ParserContext } from './ParserContext';
-// import { EBNFRenameProvider } from './providers/RenameProvider';
-// import { EBNFDefinitionProvider } from './providers/DefinitionProvider';
-// import { EBNFReferenceProvider } from './providers/ReferenceProvider';
+import { EBNFRenameProvider } from './providers/EBNFRenameProvider';
+import { EBNFDefinitionProvider } from './providers/EBNFDefinitionProvider';
+import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
 // import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 
 let formattingRegistrations: vscode.Disposable;
 
 export function activate(context: vscode.ExtensionContext) {
-    // context.subscriptions.push(vscode.languages.registerRenameProvider(ParserContext.ebnfSelector, new EBNFRenameProvider()));
-    // context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
-    // context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
+    context.subscriptions.push(vscode.languages.registerRenameProvider(ParserContext.ebnfSelector, new EBNFRenameProvider()));
+    context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
+    context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
     // context.subscriptions.push(vscode.languages.registerCodeActionsProvider(ParserContext.ebnfSelector, new EBNFCodeActionsProvider()));
+    context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 
     if (vscode.window.activeTextEditor) {
         ParserContext.parse(vscode.window.activeTextEditor.document);
@@ -38,8 +39,10 @@ export function deactivate() {
         formattingRegistrations = undefined;
     }
 
+    ParserContext.listener = undefined;
     ParserContext.diagnosticsCollection.clear();
     ParserContext.diagnosticsCollection.dispose();
+    ParserContext.ebnfStatusBarItem.dispose();
 }
 
 function handleSettingChange(event: vscode.ConfigurationChangeEvent) {

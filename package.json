@@ -23,10 +23,12 @@
         "bnf"
     ],
     "capabilities": {
-        "documentFormattingProvider" : "false",
-        "documentRangeFormattingProvider" : "false",
-        "renameProvider" : "false",
-        "codeActionProvider" : "true"
+        "documentFormattingProvider": "true",
+        "documentRangeFormattingProvider": "false",
+        "definitionProvider": "true",
+        "renameProvider": "true",
+        "codeActionProvider": "false",
+        "referencesProvider": "true"
     },
     "repository": {
         "type": "git",
