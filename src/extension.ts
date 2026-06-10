@@ -5,6 +5,7 @@ import { EBNFDefinitionProvider } from './providers/EBNFDefinitionProvider';
 import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
 // import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
+import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvider';
 
 let formattingRegistrations: vscode.Disposable;
 
@@ -13,6 +14,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
     context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
     // context.subscriptions.push(vscode.languages.registerCodeActionsProvider(ParserContext.ebnfSelector, new EBNFCodeActionsProvider()));
+    context.subscriptions.push(vscode.languages.registerCompletionItemProvider(ParserContext.ebnfSelector, new EBNFCompletionItemProvider()));
     context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 
     if (vscode.window.activeTextEditor) {

@@ -28,7 +28,8 @@
         "definitionProvider": "true",
         "renameProvider": "true",
         "codeActionProvider": "false",
-        "referencesProvider": "true"
+        "referencesProvider": "true",
+        "completionProvider": "true"
     },
     "repository": {
         "type": "git",
