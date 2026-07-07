@@ -163,6 +163,10 @@
         "assert": "^2.1.0",
         "util": "^0.12.5"
     },
+    "overrides": {
+        "js-yaml": "^3.15.0",
+        "@babel/core": "^7.29.6"
+    },
     "main": "./dist/extension.js",
     "scripts": {
         "vscode:prepublish": "npm run package",
