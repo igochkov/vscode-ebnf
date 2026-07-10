@@ -3,10 +3,11 @@ import { ParserContext } from './ParserContext';
 import { EBNFRenameProvider } from './providers/EBNFRenameProvider';
 import { EBNFDefinitionProvider } from './providers/EBNFDefinitionProvider';
 import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
-// import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
+import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvider';
 import { Telemetry } from './telemetry/Telemetry';
+import { CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand } from './commands/ConvertIdentifiers';
 
 let formattingRegistrations: vscode.Disposable;
 
@@ -16,7 +17,11 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerRenameProvider(ParserContext.ebnfSelector, new EBNFRenameProvider()));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
     context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
-    // context.subscriptions.push(vscode.languages.registerCodeActionsProvider(ParserContext.ebnfSelector, new EBNFCodeActionsProvider()));
+    context.subscriptions.push(vscode.languages.registerCodeActionsProvider(
+        ParserContext.ebnfSelector,
+        new EBNFCodeActionsProvider(),
+        { providedCodeActionKinds: EBNFCodeActionsProvider.providedCodeActionKinds }));
+    context.subscriptions.push(vscode.commands.registerCommand(CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand));
     context.subscriptions.push(vscode.languages.registerCompletionItemProvider(ParserContext.ebnfSelector, new EBNFCompletionItemProvider()));
     context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 

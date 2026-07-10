@@ -9,8 +9,9 @@ import { ParserContext } from "../ParserContext";
 export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProvider //, vscode.OnTypeFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider
 {
     provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-        const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
-        if (hasDiagnostics) {
+        const hasErrors = vscode.languages.getDiagnostics(document.uri)
+            .some(d => d.severity === vscode.DiagnosticSeverity.Error);
+        if (hasErrors) {
             vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
             return [];
         }
