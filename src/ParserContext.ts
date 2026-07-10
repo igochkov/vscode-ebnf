@@ -1,10 +1,11 @@
 import * as vscode from "vscode";
-import { CharStream, CommonTokenStream, ParseTreeListener } from 'antlr4ng';
+import { CharStream, CommonTokenStream, ParseTreeListener, Token } from 'antlr4ng';
 
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
 import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
+import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -62,10 +63,35 @@ export class ParserContext {
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener)
 
-        parser.syntax();        
+        parser.syntax();
 
         ParserContext.diagnosticsCollection.set(document.uri, errorListener.diagnostics);
         ParserContext.updateStatusBarItem();
+
+        const stats = ParserContext.computeGrammarStats(tokenStream.getTokens());
+        Telemetry.reportGrammarAnalyzed(document, stats);
+    }
+
+    private static computeGrammarStats(tokens: Token[]): GrammarStats {
+        let identifierCount = 0;
+        let hyphenIdentifiers = 0;
+        let underscoreIdentifiers = 0;
+        let adjacentIdentifiers = 0; // two META_IDENTIFIERs in a row ⇒ space-separated multi-word name
+        let prevWasIdentifier = false;
+
+        for (const token of tokens) {
+            const isIdentifier = token.type === EBNFLexer.META_IDENTIFIER;
+            if (isIdentifier) {
+                identifierCount++;
+                const text = token.text ?? "";
+                if (text.includes("-")) { hyphenIdentifiers++; }
+                if (text.includes("_")) { underscoreIdentifiers++; }
+                if (prevWasIdentifier) { adjacentIdentifiers++; }
+            }
+            prevWasIdentifier = isIdentifier;
+        }
+
+        return { identifierCount, hyphenIdentifiers, underscoreIdentifiers, adjacentIdentifiers };
     }
 
     public static updateStatusBarItem() {

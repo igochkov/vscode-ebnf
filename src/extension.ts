@@ -6,10 +6,13 @@ import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
 // import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvider';
+import { Telemetry } from './telemetry/Telemetry';
 
 let formattingRegistrations: vscode.Disposable;
 
 export function activate(context: vscode.ExtensionContext) {
+    Telemetry.initialize(context);
+
     context.subscriptions.push(vscode.languages.registerRenameProvider(ParserContext.ebnfSelector, new EBNFRenameProvider()));
     context.subscriptions.push(vscode.languages.registerDefinitionProvider(ParserContext.ebnfSelector, new EBNFDefinitionProvider()));
     context.subscriptions.push(vscode.languages.registerReferenceProvider(ParserContext.ebnfSelector, new EBNFReferenceProvider()));
@@ -35,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.workspace.onDidChangeConfiguration(handleSettingChange));
 }
 
-export function deactivate() { 
+export async function deactivate() {
     if (formattingRegistrations) {
         formattingRegistrations.dispose();
         formattingRegistrations = undefined;
@@ -45,6 +48,7 @@ export function deactivate() {
     ParserContext.diagnosticsCollection.clear();
     ParserContext.diagnosticsCollection.dispose();
     ParserContext.ebnfStatusBarItem.dispose();
+    await Telemetry.dispose(); // flush the final day and let the request finish
 }
 
 function handleSettingChange(event: vscode.ConfigurationChangeEvent) {

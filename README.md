@@ -48,6 +48,16 @@ The EBNF Tools extension currently offers the following features:
 
 ![Completion Suggestions](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/completion-suggestions.gif)
 
+## Telemetry
+
+EBNF Tools collects **anonymous** usage telemetry (via the [Aptabase](https://aptabase.com) EU server) to understand how EBNF is written in practice — specifically, how commonly identifiers use hyphens versus underscores. This directly informs future grammar/standards-conformance decisions.
+
+**What is collected** — at most **one event per day**, recording only *whether* (true/false) you used hyphen, underscore, or space-separated identifiers that day, plus the extension version. That's it.
+
+**What is _never_ collected:** no device or machine ID, no grammar text, no identifier names, no file names, no paths, no file contents. Because no stable identifier is sent, individual users cannot be tracked across days.
+
+**How to opt out:** telemetry is only sent when VS Code's global telemetry is enabled (`telemetry.telemetryLevel`). You can additionally disable it for this extension alone with the `EBNF.telemetry.enable` setting.
+
 ## Contributing
 
 We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md).

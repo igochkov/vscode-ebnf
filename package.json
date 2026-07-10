@@ -154,6 +154,16 @@
                         "."
                     ],
                     "order": 13
+                },
+                "EBNF.telemetry.enable": {
+                    "type": "boolean",
+                    "default": true,
+                    "markdownDescription": "Send anonymous usage telemetry: at most one event per day recording only *whether* you used hyphen/underscore/space-separated identifiers that day. **No** device ID, grammar text, identifier names, file names, or paths are ever sent. Also requires VS Code's global telemetry to be enabled (see `#telemetry.telemetryLevel#`).",
+                    "tags": [
+                        "telemetry",
+                        "usesOnlineServices"
+                    ],
+                    "order": 20
                 }
             }
         }
