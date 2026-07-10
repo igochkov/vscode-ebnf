@@ -155,6 +155,20 @@
                     ],
                     "order": 13
                 },
+                "EBNF.identifierStyle": {
+                    "type": "string",
+                    "enum": [
+                        "modern",
+                        "standard"
+                    ],
+                    "default": "modern",
+                    "enumDescriptions": [
+                        "Allow underscores in identifiers (e.g. \"my_rule\"). Hyphens ('-') are still accepted but deprecated, because '-' is the EBNF except-symbol. Backward-compatible default.",
+                        "Aim for strict ISO/IEC 14977 identifiers (letters and digits). Currently flags hyphens as non-standard; underscore and space-separated-identifier handling arrive with future release."
+                    ],
+                    "markdownDescription": "Which meta-identifier characters are considered valid.\n\n- **modern** (default): underscores are allowed; hyphens (`-`) are **deprecated** because `-` is the EBNF *except-symbol*.\n- **standard**: strict ISO/IEC 14977 (letters and digits).\n\nFor now this only affects diagnostics — parsing is unchanged and remains backward-compatible. See [issue #36](https://github.com/igochkov/vscode-ebnf/issues/36).",
+                    "order": 14
+                },
                 "EBNF.telemetry.enable": {
                     "type": "boolean",
                     "default": true,

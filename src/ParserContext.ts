@@ -10,6 +10,7 @@ import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
     public static ebnfName: string = "EBNF";
+    public static readonly issueUrl = "https://github.com/igochkov/vscode-ebnf/issues/36";
     public static listener: ASTListener;
     public static diagnosticsCollection = vscode.languages.createDiagnosticCollection(ParserContext.ebnfName);
     public static ebnfStatusBarItem =  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 500);
@@ -65,11 +66,47 @@ export class ParserContext {
 
         parser.syntax();
 
-        ParserContext.diagnosticsCollection.set(document.uri, errorListener.diagnostics);
+        const tokens = tokenStream.getTokens();
+        const diagnostics = errorListener.diagnostics.concat(ParserContext.identifierDeprecationDiagnostics(tokens));
+        ParserContext.diagnosticsCollection.set(document.uri, diagnostics);
         ParserContext.updateStatusBarItem();
 
-        const stats = ParserContext.computeGrammarStats(tokenStream.getTokens());
+        const stats = ParserContext.computeGrammarStats(tokens);
         Telemetry.reportGrammarAnalyzed(document, stats);
+    }
+
+    /**
+     * Phase 1 of #36: hyphens in meta-identifiers are deprecated because "-" is the
+     * ISO/IEC 14977 except-symbol. Parsing is unchanged (still backward-compatible);
+     * we only surface a non-blocking Warning that links to the tracking issue. The
+     * message adapts to the configured `EBNF.identifierStyle`.
+     */
+    private static identifierDeprecationDiagnostics(tokens: Token[]): vscode.Diagnostic[] {
+        const style = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<string>("identifierStyle", "modern");
+        const diagnostics: vscode.Diagnostic[] = [];
+
+        for (const token of tokens) {
+            if (token.type !== EBNFLexer.META_IDENTIFIER) {
+                continue;
+            }
+            const text = token.text ?? "";
+            if (!text.includes("-")) {
+                continue;
+            }
+
+            const line = token.line - 1; // ANTLR lines are 1-based; VS Code is 0-based
+            const range = new vscode.Range(line, token.column, line, token.column + text.length);
+            const message = style === "standard"
+                ? `"-" is not a standard EBNF identifier character — it is the except-symbol in ISO/IEC 14977. Use "_" instead.`
+                : `Hyphens in identifiers are deprecated: "-" is the EBNF except-symbol. "${text}" still works for now but will change meaning in a future release. Use "_" instead.`;
+
+            const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Warning);
+            diagnostic.source = ParserContext.ebnfName;
+            diagnostic.code = { value: "hyphen-in-identifier", target: vscode.Uri.parse(ParserContext.issueUrl) };
+            diagnostics.push(diagnostic);
+        }
+
+        return diagnostics;
     }
 
     private static computeGrammarStats(tokens: Token[]): GrammarStats {
