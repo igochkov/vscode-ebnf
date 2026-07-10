@@ -17,7 +17,7 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
 - [ ] **Hover**: Show information about the symbol/object that's below the mouse cursor.
 - [x] **Diagnostic**: Indicate issues with the grammar.
-- [ ] **Actions on Errors or Warnings**: Possible corrective actions right next to an error or warning.
+- [x] **Actions on Errors or Warnings**: Possible corrective actions right next to an error or warning.
 - [ ] **Commands (Transpile to tmLanguage)**: A command for compiling EBNF code to tmLanguage.
 - [ ] **Railroad diagram generation**: Generate railroad diagrams from your EBNF code for visualization and documentation purposes.
 
@@ -25,6 +25,15 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 ## Change Log
 
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
+
+### Version 1.5
+**Released on 2026-07-11**
+
+- Feature: _Completion Suggestions_ — suggests previously defined symbols (see [PR 34](https://github.com/igochkov/vscode-ebnf/pull/34)).
+- Feature: _`EBNF.identifierStyle` setting_ (`modern` | `standard`) controlling how meta-identifier characters are treated (see [issue 36](https://github.com/igochkov/vscode-ebnf/issues/36)).
+- Feature: Deprecation warning for hyphens (`-`) in meta-identifiers — `-` is the EBNF except-symbol — with a Quick Fix and an _EBNF: Convert identifiers…_ command to migrate them to underscores (see [issue 36](https://github.com/igochkov/vscode-ebnf/issues/36)).
+- Feature: Anonymous, opt-in usage telemetry to guide standards-conformance work. No grammar text, identifier names, file paths, or device IDs are collected; it respects the global `telemetry.telemetryLevel` and the `EBNF.telemetry.enable` setting.
+- Change: The formatter now only blocks on errors, not on warnings.
 
 ### Version 1.4
 **Released on 2025-07-18**

@@ -42,10 +42,10 @@ jobs:
           fi
 
       - name: Package VSIX
-        run: npx --yes @vscode/vsce package --no-dependencies -o "vscode-ebnf-${GITHUB_REF_NAME}.vsix"
+        run: npx --yes @vscode/vsce@3.9.2 package --no-dependencies -o "vscode-ebnf-${GITHUB_REF_NAME}.vsix"
 
       - name: Publish to VS Code Marketplace
-        run: npx --yes @vscode/vsce publish --no-dependencies --packagePath "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$VSCE_PAT"
+        run: npx --yes @vscode/vsce@3.9.2 publish --no-dependencies --packagePath "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$VSCE_PAT"
 
       - name: Create GitHub Release with the VSIX
         run: gh release create "$GITHUB_REF_NAME" "vscode-ebnf-${GITHUB_REF_NAME}.vsix" --title "$GITHUB_REF_NAME" --generate-notes
@@ -55,4 +55,4 @@ jobs:
       # Optional mirror to Open VSX. Add an OVSX_PAT repo secret to enable; skipped otherwise.
       - name: Publish to Open VSX (optional)
         if: ${{ env.OVSX_PAT != '' }}
-        run: npx --yes ovsx publish "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$OVSX_PAT"
+        run: npx --yes ovsx@1.0.2 publish "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$OVSX_PAT"

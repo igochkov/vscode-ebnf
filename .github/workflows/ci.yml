@@ -24,7 +24,7 @@ jobs:
         run: npm test
 
       - name: Package (validates the production webpack build)
-        run: npx --yes @vscode/vsce package --no-dependencies -o vscode-ebnf.vsix
+        run: npx --yes @vscode/vsce@3.9.2 package --no-dependencies -o vscode-ebnf.vsix
 
       - name: Upload VSIX artifact
         uses: actions/upload-artifact@v4
