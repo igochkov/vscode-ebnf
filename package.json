@@ -27,7 +27,7 @@
         "documentRangeFormattingProvider": "false",
         "definitionProvider": "true",
         "renameProvider": "true",
-        "codeActionProvider": "false",
+        "codeActionProvider": "true",
         "referencesProvider": "true",
         "completionProvider": "true"
     },
@@ -73,6 +73,21 @@
                 }
             }
         ],
+        "commands": [
+            {
+                "command": "ebnf.convertIdentifiers",
+                "title": "Convert identifiers…",
+                "category": "EBNF"
+            }
+        ],
+        "menus": {
+            "commandPalette": [
+                {
+                    "command": "ebnf.convertIdentifiers",
+                    "when": "editorLangId == ebnf"
+                }
+            ]
+        },
         "configuration": {
             "title": "EBNF",
             "properties": {

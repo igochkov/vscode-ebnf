@@ -6,6 +6,7 @@ import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
 import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
 import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
+import { hyphenIdentifiersFromTokens, HYPHEN_DIAGNOSTIC_CODE } from "./migration/IdentifierMigration";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -85,24 +86,14 @@ export class ParserContext {
         const style = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<string>("identifierStyle", "modern");
         const diagnostics: vscode.Diagnostic[] = [];
 
-        for (const token of tokens) {
-            if (token.type !== EBNFLexer.META_IDENTIFIER) {
-                continue;
-            }
-            const text = token.text ?? "";
-            if (!text.includes("-")) {
-                continue;
-            }
-
-            const line = token.line - 1; // ANTLR lines are 1-based; VS Code is 0-based
-            const range = new vscode.Range(line, token.column, line, token.column + text.length);
+        for (const identifier of hyphenIdentifiersFromTokens(tokens)) {
             const message = style === "standard"
                 ? `"-" is not a standard EBNF identifier character — it is the except-symbol in ISO/IEC 14977. Use "_" instead.`
-                : `Hyphens in identifiers are deprecated: "-" is the EBNF except-symbol. "${text}" still works for now but will change meaning in a future release. Use "_" instead.`;
+                : `Hyphens in identifiers are deprecated: "-" is the EBNF except-symbol. "${identifier.text}" still works for now but will change meaning in a future release. Use "_" instead.`;
 
-            const diagnostic = new vscode.Diagnostic(range, message, vscode.DiagnosticSeverity.Warning);
+            const diagnostic = new vscode.Diagnostic(identifier.range, message, vscode.DiagnosticSeverity.Warning);
             diagnostic.source = ParserContext.ebnfName;
-            diagnostic.code = { value: "hyphen-in-identifier", target: vscode.Uri.parse(ParserContext.issueUrl) };
+            diagnostic.code = { value: HYPHEN_DIAGNOSTIC_CODE, target: vscode.Uri.parse(ParserContext.issueUrl) };
             diagnostics.push(diagnostic);
         }
 
