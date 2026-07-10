@@ -1,0 +1,58 @@
+name: Release
+
+# Publishes to the VS Code Marketplace when a version tag is pushed, e.g.:
+#   git tag v1.5.0 && git push origin v1.5.0
+# The tag must match "version" in package.json (guarded below).
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write # create the GitHub Release and upload the .vsix
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Verify tag matches package.json version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          echo "tag=$TAG  package.json=$PKG"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $PKG. Bump package.json and re-tag."
+            exit 1
+          fi
+
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce package --no-dependencies -o "vscode-ebnf-${GITHUB_REF_NAME}.vsix"
+
+      - name: Publish to VS Code Marketplace
+        run: npx --yes @vscode/vsce publish --no-dependencies --packagePath "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$VSCE_PAT"
+
+      - name: Create GitHub Release with the VSIX
+        run: gh release create "$GITHUB_REF_NAME" "vscode-ebnf-${GITHUB_REF_NAME}.vsix" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # Optional mirror to Open VSX. Add an OVSX_PAT repo secret to enable; skipped otherwise.
+      - name: Publish to Open VSX (optional)
+        if: ${{ env.OVSX_PAT != '' }}
+        run: npx --yes ovsx publish "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$OVSX_PAT"
