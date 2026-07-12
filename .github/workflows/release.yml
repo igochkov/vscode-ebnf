@@ -1,0 +1,72 @@
+name: Release
+
+# Publishes to the VS Code Marketplace when a version tag is pushed, e.g.:
+#   git tag v1.5.0 && git push origin v1.5.0
+# The tag must match "version" in package.json (guarded below).
+#
+# Auth uses Microsoft Entra ID via GitHub OIDC — no stored publish token.
+# Azure DevOps global PATs are retired on 2026-12-01, so we don't use VSCE_PAT.
+# One-time setup is documented in docs/RELEASING.md.
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  id-token: write # request the GitHub OIDC token for azure/login
+  contents: write # create the GitHub Release and upload the .vsix
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: release # the Entra federated credential is scoped to this environment
+    env:
+      OVSX_PAT: ${{ secrets.OVSX_PAT }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Test
+        run: npm test
+
+      - name: Verify tag matches package.json version
+        run: |
+          TAG="${GITHUB_REF_NAME#v}"
+          PKG="$(node -p "require('./package.json').version")"
+          echo "tag=$TAG  package.json=$PKG"
+          if [ "$TAG" != "$PKG" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $PKG. Bump package.json and re-tag."
+            exit 1
+          fi
+
+      - name: Package VSIX
+        run: npx --yes @vscode/vsce@3.9.2 package --no-dependencies -o "vscode-ebnf-${GITHUB_REF_NAME}.vsix"
+
+      - name: Azure login (Entra ID via GitHub OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+          # If the identity has no subscription role, drop subscription-id above and
+          # set: allow-no-subscriptions: true
+
+      - name: Publish to VS Code Marketplace
+        run: npx --yes @vscode/vsce@3.9.2 publish --no-dependencies --packagePath "vscode-ebnf-${GITHUB_REF_NAME}.vsix" --azure-credential
+
+      - name: Create GitHub Release with the VSIX
+        run: gh release create "$GITHUB_REF_NAME" "vscode-ebnf-${GITHUB_REF_NAME}.vsix" --title "$GITHUB_REF_NAME" --generate-notes
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+      # Optional mirror to Open VSX (still token-based). Add an OVSX_PAT secret to enable.
+      - name: Publish to Open VSX (optional)
+        if: ${{ env.OVSX_PAT != '' }}
+        run: npx --yes ovsx@1.0.2 publish "vscode-ebnf-${GITHUB_REF_NAME}.vsix" -p "$OVSX_PAT"

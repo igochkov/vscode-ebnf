@@ -19,12 +19,12 @@ program
     = { item };
 
 item
-    = fn-defn
-    | fn-decl;
+    = fn_defn
+    | fn_decl;
 
-fn-defn
+fn_defn
     = "typed-ident";
 
-param-list
+param_list
     = "void"
-    | { typed-ident, "," }, typed-ident;
+    | { typed_ident, "," }, typed_ident;

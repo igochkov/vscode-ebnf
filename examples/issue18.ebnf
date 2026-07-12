@@ -1,7 +1,7 @@
 (*
 The coloring is incorrect when using the character '¬' in an ebnf option specification.
 *)
-special-symbol = '+' | '-' | '*' | '/' | '¬' | '=' | '<' | '>' | '[' | ']' | '.' | ',' | ':' |
+special_symbol = '+' | '-' | '*' | '/' | '¬' | '=' | '<' | '>' | '[' | ']' | '.' | ',' | ':' |
                  ';' | '^' | '(' | ')' | '<>' | '<=' | '>=' | ':=' | '..' | 
                  'and' | 'array' | 'begin' | 'case' | 'const' | 'div' | 'do' | 'downto' | 'else' |
               'end' | 'file' | 'for' | 'function' | 'goto' | 'if' | 'in' | 'label' | 'mod' |
