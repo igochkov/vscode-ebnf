@@ -24,12 +24,12 @@ program
     = { item };
 
 item
-    = fn-defn; (* invalid semicolumn *)
-    | fn-decl;
+    = fn_defn; (* invalid semicolumn *)
+    | fn_decl;
 
-fn-defn
+fn_defn
     = "typed-ident";
 
-param-list
+param_list
     = "void"
-    | { typed-ident, "," }, typed-ident;
+    | { typed_ident, "," }, typed_ident;
