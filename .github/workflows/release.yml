@@ -54,9 +54,9 @@ jobs:
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-          # If the identity has no subscription role, drop subscription-id above and
-          # set: allow-no-subscriptions: true
+          # Publishing needs only an Entra token, not a subscription context — and the
+          # publish identity has no subscription role, so don't require one.
+          allow-no-subscriptions: true
 
       - name: Publish to VS Code Marketplace
         run: npx --yes @vscode/vsce@3.9.2 publish --no-dependencies --packagePath "vscode-ebnf-${GITHUB_REF_NAME}.vsix" --azure-credential
