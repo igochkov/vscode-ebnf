@@ -9,6 +9,9 @@ import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvid
 import { EBNFHoverProvider } from './providers/EBNFHoverProvider';
 import { EBNFDocumentSymbolProvider } from './providers/EBNFDocumentSymbolProvider';
 import { EBNFDocumentHighlightProvider } from './providers/EBNFDocumentHighlightProvider';
+import { EBNFFoldingRangeProvider } from './providers/EBNFFoldingRangeProvider';
+import { EBNFCodeLensProvider } from './providers/EBNFCodeLensProvider';
+import { EBNFSemanticTokensProvider, EBNF_SEMANTIC_TOKENS_LEGEND } from './providers/EBNFSemanticTokensProvider';
 import { Telemetry } from './telemetry/Telemetry';
 import { CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand } from './commands/ConvertIdentifiers';
 
@@ -29,6 +32,9 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(vscode.languages.registerHoverProvider(ParserContext.ebnfSelector, new EBNFHoverProvider()));
     context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(ParserContext.ebnfSelector, new EBNFDocumentSymbolProvider()));
     context.subscriptions.push(vscode.languages.registerDocumentHighlightProvider(ParserContext.ebnfSelector, new EBNFDocumentHighlightProvider()));
+    context.subscriptions.push(vscode.languages.registerFoldingRangeProvider(ParserContext.ebnfSelector, new EBNFFoldingRangeProvider()));
+    context.subscriptions.push(vscode.languages.registerCodeLensProvider(ParserContext.ebnfSelector, new EBNFCodeLensProvider()));
+    context.subscriptions.push(vscode.languages.registerDocumentSemanticTokensProvider(ParserContext.ebnfSelector, new EBNFSemanticTokensProvider(), EBNF_SEMANTIC_TOKENS_LEGEND));
     context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 
     if (vscode.window.activeTextEditor) {
@@ -80,8 +86,8 @@ function registerFormatting(): vscode.Disposable {
     const formattingProvider = new EBNFFormattingProvider();
 
     return vscode.Disposable.from(
-        vscode.languages.registerDocumentFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider)
-        // vscode.languages.registerDocumentRangeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider)
-        // vscode.languages.registerOnTypeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider, ";", ".", "\n") //, "}", ":)", "]", "/)", "*)", ","
+        vscode.languages.registerDocumentFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider),
+        vscode.languages.registerDocumentRangeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider),
+        vscode.languages.registerOnTypeFormattingEditProvider(ParserContext.ebnfSelector, formattingProvider, ";", ".")
     );
 }

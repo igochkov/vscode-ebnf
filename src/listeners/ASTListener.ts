@@ -17,6 +17,8 @@ export interface RuleInfo {
     stopToken: Token;
     /** Leading comment texts attached to the rule name, in source order. */
     comments: string[];
+    /** The parse-tree context for the whole syntax-rule (used by range/on-type formatting). */
+    ctx: SyntaxRuleContext;
 }
 
 export class ASTListener implements EBNFParserListener {
@@ -48,7 +50,8 @@ export class ASTListener implements EBNFParserListener {
                     nameToken: ruleName.symbol,
                     startToken,
                     stopToken,
-                    comments
+                    comments,
+                    ctx
                 });
             }
         }

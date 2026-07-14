@@ -110,45 +110,56 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
     }
 
     public visitDefinitionsList(ctx: DefinitionsListContext): string {
+        // Grammar: singleDefinition (DEFINITION_SEPARATOR_SYMBOL comment* singleDefinition)*.
+        // We walk the children in order so each comment stays attached to the separator it
+        // follows. Emitting ctx.comment() after every separator duplicated/misplaced them (B3).
         var result: string = "";
-        var first: boolean = true;
+        var firstDefinition: boolean = true;
 
-        for (var def of ctx.singleDefinition()) {
-            if (!first) {
+        for (const child of ctx.children ?? []) {
+            if (child instanceof SingleDefinitionContext) {
+                if (!firstDefinition) {
+                    result += " ";
+                }
+                result += this.visit(child);
+                firstDefinition = false;
+            }
+            else if (child instanceof CommentContext) {
+                result += " " + this.visit(child);
+            }
+            else {
+                // DEFINITION_SEPARATOR_SYMBOL terminal.
                 result += this.options.definitionSeparatorSymbolOnNewLine ? "\n" : " ";
                 result += (this.options.definitionSeparatorSymbolOnNewLine && this.options.indentDefiningSymbol) ? this.indent() : "";
-                result += this.options.defaultDefinitionSeparatorSymbol; // ctx.DEFINITION_SEPARATOR_SYMBOL()[i].symbol.text;
-                ctx.comment().forEach((comment: CommentContext) => {
-                    result += " " + this.visit(comment);
-                });
-                result += " ";
+                result += this.options.defaultDefinitionSeparatorSymbol; // original: child.getText()
             }
-
-            result += this.visit(def);
-            first = false;
         }
 
         return result;
     }
 
     public visitSingleDefinition(ctx: SingleDefinitionContext): string {
+        // Grammar: syntacticTerm (CONCATENATE_SYMBOL comment* syntacticTerm)*. Walk children in
+        // order so comments stay with their concatenate-symbol rather than being repeated (B3).
         var result: string = "";
-        var first: boolean = true;
-        var i: number = 0;
+        var firstTerm: boolean = true;
 
-        for (var term of ctx.syntacticTerm()) {
-            if (!first) {
-                result += this.options.insertSpaceBeforeConcatenateSymbol ? " " : "";
-                result += ctx.CONCATENATE_SYMBOL()[i].symbol.text;
-                ctx.comment().forEach((comment: CommentContext) => {
-                    result += " " + this.visit(comment);
-                });
-                result += " ";
-                i += 1;
+        for (const child of ctx.children ?? []) {
+            if (child instanceof SyntacticTermContext) {
+                if (!firstTerm) {
+                    result += " ";
+                }
+                result += this.visit(child);
+                firstTerm = false;
             }
-
-            result += this.visit(term);
-            first = false;
+            else if (child instanceof CommentContext) {
+                result += " " + this.visit(child);
+            }
+            else {
+                // CONCATENATE_SYMBOL terminal.
+                result += this.options.insertSpaceBeforeConcatenateSymbol ? " " : "";
+                result += child.getText();
+            }
         }
 
         return result;

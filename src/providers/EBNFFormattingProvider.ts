@@ -1,122 +1,109 @@
 import * as vscode from "vscode";
 import { EBNFLexer } from "../parser/EBNFLexer";
-import { CharStream, CommonTokenStream } from "antlr4ng";
-import { EBNFParser } from "../parser/EBNFParser";
+import { CharStream, CommonTokenStream, ParseTreeListener } from "antlr4ng";
+import { EBNFParser, SyntaxContext } from "../parser/EBNFParser";
 import { FormattingVisitor } from "../visitors/FormattingVisitor";
 import { EBNFFormattingOptions } from "./EBNFFormattingOptions";
 import { ParserContext } from "../ParserContext";
+import { ASTListener, RuleInfo } from "../listeners/ASTListener";
 
-export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProvider //, vscode.OnTypeFormattingEditProvider, vscode.DocumentRangeFormattingEditProvider
-{
-    provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-        const hasErrors = vscode.languages.getDiagnostics(document.uri)
-            .some(d => d.severity === vscode.DiagnosticSeverity.Error);
-        if (hasErrors) {
+export class EBNFFormattingProvider implements
+    vscode.DocumentFormattingEditProvider,
+    vscode.DocumentRangeFormattingEditProvider,
+    vscode.OnTypeFormattingEditProvider {
+
+    provideDocumentFormattingEdits(document: vscode.TextDocument, options: vscode.FormattingOptions, _token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+        if (this.hasErrors(document)) {
             vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
             return [];
         }
 
         const content: string = document.getText();
-        const formattedText = this.format(content, options);
+        const { syntax } = this.parse(content);
+        const formattedText = new FormattingVisitor(this.formattingOptions(options)).visit(syntax) ?? "";
 
-        var fullRange = new vscode.Range(
+        const fullRange = new vscode.Range(
             document.positionAt(0),
             document.positionAt(content.length));
 
         return [vscode.TextEdit.replace(fullRange, formattedText)];
-    };
+    }
 
-    // provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-    //     const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
-    //     if (hasDiagnostics) {
-    //         vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
-    //         return [];
-    //     }
+    // G18 — format only the syntax-rules overlapping the selection.
+    provideDocumentRangeFormattingEdits(document: vscode.TextDocument, range: vscode.Range, options: vscode.FormattingOptions, _token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+        if (this.hasErrors(document)) {
+            return [];
+        }
 
-    //     // Parse the whole document
-    //     const fullContent: string = document.getText();
-    //     const inputStream = CharStream.fromString(fullContent);
-    //     const lexer = new EBNFLexer(inputStream);
-    //     const tokenStream = new CommonTokenStream(lexer);
-    //     const parser = new EBNFParser(tokenStream);
-    //     const syntax = parser.syntax();
+        const selectionStart = document.offsetAt(range.start);
+        const selectionEnd = document.offsetAt(range.end);
 
-    //     // Find all syntax rules that overlap with the selection
-    //     // Assuming EBNFParser.SyntaxRuleContext is the context for a syntax rule
-    //     // and syntax.children contains all rules
-    //     const rulesToFormat: SyntaxRuleContext[] = [];
-    //     const selectionStart = document.offsetAt(range.start);
-    //     const selectionEnd = document.offsetAt(range.end);
+        return this.formatRules(document, options, rule => {
+            const ruleStart = rule.startToken.start;
+            const ruleEnd = rule.stopToken.stop + 1;
+            return ruleEnd > selectionStart && ruleStart < selectionEnd;
+        });
+    }
 
-    //     function collectRules(node: ParserRuleContext | null) {
-    //         if (!node) return;
-    //         if (node instanceof SyntaxRuleContext) {
-    //             const ruleStart = node.start.start;
-    //             const ruleEnd = node.stop.stop + 1; // stopIndex is inclusive
-    //             if (ruleEnd > selectionStart && ruleStart < selectionEnd) {
-    //                 rulesToFormat.push(node);
-    //             }
-    //         }
-    //         if (node.children) {
-    //             for (const child of node.children) {
-    //                 collectRules(child as ParserRuleContext);
-    //             }
-    //         }
-    //     }
-    //     collectRules(syntax);
+    // G19 — reformat the rule just completed when a terminator (or newline) is typed.
+    provideOnTypeFormattingEdits(document: vscode.TextDocument, position: vscode.Position, _ch: string, options: vscode.FormattingOptions, _token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
+        if (this.hasErrors(document)) {
+            return [];
+        }
 
-    //     if (rulesToFormat.length === 0) {
-    //         // No rules found in selection, do nothing
-    //         return [];
-    //     }
+        const offset = document.offsetAt(position);
 
-    //     // Format each rule and build edits
-    //     const edits: vscode.TextEdit[] = [];
-    //     const formattingOptions = this.formattingOptions(options);
-    //     const visitor = new FormattingVisitor(formattingOptions);
-    //     for (const rule of rulesToFormat) {
-    //         const ruleStart = rule.start.start;
-    //         const ruleEnd = rule.stop.stop + 1;
-    //         //const ruleText = fullContent.substring(ruleStart, ruleEnd);
-    //         const formatted = visitor.visit(rule);
-    //         const startPos = document.positionAt(ruleStart);
-    //         const endPos = document.positionAt(ruleEnd);
-    //         edits.push(vscode.TextEdit.replace(new vscode.Range(startPos, endPos), formatted));
-    //     }
-        
-    //     return edits;
-    // };
+        return this.formatRules(document, options, rule => {
+            const ruleStart = rule.startToken.start;
+            const ruleEnd = rule.stopToken.stop + 1;
+            return ruleStart <= offset && offset <= ruleEnd;
+        });
+    }
 
-    // provideOnTypeFormattingEdits(document: vscode.TextDocument, position: vscode.Position, ch: string, options: vscode.FormattingOptions, token: vscode.CancellationToken): vscode.ProviderResult<vscode.TextEdit[]> {
-    //     const hasDiagnostics = vscode.languages.getDiagnostics(document.uri).length > 0;
-    //     if (hasDiagnostics) {
-    //         vscode.window.showInformationMessage("Fix all syntax errors before formatting the document.");
-    //         return [];
-    //     }
+    /** Formats each syntax-rule matching the predicate and returns replacement edits. */
+    private formatRules(document: vscode.TextDocument, options: vscode.FormattingOptions, predicate: (rule: RuleInfo) => boolean): vscode.TextEdit[] {
+        const { listener } = this.parse(document.getText());
+        const visitor = new FormattingVisitor(this.formattingOptions(options));
 
-    //     let line = document.lineAt(position.line);
-    //     let lineRange = line.range;
+        const edits: vscode.TextEdit[] = [];
+        for (const rule of listener.rules) {
+            if (!predicate(rule)) {
+                continue;
+            }
 
-    //     const content: string = document.getText(lineRange);
-    //     const formattedText = this.format(content, options);
+            const formatted = visitor.visit(rule.ctx) ?? "";
+            const ruleRange = new vscode.Range(
+                document.positionAt(rule.startToken.start),
+                document.positionAt(rule.stopToken.stop + 1));
+            edits.push(vscode.TextEdit.replace(ruleRange, formatted));
+        }
 
-    //     return [vscode.TextEdit.replace(lineRange, formattedText)];
-    // }
+        return edits;
+    }
 
-    private format(content: string, options: vscode.FormattingOptions): string {
+    private parse(content: string): { syntax: SyntaxContext; listener: ASTListener } {
         const inputStream = CharStream.fromString(content);
         const lexer = new EBNFLexer(inputStream);
         const tokenStream = new CommonTokenStream(lexer);
         const parser = new EBNFParser(tokenStream);
+
+        const listener = new ASTListener();
+        parser.removeParseListeners();
+        parser.addParseListener(listener as unknown as ParseTreeListener);
+
         const syntax = parser.syntax();
-        var visitor = new FormattingVisitor(this.formattingOptions(options));
-        return visitor.visit(syntax) ?? "";
+        return { syntax, listener };
+    }
+
+    private hasErrors(document: vscode.TextDocument): boolean {
+        return vscode.languages.getDiagnostics(document.uri)
+            .some(d => d.severity === vscode.DiagnosticSeverity.Error);
     }
 
     private formattingOptions(vsOptions: vscode.FormattingOptions): EBNFFormattingOptions {
         const settings = vscode.workspace.getConfiguration(ParserContext.ebnfName);
 
-        var options = new EBNFFormattingOptions();
+        const options = new EBNFFormattingOptions();
         options.enable = settings.get<boolean>("format.enable", true);
         options.tabSize = vsOptions.tabSize;
         options.insertSpaces = vsOptions.insertSpaces;
