@@ -24,7 +24,8 @@
     ],
     "capabilities": {
         "documentFormattingProvider": "true",
-        "documentRangeFormattingProvider": "false",
+        "documentRangeFormattingProvider": "true",
+        "documentOnTypeFormattingProvider": "true",
         "definitionProvider": "true",
         "renameProvider": "true",
         "codeActionProvider": "true",
@@ -32,7 +33,10 @@
         "completionProvider": "true",
         "hoverProvider": "true",
         "documentSymbolProvider": "true",
-        "documentHighlightProvider": "true"
+        "documentHighlightProvider": "true",
+        "foldingRangeProvider": "true",
+        "codeLensProvider": "true",
+        "documentSemanticTokensProvider": "true"
     },
     "repository": {
         "type": "git",
