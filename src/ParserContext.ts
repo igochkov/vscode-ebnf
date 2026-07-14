@@ -7,6 +7,7 @@ import { ASTListener } from "./listeners/ASTListener";
 import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
 import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
 import { hyphenIdentifiersFromTokens, HYPHEN_DIAGNOSTIC_CODE } from "./migration/IdentifierMigration";
+import { analyze, AnalysisSeverity } from "./analysis/GrammarAnalyzer";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -15,6 +16,14 @@ export class ParserContext {
     public static listener: ASTListener | undefined;
     public static diagnosticsCollection = vscode.languages.createDiagnosticCollection(ParserContext.ebnfName);
     public static ebnfStatusBarItem =  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 500);
+
+    /** Ensures the given document has been parsed and returns its symbol listener (if any). */
+    public static getListener(document: vscode.TextDocument): ASTListener | undefined {
+        if (!ParserContext.listener) {
+            ParserContext.parse(document);
+        }
+        return ParserContext.listener;
+    }
 
     public static OnDocumentOpen(document: vscode.TextDocument) {
         if (document && ParserContext.isEBNFFile(document)) {
@@ -68,7 +77,9 @@ export class ParserContext {
         parser.syntax();
 
         const tokens = tokenStream.getTokens();
-        const diagnostics = errorListener.diagnostics.concat(ParserContext.identifierDeprecationDiagnostics(tokens));
+        const diagnostics = errorListener.diagnostics
+            .concat(ParserContext.identifierDeprecationDiagnostics(tokens))
+            .concat(ParserContext.semanticDiagnostics());
         ParserContext.diagnosticsCollection.set(document.uri, diagnostics);
         ParserContext.updateStatusBarItem();
 
@@ -98,6 +109,35 @@ export class ParserContext {
         }
 
         return diagnostics;
+    }
+
+    /**
+     * M2 semantic linter (G1/G2/G3): undefined, duplicate and unused rules. The
+     * analysis itself lives in a VS Code-independent module; here we only map its
+     * findings onto vscode.Diagnostic values.
+     */
+    private static semanticDiagnostics(): vscode.Diagnostic[] {
+        if (!ParserContext.listener) {
+            return [];
+        }
+
+        return analyze(ParserContext.listener).map(finding => {
+            const range = new vscode.Range(
+                finding.startLine, finding.startColumn,
+                finding.endLine, finding.endColumn);
+            const diagnostic = new vscode.Diagnostic(range, finding.message, ParserContext.toSeverity(finding.severity));
+            diagnostic.source = ParserContext.ebnfName;
+            diagnostic.code = finding.code;
+            return diagnostic;
+        });
+    }
+
+    private static toSeverity(severity: AnalysisSeverity): vscode.DiagnosticSeverity {
+        switch (severity) {
+            case "warning": return vscode.DiagnosticSeverity.Warning;
+            case "information": return vscode.DiagnosticSeverity.Information;
+            case "hint": return vscode.DiagnosticSeverity.Hint;
+        }
     }
 
     private static computeGrammarStats(tokens: Token[]): GrammarStats {

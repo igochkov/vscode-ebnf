@@ -6,6 +6,9 @@ import { EBNFReferenceProvider } from './providers/EBNFReferenceProvider';
 import { EBNFCodeActionsProvider } from './providers/EBNFCodeActionsProvider';
 import { EBNFFormattingProvider } from './providers/EBNFFormattingProvider';
 import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvider';
+import { EBNFHoverProvider } from './providers/EBNFHoverProvider';
+import { EBNFDocumentSymbolProvider } from './providers/EBNFDocumentSymbolProvider';
+import { EBNFDocumentHighlightProvider } from './providers/EBNFDocumentHighlightProvider';
 import { Telemetry } from './telemetry/Telemetry';
 import { CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand } from './commands/ConvertIdentifiers';
 
@@ -23,6 +26,9 @@ export function activate(context: vscode.ExtensionContext) {
         { providedCodeActionKinds: EBNFCodeActionsProvider.providedCodeActionKinds }));
     context.subscriptions.push(vscode.commands.registerCommand(CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand));
     context.subscriptions.push(vscode.languages.registerCompletionItemProvider(ParserContext.ebnfSelector, new EBNFCompletionItemProvider()));
+    context.subscriptions.push(vscode.languages.registerHoverProvider(ParserContext.ebnfSelector, new EBNFHoverProvider()));
+    context.subscriptions.push(vscode.languages.registerDocumentSymbolProvider(ParserContext.ebnfSelector, new EBNFDocumentSymbolProvider()));
+    context.subscriptions.push(vscode.languages.registerDocumentHighlightProvider(ParserContext.ebnfSelector, new EBNFDocumentHighlightProvider()));
     context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 
     if (vscode.window.activeTextEditor) {
