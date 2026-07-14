@@ -23,21 +23,22 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
             return;
         }
 
-        const def = listener.definitions.find(d => d.text === text);
+        // G2: a meta-identifier may be defined by more than one syntax-rule
+        // (ISO/IEC 14977 §5.1 note 2), so return every definition site, not just the first.
+        const result: vscode.Location[] = listener.definitions
+            .filter(d => d.text === text)
+            .map(d => new vscode.Location(
+                document.uri,
+                new vscode.Range(
+                    d.line - 1,
+                    d.column,
+                    d.line - 1,
+                    d.column + (d.text ?? "").length
+                )));
 
-        if (!def || def.text === undefined) {
+        if (result.length === 0) {
             return;
         }
-
-        const result: vscode.Definition = {
-            uri: document.uri,
-            range: new vscode.Range(
-                def.line - 1,
-                def.column,
-                def.line - 1,
-                def.column + def.text.length
-            )
-        };
 
         return result;
     }

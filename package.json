@@ -29,7 +29,10 @@
         "renameProvider": "true",
         "codeActionProvider": "true",
         "referencesProvider": "true",
-        "completionProvider": "true"
+        "completionProvider": "true",
+        "hoverProvider": "true",
+        "documentSymbolProvider": "true",
+        "documentHighlightProvider": "true"
     },
     "repository": {
         "type": "git",
