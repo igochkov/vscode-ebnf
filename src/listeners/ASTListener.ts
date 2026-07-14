@@ -1,4 +1,4 @@
-import { ErrorNode, ParserRuleContext, TerminalNode, Token } from 'antlr4ng/dist';
+import { ErrorNode, ParserRuleContext, TerminalNode, Token } from 'antlr4ng';
 import { SyntacticPrimaryContext, SyntaxRuleContext } from '../parser/EBNFParser';
 import { EBNFParserListener } from '../parser/EBNFParserListener';
 

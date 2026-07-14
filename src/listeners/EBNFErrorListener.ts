@@ -23,7 +23,7 @@ export class EBNFErrorListener implements ANTLRErrorListener {
         let endLine: number = startLine;
         let endIndex: number = charPositionInLine + 1;
 
-        if (offendingSymbol.text) {
+        if (offendingSymbol && offendingSymbol.text) {
             const lines = offendingSymbol.text.split(/\n/);
 
             if (lines.length === 1) {

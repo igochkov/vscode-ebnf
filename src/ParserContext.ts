@@ -12,7 +12,7 @@ export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
     public static ebnfName: string = "EBNF";
     public static readonly issueUrl = "https://github.com/igochkov/vscode-ebnf/issues/36";
-    public static listener: ASTListener;
+    public static listener: ASTListener | undefined;
     public static diagnosticsCollection = vscode.languages.createDiagnosticCollection(ParserContext.ebnfName);
     public static ebnfStatusBarItem =  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 500);
 
@@ -35,7 +35,7 @@ export class ParserContext {
         }
     }
 
-    public static OnActiveTextEditorChanged(editor: vscode.TextEditor) {
+    public static OnActiveTextEditorChanged(editor: vscode.TextEditor | undefined) {
         if (editor && ParserContext.isEBNFFile(editor.document)) {
             ParserContext.parse(editor.document);
         }

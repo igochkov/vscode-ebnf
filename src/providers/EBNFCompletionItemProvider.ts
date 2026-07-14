@@ -10,7 +10,15 @@ export class EBNFCompletionItemProvider implements vscode.CompletionItemProvider
             ParserContext.parse(document);
         }
 
-        const names = new Set(ParserContext.listener.symbols.map(sym => sym.text).filter(name => name != text));
+        const listener = ParserContext.listener;
+        if (!listener) {
+            return;
+        }
+
+        const names = new Set(
+            listener.symbols
+                .map(sym => sym.text)
+                .filter((name): name is string => name !== undefined && name !== text));
 
         return [...names].map(name =>
             new vscode.CompletionItem(name, vscode.CompletionItemKind.Keyword));
