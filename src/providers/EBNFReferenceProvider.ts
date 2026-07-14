@@ -14,14 +14,19 @@ export class EBNFReferenceProvider implements vscode.ReferenceProvider {
             ParserContext.parse(document);
         }
 
-        var result: vscode.Location[]
-            = ParserContext.listener.symbols.filter(symbol => symbol.text === text)
+        const listener = ParserContext.listener;
+        if (!listener) {
+            return;
+        }
+
+        const result: vscode.Location[]
+            = listener.symbols.filter(symbol => symbol.text === text)
                 .map(ref => new vscode.Location(document.uri,
                     new vscode.Range(
                         ref.line - 1,
                         ref.column,
                         ref.line - 1,
-                        ref.column + ref.text.length
+                        ref.column + ref.text!.length
                     )));
 
         return result;

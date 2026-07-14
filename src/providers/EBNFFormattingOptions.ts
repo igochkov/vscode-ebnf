@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 export class EBNFFormattingOptions implements vscode.FormattingOptions {
     [key: string]: string | number | boolean;
 
-    public enable: boolean;
+    public enable: boolean = true;
     public tabSize: number = 4;
     public insertSpaces: boolean = true;
     public definingSymbolOnNewLine: boolean = true;

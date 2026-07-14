@@ -199,6 +199,7 @@
     },
     "dependencies": {
         "antlr-ng": "^1.0.10",
+        "antlr4ng": "^3.0.16",
         "assert": "^2.1.0",
         "util": "^0.12.5"
     },
@@ -211,6 +212,7 @@
         "vscode:prepublish": "npm run package",
         "build": "webpack --mode development",
         "package": "webpack --mode production",
+        "typecheck": "tsc --noEmit",
         "test": "jest"
     },
     "devDependencies": {

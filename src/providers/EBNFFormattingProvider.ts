@@ -110,26 +110,26 @@ export class EBNFFormattingProvider implements vscode.DocumentFormattingEditProv
         const parser = new EBNFParser(tokenStream);
         const syntax = parser.syntax();
         var visitor = new FormattingVisitor(this.formattingOptions(options));
-        return visitor.visit(syntax);
+        return visitor.visit(syntax) ?? "";
     }
 
     private formattingOptions(vsOptions: vscode.FormattingOptions): EBNFFormattingOptions {
         const settings = vscode.workspace.getConfiguration(ParserContext.ebnfName);
 
         var options = new EBNFFormattingOptions();
-        options.enable = settings.get("format.enable");
+        options.enable = settings.get<boolean>("format.enable", true);
         options.tabSize = vsOptions.tabSize;
         options.insertSpaces = vsOptions.insertSpaces;
-        options.definingSymbolOnNewLine = settings.get("format.definingSymbolOnNewLine");
-        options.indentDefiningSymbol = settings.get("format.indentDefiningSymbol");
-        options.terminatorSymbolOnNewLine = settings.get("format.terminatorSymbolOnNewLine");
-        options.definitionSeparatorSymbolOnNewLine = settings.get("format.definitionSeparatorSymbolOnNewLine");
-        options.insertSpaceBeforeConcatenateSymbol = settings.get("format.insertSpaceBeforeConcatenateSymbol");
-        options.insertSpaceAtSequenceSymbols = settings.get("format.insertSpaceAtSequenceSymbols");
-        options.defaultDefinitionSeparatorSymbol = settings.get("format.defaultDefinitionSeparatorSymbol");
-        options.defaultOptionSymbols = settings.get("format.defaultOptionSymbols");
-        options.defaultRepeatSymbols = settings.get("format.defaultRepeatSymbols");
-        options.defaultTerminatorSymbol = settings.get("format.defaultTerminatorSymbol");
+        options.definingSymbolOnNewLine = settings.get<boolean>("format.definingSymbolOnNewLine", true);
+        options.indentDefiningSymbol = settings.get<boolean>("format.indentDefiningSymbol", true);
+        options.terminatorSymbolOnNewLine = settings.get<boolean>("format.terminatorSymbolOnNewLine", false);
+        options.definitionSeparatorSymbolOnNewLine = settings.get<boolean>("format.definitionSeparatorSymbolOnNewLine", true);
+        options.insertSpaceBeforeConcatenateSymbol = settings.get<boolean>("format.insertSpaceBeforeConcatenateSymbol", false);
+        options.insertSpaceAtSequenceSymbols = settings.get<boolean>("format.insertSpaceAtSequenceSymbols", true);
+        options.defaultDefinitionSeparatorSymbol = settings.get<string>("format.defaultDefinitionSeparatorSymbol", "|");
+        options.defaultOptionSymbols = settings.get<string>("format.defaultOptionSymbols", "[ ]");
+        options.defaultRepeatSymbols = settings.get<string>("format.defaultRepeatSymbols", "{ }");
+        options.defaultTerminatorSymbol = settings.get<string>("format.defaultTerminatorSymbol", ";");
 
         return options;
     }

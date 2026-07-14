@@ -9,7 +9,7 @@ import { EBNFCompletionItemProvider } from './providers/EBNFCompletionItemProvid
 import { Telemetry } from './telemetry/Telemetry';
 import { CONVERT_IDENTIFIERS_COMMAND, convertIdentifiersCommand } from './commands/ConvertIdentifiers';
 
-let formattingRegistrations: vscode.Disposable;
+let formattingRegistrations: vscode.Disposable | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
     Telemetry.initialize(context);

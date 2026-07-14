@@ -18,9 +18,18 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
             ParserContext.parse(document);
         }
 
-        const def = ParserContext.listener.definitions.find(d => d.text === text);
+        const listener = ParserContext.listener;
+        if (!listener) {
+            return;
+        }
 
-        var result: vscode.Definition = {
+        const def = listener.definitions.find(d => d.text === text);
+
+        if (!def || def.text === undefined) {
+            return;
+        }
+
+        const result: vscode.Definition = {
             uri: document.uri,
             range: new vscode.Range(
                 def.line - 1,
