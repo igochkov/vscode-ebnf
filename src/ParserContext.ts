@@ -8,6 +8,7 @@ import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
 import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
 import { hyphenIdentifiersFromTokens, HYPHEN_DIAGNOSTIC_CODE } from "./migration/IdentifierMigration";
 import { analyze, AnalysisSeverity } from "./analysis/GrammarAnalyzer";
+import { findInvalidSequences } from "./analysis/invalidSequences";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -79,7 +80,8 @@ export class ParserContext {
         const tokens = tokenStream.getTokens();
         const diagnostics = errorListener.diagnostics
             .concat(ParserContext.identifierDeprecationDiagnostics(tokens))
-            .concat(ParserContext.semanticDiagnostics());
+            .concat(ParserContext.semanticDiagnostics())
+            .concat(ParserContext.invalidSequenceDiagnostics(document));
         ParserContext.diagnosticsCollection.set(document.uri, diagnostics);
         ParserContext.updateStatusBarItem();
 
@@ -128,6 +130,24 @@ export class ParserContext {
             const diagnostic = new vscode.Diagnostic(range, finding.message, ParserContext.toSeverity(finding.severity));
             diagnostic.source = ParserContext.ebnfName;
             diagnostic.code = finding.code;
+            return diagnostic;
+        });
+    }
+
+    /**
+     * G24 (ISO/IEC 14977 §7.8): flag the invalid character sequences "(*)", "(:)" and "(/)".
+     */
+    private static invalidSequenceDiagnostics(document: vscode.TextDocument): vscode.Diagnostic[] {
+        return findInvalidSequences(document.getText()).map(found => {
+            const range = new vscode.Range(
+                document.positionAt(found.index),
+                document.positionAt(found.index + found.sequence.length));
+            const diagnostic = new vscode.Diagnostic(
+                range,
+                `"${found.sequence}" is an invalid character sequence in EBNF (ISO/IEC 14977 §7.8).`,
+                vscode.DiagnosticSeverity.Warning);
+            diagnostic.source = ParserContext.ebnfName;
+            diagnostic.code = "ebnf.invalidSequence";
             return diagnostic;
         });
     }

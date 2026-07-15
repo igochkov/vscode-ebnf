@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
 import { tokenRange } from "./ProviderUtils";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFCodeLensProvider implements vscode.CodeLensProvider {
     public provideCodeLenses(
@@ -15,8 +16,9 @@ export class EBNFCodeLensProvider implements vscode.CodeLensProvider {
         return listener.rules
             .filter(rule => rule.name.length > 0)
             .map(rule => {
+                const name = normalizeMetaIdentifier(rule.name);
                 const locations = listener.usages
-                    .filter(usage => usage.text === rule.name)
+                    .filter(usage => normalizeMetaIdentifier(usage.text) === name)
                     .map(usage => new vscode.Location(document.uri, tokenRange(usage)));
 
                 const nameRange = tokenRange(rule.nameToken);

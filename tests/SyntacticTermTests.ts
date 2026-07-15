@@ -62,10 +62,14 @@ test('should find full semantic term - with spaces', () => {
     expect(collectErrorNodes(syntacticException)).toHaveLength(0);
 });
 
-test('should fail - no identifiers allowed in exception', () => {
+// ISO/IEC 14977 §4.7: an exception must be reducible to a factor with no meta-identifiers,
+// but that is a *semantic* property. The standard's own §8.1 grammar uses meta-identifiers
+// inside exceptions (e.g. "terminal character - first quote symbol"), so we accept them
+// syntactically. (Was previously asserted as an error; relaxed for SC1 / issue #36 Phase 2.)
+test('meta-identifiers are allowed inside an exception (ISO §8.1 usage)', () => {
     const input = "'string' - test";
     const context: SyntacticTermContext = parseRule('syntacticTerm', input);
-    
+
     const syntacticFactor = context.syntacticFactor();
     const exceptSymbol = context.EXCEPT_SYMBOL();
     const syntacticException = context.syntacticException();
@@ -79,5 +83,5 @@ test('should fail - no identifiers allowed in exception', () => {
 
     expect(syntacticException).not.toBeNull();
     expect(syntacticException?.ruleIndex).toEqual(EBNFParser.RULE_syntacticException);
-    expect(collectErrorNodes(syntacticException).length).toBeGreaterThan(0);
+    expect(collectErrorNodes(syntacticException)).toHaveLength(0);
 });

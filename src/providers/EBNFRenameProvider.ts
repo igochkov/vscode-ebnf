@@ -1,14 +1,16 @@
 import * as vscode from "vscode";
 import { ISymbolInfo } from '../ISymbolInfo';
 import { ParserContext } from "../ParserContext";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFRenameProvider implements vscode.RenameProvider {
     /**
-     * Meta-identifier pattern accepted by the (modern) lexer: a letter followed by
-     * letters, digits, "_" or "-". Renaming to anything else would produce an invalid
-     * grammar, so it is rejected. See B5/G15 in the gap analysis.
+     * Meta-identifier pattern accepted by the lexer: one or more gap-free words (a letter
+     * followed by letters, digits, "_" or "-") separated by spaces/tabs, so space-separated
+     * names such as "syntax rule" are valid rename targets (SC1). Renaming to anything else
+     * would produce an invalid grammar, so it is rejected. See B5/G15 in the gap analysis.
      */
-    private static readonly identifierPattern = /^[A-Za-z][A-Za-z0-9_-]*$/;
+    private static readonly identifierPattern = /^[A-Za-z][A-Za-z0-9_-]*([ \t]+[A-Za-z][A-Za-z0-9_-]*)*$/;
 
     private symbols(document: vscode.TextDocument): ISymbolInfo[] {
         if (!ParserContext.listener) {
@@ -54,7 +56,7 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
         _: vscode.CancellationToken): vscode.ProviderResult<vscode.WorkspaceEdit>
     {
         if (!EBNFRenameProvider.identifierPattern.test(newName)) {
-            throw new Error(`"${newName}" is not a valid EBNF meta-identifier. Use a letter followed by letters, digits, "_" or "-".`);
+            throw new Error(`"${newName}" is not a valid EBNF meta-identifier. Use one or more words (a letter followed by letters, digits, "_" or "-"), separated by spaces.`);
         }
 
         const symbols = this.symbols(document);
@@ -63,8 +65,9 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
         const workspaceEdit = new vscode.WorkspaceEdit();
 
         if (currentSymbol) {
+            const currentName = normalizeMetaIdentifier(currentSymbol.name);
             const edits = symbols
-                .filter(symbol => symbol.name === currentSymbol.name)
+                .filter(symbol => normalizeMetaIdentifier(symbol.name) === currentName)
                 .map(symbol => new vscode.TextEdit(symbol.range, newName));
             workspaceEdit.set(document.uri, edits);
         }

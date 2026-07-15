@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
 import { ParserContext } from '../ParserContext';
+import { normalizeMetaIdentifier } from '../analysis/metaIdentifier';
 
 export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
     public provideDefinition(
@@ -25,8 +26,9 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
 
         // G2: a meta-identifier may be defined by more than one syntax-rule
         // (ISO/IEC 14977 §5.1 note 2), so return every definition site, not just the first.
+        const target = normalizeMetaIdentifier(text);
         const result: vscode.Location[] = listener.definitions
-            .filter(d => d.text === text)
+            .filter(d => normalizeMetaIdentifier(d.text) === target)
             .map(d => new vscode.Location(
                 document.uri,
                 new vscode.Range(

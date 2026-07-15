@@ -1,5 +1,6 @@
 import { Token } from 'antlr4ng';
 import { ASTListener, RuleInfo } from '../listeners/ASTListener';
+import { normalizeMetaIdentifier } from './metaIdentifier';
 
 /** Diagnostic codes emitted by the semantic analyzer (stable identifiers). */
 export const DiagnosticCode = {
@@ -45,16 +46,18 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
     const findings: AnalysisFinding[] = [];
     const rules = listener.rules.filter(rule => rule.name.length > 0);
 
-    const definedNames = new Set(rules.map(rule => rule.name));
+    // Compare on the normalized name so whitespace variants of a space-separated
+    // meta-identifier ("syntax  rule" vs "syntax rule") resolve to the same rule (SC1).
+    const definedNames = new Set(rules.map(rule => normalizeMetaIdentifier(rule.name)));
     const usedNames = new Set(
         listener.usages
-            .map(usage => usage.text)
-            .filter((text): text is string => text !== undefined && text.length > 0));
+            .map(usage => normalizeMetaIdentifier(usage.text))
+            .filter(name => name.length > 0));
 
     // G1 — undefined rules.
     for (const usage of listener.usages) {
-        const name = usage.text;
-        if (name && !definedNames.has(name)) {
+        const name = normalizeMetaIdentifier(usage.text);
+        if (name.length > 0 && !definedNames.has(name)) {
             findings.push({
                 code: DiagnosticCode.UndefinedRule,
                 message: `Rule "${name}" is used but never defined.`,
@@ -67,14 +70,16 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
     // G2 — duplicate definitions.
     const countByName = new Map<string, number>();
     for (const rule of rules) {
-        countByName.set(rule.name, (countByName.get(rule.name) ?? 0) + 1);
+        const name = normalizeMetaIdentifier(rule.name);
+        countByName.set(name, (countByName.get(name) ?? 0) + 1);
     }
     for (const rule of rules) {
-        const count = countByName.get(rule.name) ?? 0;
+        const name = normalizeMetaIdentifier(rule.name);
+        const count = countByName.get(name) ?? 0;
         if (count > 1) {
             findings.push({
                 code: DiagnosticCode.DuplicateDefinition,
-                message: `Rule "${rule.name}" is defined ${count} times.`,
+                message: `Rule "${name}" is defined ${count} times.`,
                 severity: "information",
                 ...rangeOfToken(rule.nameToken)
             });
@@ -83,14 +88,16 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
 
     // G3 — unused rules (the first-defined rule is the start symbol).
     const startSymbol: RuleInfo | undefined = rules[0];
+    const startName = startSymbol ? normalizeMetaIdentifier(startSymbol.name) : undefined;
     for (const rule of rules) {
-        if (startSymbol && rule.name === startSymbol.name) {
+        const name = normalizeMetaIdentifier(rule.name);
+        if (name === startName) {
             continue;
         }
-        if (!usedNames.has(rule.name)) {
+        if (!usedNames.has(name)) {
             findings.push({
                 code: DiagnosticCode.UnusedRule,
-                message: `Rule "${rule.name}" is defined but never used.`,
+                message: `Rule "${name}" is defined but never used.`,
                 severity: "information",
                 ...rangeOfToken(rule.nameToken)
             });

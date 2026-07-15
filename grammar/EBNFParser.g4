@@ -8,6 +8,8 @@ comment : (START_COMMENT_SYMBOL | NESTED_START_COMMENT_SYMBOL) commentSymbol* EN
 
 commentSymbol
     : comment
+	| TERMINAL_STRING
+	| SPECIAL_SEQUENCE
 	| OTHER_CHARACTER
 	;
 
@@ -43,7 +45,11 @@ syntacticException
 	:  syntacticExceptionFactor comment*
 	;
 
-// syntactic-factor containing no meta-identifiers.
+// A syntactic-factor used as an exception. ISO/IEC 14977 §4.7 requires that it "could
+// equally be represented by a syntactic-factor containing no meta-identifiers" — a semantic
+// property. We do not enforce it syntactically, because the standard's own §8.1 grammar uses
+// meta-identifiers inside exceptions (e.g. "terminal character - first quote symbol"); see
+// SC7 in the code-quality review. META_IDENTIFIER is therefore allowed here.
 syntacticExceptionFactor
 	: (integerWithComments repetitionSymbolWithComments)? syntacticExceptionPrimary
 	;
@@ -56,13 +62,15 @@ repetitionSymbolWithComments
 	: REPETITION_SYMBOL comment*
 	;
 
-// syntactic-primary containing no meta-identifiers
+// syntactic-primary used as an exception. META_IDENTIFIER is permitted (see note on
+// syntacticExceptionFactor above) so the ISO §8.1 self-defining grammar parses.
 syntacticExceptionPrimary
-	: 
+	:
 	( optionalSequence
 	| repeatedSequence
-	| groupedSequence 
-	| TERMINAL_STRING 
+	| groupedSequence
+	| META_IDENTIFIER
+	| TERMINAL_STRING
     | SPECIAL_SEQUENCE
 	| emptySequence
 	) comment*

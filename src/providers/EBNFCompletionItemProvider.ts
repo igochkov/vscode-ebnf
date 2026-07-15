@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFCompletionItemProvider implements vscode.CompletionItemProvider {
     public provideCompletionItems(document: vscode.TextDocument, position: vscode.Position) {
@@ -15,10 +16,11 @@ export class EBNFCompletionItemProvider implements vscode.CompletionItemProvider
             return;
         }
 
+        const current = normalizeMetaIdentifier(text);
         const names = new Set(
             listener.symbols
-                .map(sym => sym.text)
-                .filter((name): name is string => name !== undefined && name !== text));
+                .map(sym => normalizeMetaIdentifier(sym.text))
+                .filter(name => name.length > 0 && name !== current));
 
         return [...names].map(name =>
             new vscode.CompletionItem(name, vscode.CompletionItemKind.Keyword));
