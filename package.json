@@ -220,6 +220,7 @@
         "build": "webpack --mode development",
         "package": "webpack --mode production",
         "typecheck": "tsc --noEmit",
+        "generate": "antlr-ng -o src/parser --exact-output-dir true -l true -v true grammar/EBNFLexer.g4 grammar/EBNFParser.g4 -D language=TypeScript",
         "test": "jest"
     },
     "devDependencies": {

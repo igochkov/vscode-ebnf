@@ -1,13 +1,29 @@
 # Parser generation
 
-### Windows
+The TypeScript parser under [`../src/parser`](../src/parser) is generated from the two
+ANTLR grammars in this folder — [`EBNFLexer.g4`](EBNFLexer.g4) and
+[`EBNFParser.g4`](EBNFParser.g4) — using [`antlr-ng`](https://www.npmjs.com/package/antlr-ng)
+(a dev dependency). No Java or external tooling is required.
 
-1. Install [Java JRE 11](https://www.openlogic.com/openjdk-downloads?field_java_parent_version_target_id=406&field_operating_system_target_id=436&field_architecture_target_id=391&field_java_package_target_id=401)
+## Regenerate
 
-2. Ensure that `JAVA_HOME` environment variable is set
+```bash
+npm run generate
+```
 
-3. Install the [ANTLR4 grammar syntax support](https://marketplace.visualstudio.com/items?itemName=mike-lischke.vscode-antlr4) VS Code extension
+This runs `antlr-ng` for the TypeScript target and writes `EBNFLexer.ts`,
+`EBNFParser.ts`, `EBNFParserListener.ts`, `EBNFParserVisitor.ts` and the `*.tokens`
+files into `src/parser`. Commit the result whenever you change a `.g4` file.
 
-4. Open `grammar/EBNFLexer.g4` and trigger save file. On save triggers the generation process. Do the same for the `grammar/EBNFParser.g4` file.
+The generation is **deterministic and path-independent** (no absolute-path or version
+header is emitted), so regenerating on any machine produces byte-identical output.
 
-> N.B. The ANLR4 generation settings are defined in the `.vscode/settings.json`. 
+## CI drift guard
+
+CI runs `npm run generate` and fails if `src/parser` differs from the committed output
+(see [`.github/workflows/ci.yml`](../.github/workflows/ci.yml)). This guarantees the
+committed parser can never silently drift from the grammar. If CI fails on this step,
+run `npm run generate` locally and commit the changes.
+
+> The `*.interp` files antlr-ng also emits are ANTLR interpreter data, not needed at
+> runtime; they are git-ignored.
