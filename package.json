@@ -186,9 +186,9 @@
                     "default": "modern",
                     "enumDescriptions": [
                         "Allow underscores in identifiers (e.g. \"my_rule\"). Hyphens ('-') are still accepted but deprecated, because '-' is the EBNF except-symbol. Backward-compatible default.",
-                        "Aim for strict ISO/IEC 14977 identifiers (letters and digits). Currently flags hyphens as non-standard; underscore and space-separated-identifier handling arrive with future release."
+                        "Aim for strict ISO/IEC 14977 identifiers. Flags both hyphens ('-') and underscores ('_') as non-standard and recommends space-separated words (e.g. \"syntax rule\")."
                     ],
-                    "markdownDescription": "Which meta-identifier characters are considered valid.\n\n- **modern** (default): underscores are allowed; hyphens (`-`) are **deprecated** because `-` is the EBNF *except-symbol*.\n- **standard**: strict ISO/IEC 14977 (letters and digits).\n\nFor now this only affects diagnostics — parsing is unchanged and remains backward-compatible. See [issue #36](https://github.com/igochkov/vscode-ebnf/issues/36).",
+                    "markdownDescription": "Which meta-identifier characters are considered valid.\n\n- **modern** (default): underscores are allowed; hyphens (`-`) are **deprecated** because `-` is the EBNF *except-symbol*.\n- **standard**: strict ISO/IEC 14977 — both `-` and `_` are flagged as non-standard; use space-separated words (e.g. `syntax rule`, now supported) or letters and digits only.\n\nThis affects diagnostics only — parsing is unchanged and remains backward-compatible. Run **EBNF: Convert identifiers…** to migrate to spaces or `_`. See [issue #36](https://github.com/igochkov/vscode-ebnf/issues/36).",
                     "order": 14
                 },
                 "EBNF.telemetry.enable": {

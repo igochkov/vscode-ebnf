@@ -1,19 +1,20 @@
 import * as vscode from "vscode";
-import { findHyphenIdentifiers, convertIdentifier } from "../migration/IdentifierMigration";
+import { findMigratableIdentifiers, convertIdentifier, HYPHEN, UNDERSCORE } from "../migration/IdentifierMigration";
+import { ParserContext } from "../ParserContext";
 
 export const CONVERT_IDENTIFIERS_COMMAND = "ebnf.convertIdentifiers";
 
 interface TargetItem extends vscode.QuickPickItem {
     target: string;
-    enabled: boolean;
 }
 
 /**
- * `EBNF: Convert identifiers…` — opt-in, user-invoked migration of hyphenated
- * meta-identifiers. Tokenization-accurate (only META_IDENTIFIER tokens are touched).
- * Applied as an undoable WorkspaceEdit whose entries request confirmation, so VS Code
- * shows its Refactor Preview panel (a diff the user can review/uncheck) — never a
- * silent write to disk. Skips non-file/virtual and read-only documents.
+ * `EBNF: Convert identifiers…` — opt-in, user-invoked, whole-document migration of
+ * non-standard meta-identifiers ("-" and "_"). Tokenization-accurate (only META_IDENTIFIER
+ * tokens are touched). Converting the whole document at once keeps a rule's definition and
+ * all its references in sync — converting a single identifier could desync them. Applied as
+ * an undoable WorkspaceEdit that requests confirmation, so VS Code shows its Refactor Preview
+ * panel (a reviewable diff) — never a silent write to disk. Skips non-file/read-only documents.
  */
 export async function convertIdentifiersCommand(): Promise<void> {
     const editor = vscode.window.activeTextEditor;
@@ -29,43 +30,44 @@ export async function convertIdentifiersCommand(): Promise<void> {
         return;
     }
 
-    const identifiers = findHyphenIdentifiers(document);
+    // Find every identifier that uses a non-standard character ("-" or "_").
+    const identifiers = findMigratableIdentifiers(document, HYPHEN + UNDERSCORE);
     if (identifiers.length === 0) {
-        vscode.window.showInformationMessage("No hyphenated identifiers found in this file.");
+        vscode.window.showInformationMessage("No identifiers with \"-\" or \"_\" found in this file.");
         return;
     }
 
-    const items: TargetItem[] = [
-        {
-            label: "$(check) Underscore  _",
-            description: `Replace "-" with "_" in ${identifiers.length} identifier${identifiers.length === 1 ? "" : "s"}`,
-            target: "_",
-            enabled: true,
-        },
-        {
-            label: "Space",
-            description: "Not available yet — needs space-separated identifier support (issue #36)",
-            target: " ",
-            enabled: false,
-        },
-    ];
+    const count = identifiers.length;
+    const plural = count === 1 ? "" : "s";
+    const spaceItem: TargetItem = {
+        label: "$(check) Space  ( standard ISO/IEC 14977 )",
+        description: `Replace "-" and "_" with a space in ${count} identifier${plural} — e.g. "syntax_rule" → "syntax rule"`,
+        target: " ",
+    };
+    const underscoreItem: TargetItem = {
+        label: "Underscore  _  ( modern )",
+        description: `Replace "-" with "_" in ${count} identifier${plural} — e.g. "syntax-rule" → "syntax_rule"`,
+        target: UNDERSCORE,
+    };
+
+    // Offer the style-appropriate target first.
+    const style = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<string>("identifierStyle", "modern");
+    const items = style === "standard" ? [spaceItem, underscoreItem] : [underscoreItem, spaceItem];
 
     const choice = await vscode.window.showQuickPick(items, {
-        title: `EBNF: Convert ${identifiers.length} hyphenated identifier${identifiers.length === 1 ? "" : "s"}`,
-        placeHolder: "Choose the replacement character",
+        title: `EBNF: Convert ${count} identifier${plural}`,
+        placeHolder: "Choose the replacement for \"-\" / \"_\"",
     });
     if (!choice) {
         return; // user dismissed
-    }
-    if (!choice.enabled) {
-        vscode.window.showInformationMessage(
-            "Converting to spaces will be available once space-separated identifiers are supported (issue #36). Use \"_\" for now.");
-        return;
     }
 
     const edit = new vscode.WorkspaceEdit();
     for (const identifier of identifiers) {
         const replacement = convertIdentifier(identifier.text, choice.target);
+        if (replacement === identifier.text) {
+            continue; // nothing to change (e.g. an "_"-only identifier when converting to "_")
+        }
         // needsConfirmation makes applyEdit surface the Refactor Preview (a reviewable diff).
         edit.replace(document.uri, identifier.range, replacement, {
             needsConfirmation: true,
