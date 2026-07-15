@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
 import { ruleRange } from "./ProviderUtils";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFHoverProvider implements vscode.HoverProvider {
     public provideHover(
@@ -20,7 +21,8 @@ export class EBNFHoverProvider implements vscode.HoverProvider {
             return;
         }
 
-        const matches = listener.rules.filter(rule => rule.name === text);
+        const target = normalizeMetaIdentifier(text);
+        const matches = listener.rules.filter(rule => normalizeMetaIdentifier(rule.name) === target);
         if (matches.length === 0) {
             return;
         }

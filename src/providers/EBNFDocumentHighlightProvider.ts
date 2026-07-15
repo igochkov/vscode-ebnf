@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
 import { tokenRange } from "./ProviderUtils";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFDocumentHighlightProvider implements vscode.DocumentHighlightProvider {
     public provideDocumentHighlights(
@@ -20,10 +21,11 @@ export class EBNFDocumentHighlightProvider implements vscode.DocumentHighlightPr
             return;
         }
 
-        const definitions = new Set(listener.definitions.filter(d => d.text === text));
+        const target = normalizeMetaIdentifier(text);
+        const definitions = new Set(listener.definitions.filter(d => normalizeMetaIdentifier(d.text) === target));
 
         return listener.symbols
-            .filter(symbol => symbol.text === text)
+            .filter(symbol => normalizeMetaIdentifier(symbol.text) === target)
             .map(symbol => new vscode.DocumentHighlight(
                 tokenRange(symbol),
                 definitions.has(symbol)

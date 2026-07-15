@@ -6,8 +6,9 @@ import { EBNFParser } from './parser/EBNFParser';
 import { ASTListener } from "./listeners/ASTListener";
 import { EBNFErrorListener } from "./listeners/EBNFErrorListener";
 import { Telemetry, GrammarStats } from "./telemetry/Telemetry";
-import { hyphenIdentifiersFromTokens, HYPHEN_DIAGNOSTIC_CODE } from "./migration/IdentifierMigration";
+import { migratableIdentifiersFromTokens, IDENTIFIER_MIGRATION_CODE, HYPHEN, UNDERSCORE } from "./migration/IdentifierMigration";
 import { analyze, AnalysisSeverity } from "./analysis/GrammarAnalyzer";
+import { findInvalidSequences } from "./analysis/invalidSequences";
 
 export class ParserContext {
     public static ebnfSelector: vscode.DocumentFilter = { language: "ebnf", scheme: "file" };
@@ -79,7 +80,8 @@ export class ParserContext {
         const tokens = tokenStream.getTokens();
         const diagnostics = errorListener.diagnostics
             .concat(ParserContext.identifierDeprecationDiagnostics(tokens))
-            .concat(ParserContext.semanticDiagnostics());
+            .concat(ParserContext.semanticDiagnostics())
+            .concat(ParserContext.invalidSequenceDiagnostics(document));
         ParserContext.diagnosticsCollection.set(document.uri, diagnostics);
         ParserContext.updateStatusBarItem();
 
@@ -88,23 +90,25 @@ export class ParserContext {
     }
 
     /**
-     * Phase 1 of #36: hyphens in meta-identifiers are deprecated because "-" is the
-     * ISO/IEC 14977 except-symbol. Parsing is unchanged (still backward-compatible);
-     * we only surface a non-blocking Warning that links to the tracking issue. The
-     * message adapts to the configured `EBNF.identifierStyle`.
+     * Issue #36: non-standard meta-identifier characters. Parsing is unchanged (still
+     * backward-compatible); we only surface a non-blocking Warning linking to the tracking
+     * issue. The set of flagged characters and the message adapt to `EBNF.identifierStyle`:
+     *  - modern (default): only "-" is flagged (deprecated — it is the except-symbol); "_" is allowed.
+     *  - standard: both "-" and "_" are flagged as non-standard ISO/IEC 14977 identifier characters.
      */
     private static identifierDeprecationDiagnostics(tokens: Token[]): vscode.Diagnostic[] {
         const style = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<string>("identifierStyle", "modern");
+        const flaggedChars = style === "standard" ? HYPHEN + UNDERSCORE : HYPHEN;
         const diagnostics: vscode.Diagnostic[] = [];
 
-        for (const identifier of hyphenIdentifiersFromTokens(tokens)) {
+        for (const identifier of migratableIdentifiersFromTokens(tokens, flaggedChars)) {
             const message = style === "standard"
-                ? `"-" is not a standard EBNF identifier character — it is the except-symbol in ISO/IEC 14977. Use "_" instead.`
-                : `Hyphens in identifiers are deprecated: "-" is the EBNF except-symbol. "${identifier.text}" still works for now but will change meaning in a future release. Use "_" instead.`;
+                ? `"${identifier.text}" is not a standard ISO/IEC 14977 meta-identifier — "-" and "_" are not identifier characters. Use space-separated words (e.g. "syntax rule") or letters and digits only.`
+                : `Hyphens in identifiers are deprecated: "-" is the EBNF except-symbol. "${identifier.text}" still works for now but will change meaning in a future release. Use "_" or space-separated words instead.`;
 
             const diagnostic = new vscode.Diagnostic(identifier.range, message, vscode.DiagnosticSeverity.Warning);
             diagnostic.source = ParserContext.ebnfName;
-            diagnostic.code = { value: HYPHEN_DIAGNOSTIC_CODE, target: vscode.Uri.parse(ParserContext.issueUrl) };
+            diagnostic.code = { value: IDENTIFIER_MIGRATION_CODE, target: vscode.Uri.parse(ParserContext.issueUrl) };
             diagnostics.push(diagnostic);
         }
 
@@ -128,6 +132,24 @@ export class ParserContext {
             const diagnostic = new vscode.Diagnostic(range, finding.message, ParserContext.toSeverity(finding.severity));
             diagnostic.source = ParserContext.ebnfName;
             diagnostic.code = finding.code;
+            return diagnostic;
+        });
+    }
+
+    /**
+     * G24 (ISO/IEC 14977 §7.8): flag the invalid character sequences "(*)", "(:)" and "(/)".
+     */
+    private static invalidSequenceDiagnostics(document: vscode.TextDocument): vscode.Diagnostic[] {
+        return findInvalidSequences(document.getText()).map(found => {
+            const range = new vscode.Range(
+                document.positionAt(found.index),
+                document.positionAt(found.index + found.sequence.length));
+            const diagnostic = new vscode.Diagnostic(
+                range,
+                `"${found.sequence}" is an invalid character sequence in EBNF (ISO/IEC 14977 §7.8).`,
+                vscode.DiagnosticSeverity.Warning);
+            diagnostic.source = ParserContext.ebnfName;
+            diagnostic.code = "ebnf.invalidSequence";
             return diagnostic;
         });
     }

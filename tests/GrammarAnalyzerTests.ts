@@ -74,3 +74,9 @@ test('a well-formed grammar produces no findings', () => {
     const findings = findingsFor(`start = a, b; a = "x"; b = "y";`);
     expect(findings).toHaveLength(0);
 });
+
+// SC1 — whitespace variants of a space-separated meta-identifier are the same rule.
+test('SC1 - "foo   bar" (usage) resolves to "foo bar" (definition); no undefined/unused', () => {
+    const findings = findingsFor(`start = foo   bar; foo bar = "x";`);
+    expect(findings).toHaveLength(0);
+});

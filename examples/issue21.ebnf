@@ -15,12 +15,12 @@ immediate       = "$", ["0x"], digit, {digit};
 address         = [ "0x" ], digit, {digit};
 identifier      = letter, { letter | digit };
 whitespace      = { " " | "\t" };
-line_terminator = { "\n" | ";" };
+line terminator = { "\n" | ";" };
 
 operand = register | immediate | address;
 
-operand_list = [whitespace], operand, {",", [whitespace], operand};
+operand list = [whitespace], operand, {",", [whitespace], operand};
 
-instruction = identifier, [operand_list];
+instruction = identifier, [operand list];
 
-instruction_list = [whitespace], instruction, {line_terminator, [whitespace], instruction};
+instruction list = [whitespace], instruction, {line terminator, [whitespace], instruction};

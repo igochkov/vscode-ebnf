@@ -1,4 +1,3 @@
-// Generated from d:/projects/Private/vscode-ebnf/grammar/EBNFParser.g4 by ANTLR 4.13.1
 
 import * as antlr from "antlr4ng";
 import { Token } from "antlr4ng";
@@ -110,7 +109,7 @@ export class EBNFParser extends antlr.Parser {
             this.state = 44;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
-            while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 3145856) !== 0)) {
+            while ((((_la) & ~0x1F) === 0 && ((1 << _la) & 3539072) !== 0)) {
                 {
                 {
                 this.state = 41;
@@ -142,7 +141,7 @@ export class EBNFParser extends antlr.Parser {
         let localContext = new CommentSymbolContext(this.context, this.state);
         this.enterRule(localContext, 2, EBNFParser.RULE_commentSymbol);
         try {
-            this.state = 51;
+            this.state = 53;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_COMMENT_SYMBOL:
@@ -153,10 +152,24 @@ export class EBNFParser extends antlr.Parser {
                 this.comment();
                 }
                 break;
-            case EBNFParser.OTHER_CHARACTER:
+            case EBNFParser.TERMINAL_STRING:
                 this.enterOuterAlt(localContext, 2);
                 {
                 this.state = 50;
+                this.match(EBNFParser.TERMINAL_STRING);
+                }
+                break;
+            case EBNFParser.SPECIAL_SEQUENCE:
+                this.enterOuterAlt(localContext, 3);
+                {
+                this.state = 51;
+                this.match(EBNFParser.SPECIAL_SEQUENCE);
+                }
+                break;
+            case EBNFParser.OTHER_CHARACTER:
+                this.enterOuterAlt(localContext, 4);
+                {
+                this.state = 52;
                 this.match(EBNFParser.OTHER_CHARACTER);
                 }
                 break;
@@ -185,7 +198,7 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 54;
+            this.state = 56;
             this.errorHandler.sync(this);
             alternative = 1;
             do {
@@ -193,7 +206,7 @@ export class EBNFParser extends antlr.Parser {
                 case 1:
                     {
                     {
-                    this.state = 53;
+                    this.state = 55;
                     this.syntaxRule();
                     }
                     }
@@ -201,25 +214,25 @@ export class EBNFParser extends antlr.Parser {
                 default:
                     throw new antlr.NoViableAltException(this);
                 }
-                this.state = 56;
+                this.state = 58;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 2, this.context);
             } while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER);
-            this.state = 61;
+            this.state = 63;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 58;
+                this.state = 60;
                 this.comment();
                 }
                 }
-                this.state = 63;
+                this.state = 65;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
-            this.state = 64;
+            this.state = 66;
             this.match(EBNFParser.EOF);
             }
         }
@@ -243,27 +256,27 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 69;
+            this.state = 71;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 66;
+                this.state = 68;
                 this.comment();
                 }
                 }
-                this.state = 71;
+                this.state = 73;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
-            this.state = 72;
-            this.metaWithComments();
-            this.state = 73;
-            this.defintitionSymbolWithComments();
             this.state = 74;
-            this.definitionsList();
+            this.metaWithComments();
             this.state = 75;
+            this.defintitionSymbolWithComments();
+            this.state = 76;
+            this.definitionsList();
+            this.state = 77;
             this.match(EBNFParser.TERMINATOR_SYMBOL);
             }
         }
@@ -287,19 +300,19 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 77;
+            this.state = 79;
             this.match(EBNFParser.META_IDENTIFIER);
-            this.state = 81;
+            this.state = 83;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 78;
+                this.state = 80;
                 this.comment();
                 }
                 }
-                this.state = 83;
+                this.state = 85;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -325,21 +338,21 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 84;
+            this.state = 86;
             this.match(EBNFParser.DEFINING_SYMBOL);
-            this.state = 88;
+            this.state = 90;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 6, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 85;
+                    this.state = 87;
                     this.comment();
                     }
                     }
                 }
-                this.state = 90;
+                this.state = 92;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 6, this.context);
             }
@@ -366,37 +379,37 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 91;
+            this.state = 93;
             this.singleDefinition();
-            this.state = 102;
+            this.state = 104;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 12) {
                 {
                 {
-                this.state = 92;
+                this.state = 94;
                 this.match(EBNFParser.DEFINITION_SEPARATOR_SYMBOL);
-                this.state = 96;
+                this.state = 98;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 93;
+                        this.state = 95;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 98;
+                    this.state = 100;
                     this.errorHandler.sync(this);
                     alternative = this.interpreter.adaptivePredict(this.tokenStream, 7, this.context);
                 }
-                this.state = 99;
+                this.state = 101;
                 this.singleDefinition();
                 }
                 }
-                this.state = 104;
+                this.state = 106;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -423,37 +436,37 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 105;
+            this.state = 107;
             this.syntacticTerm();
-            this.state = 116;
+            this.state = 118;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 1) {
                 {
                 {
-                this.state = 106;
+                this.state = 108;
                 this.match(EBNFParser.CONCATENATE_SYMBOL);
-                this.state = 110;
+                this.state = 112;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 9, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 107;
+                        this.state = 109;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 112;
+                    this.state = 114;
                     this.errorHandler.sync(this);
                     alternative = this.interpreter.adaptivePredict(this.tokenStream, 9, this.context);
                 }
-                this.state = 113;
+                this.state = 115;
                 this.syntacticTerm();
                 }
                 }
-                this.state = 118;
+                this.state = 120;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -480,32 +493,32 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 119;
+            this.state = 121;
             this.syntacticFactor();
-            this.state = 128;
+            this.state = 130;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 3) {
                 {
-                this.state = 120;
+                this.state = 122;
                 this.match(EBNFParser.EXCEPT_SYMBOL);
-                this.state = 124;
+                this.state = 126;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
                 while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                     if (alternative === 1) {
                         {
                         {
-                        this.state = 121;
+                        this.state = 123;
                         this.comment();
                         }
                         }
                     }
-                    this.state = 126;
+                    this.state = 128;
                     this.errorHandler.sync(this);
                     alternative = this.interpreter.adaptivePredict(this.tokenStream, 11, this.context);
                 }
-                this.state = 127;
+                this.state = 129;
                 this.syntacticException();
                 }
             }
@@ -532,19 +545,19 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 130;
+            this.state = 132;
             this.syntacticExceptionFactor();
-            this.state = 134;
+            this.state = 136;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 131;
+                this.state = 133;
                 this.comment();
                 }
                 }
-                this.state = 136;
+                this.state = 138;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -570,19 +583,19 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 140;
+            this.state = 142;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 14) {
                 {
-                this.state = 137;
+                this.state = 139;
                 this.integerWithComments();
-                this.state = 138;
+                this.state = 140;
                 this.repetitionSymbolWithComments();
                 }
             }
 
-            this.state = 142;
+            this.state = 144;
             this.syntacticExceptionPrimary();
             }
         }
@@ -606,19 +619,19 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 144;
+            this.state = 146;
             this.match(EBNFParser.INTEGER);
-            this.state = 148;
+            this.state = 150;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 145;
+                this.state = 147;
                 this.comment();
                 }
                 }
-                this.state = 150;
+                this.state = 152;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -644,21 +657,21 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 151;
+            this.state = 153;
             this.match(EBNFParser.REPETITION_SYMBOL);
-            this.state = 155;
+            this.state = 157;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 16, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 152;
+                    this.state = 154;
                     this.comment();
                     }
                     }
                 }
-                this.state = 157;
+                this.state = 159;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 16, this.context);
             }
@@ -684,36 +697,42 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 164;
+            this.state = 167;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_OPTION_SYMBOL:
                 {
-                this.state = 158;
+                this.state = 160;
                 this.optionalSequence();
                 }
                 break;
             case EBNFParser.START_REPEAT_SYMBOL:
                 {
-                this.state = 159;
+                this.state = 161;
                 this.repeatedSequence();
                 }
                 break;
             case EBNFParser.START_GROUP_SYMBOL:
                 {
-                this.state = 160;
+                this.state = 162;
                 this.groupedSequence();
+                }
+                break;
+            case EBNFParser.META_IDENTIFIER:
+                {
+                this.state = 163;
+                this.match(EBNFParser.META_IDENTIFIER);
                 }
                 break;
             case EBNFParser.TERMINAL_STRING:
                 {
-                this.state = 161;
+                this.state = 164;
                 this.match(EBNFParser.TERMINAL_STRING);
                 }
                 break;
             case EBNFParser.SPECIAL_SEQUENCE:
                 {
-                this.state = 162;
+                this.state = 165;
                 this.match(EBNFParser.SPECIAL_SEQUENCE);
                 }
                 break;
@@ -726,26 +745,26 @@ export class EBNFParser extends antlr.Parser {
             case EBNFParser.TERMINATOR_SYMBOL:
             case EBNFParser.NESTED_START_COMMENT_SYMBOL:
                 {
-                this.state = 163;
+                this.state = 166;
                 this.emptySequence();
                 }
                 break;
             default:
                 throw new antlr.NoViableAltException(this);
             }
-            this.state = 169;
+            this.state = 172;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 18, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 166;
+                    this.state = 169;
                     this.comment();
                     }
                     }
                 }
-                this.state = 171;
+                this.state = 174;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 18, this.context);
             }
@@ -771,19 +790,19 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 175;
+            this.state = 178;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             if (_la === 14) {
                 {
-                this.state = 172;
+                this.state = 175;
                 this.integerWithComments();
-                this.state = 173;
+                this.state = 176;
                 this.repetitionSymbolWithComments();
                 }
             }
 
-            this.state = 177;
+            this.state = 180;
             this.syntacticPrimary();
             }
         }
@@ -807,42 +826,42 @@ export class EBNFParser extends antlr.Parser {
         try {
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 186;
+            this.state = 189;
             this.errorHandler.sync(this);
             switch (this.tokenStream.LA(1)) {
             case EBNFParser.START_OPTION_SYMBOL:
                 {
-                this.state = 179;
+                this.state = 182;
                 this.optionalSequence();
                 }
                 break;
             case EBNFParser.START_REPEAT_SYMBOL:
                 {
-                this.state = 180;
+                this.state = 183;
                 this.repeatedSequence();
                 }
                 break;
             case EBNFParser.START_GROUP_SYMBOL:
                 {
-                this.state = 181;
+                this.state = 184;
                 this.groupedSequence();
                 }
                 break;
             case EBNFParser.META_IDENTIFIER:
                 {
-                this.state = 182;
+                this.state = 185;
                 this.match(EBNFParser.META_IDENTIFIER);
                 }
                 break;
             case EBNFParser.TERMINAL_STRING:
                 {
-                this.state = 183;
+                this.state = 186;
                 this.match(EBNFParser.TERMINAL_STRING);
                 }
                 break;
             case EBNFParser.SPECIAL_SEQUENCE:
                 {
-                this.state = 184;
+                this.state = 187;
                 this.match(EBNFParser.SPECIAL_SEQUENCE);
                 }
                 break;
@@ -856,24 +875,24 @@ export class EBNFParser extends antlr.Parser {
             case EBNFParser.TERMINATOR_SYMBOL:
             case EBNFParser.NESTED_START_COMMENT_SYMBOL:
                 {
-                this.state = 185;
+                this.state = 188;
                 this.emptySequence();
                 }
                 break;
             default:
                 throw new antlr.NoViableAltException(this);
             }
-            this.state = 191;
+            this.state = 194;
             this.errorHandler.sync(this);
             _la = this.tokenStream.LA(1);
             while (_la === 7 || _la === 20) {
                 {
                 {
-                this.state = 188;
+                this.state = 191;
                 this.comment();
                 }
                 }
-                this.state = 193;
+                this.state = 196;
                 this.errorHandler.sync(this);
                 _la = this.tokenStream.LA(1);
             }
@@ -899,27 +918,27 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 194;
+            this.state = 197;
             this.match(EBNFParser.START_OPTION_SYMBOL);
-            this.state = 198;
+            this.state = 201;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 22, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 195;
+                    this.state = 198;
                     this.comment();
                     }
                     }
                 }
-                this.state = 200;
+                this.state = 203;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 22, this.context);
             }
-            this.state = 201;
+            this.state = 204;
             this.definitionsList();
-            this.state = 202;
+            this.state = 205;
             this.match(EBNFParser.END_OPTION_SYMBOL);
             }
         }
@@ -943,27 +962,27 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 204;
+            this.state = 207;
             this.match(EBNFParser.START_REPEAT_SYMBOL);
-            this.state = 208;
+            this.state = 211;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 23, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 205;
+                    this.state = 208;
                     this.comment();
                     }
                     }
                 }
-                this.state = 210;
+                this.state = 213;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 23, this.context);
             }
-            this.state = 211;
+            this.state = 214;
             this.definitionsList();
-            this.state = 212;
+            this.state = 215;
             this.match(EBNFParser.END_REPEAT_SYMBOL);
             }
         }
@@ -987,27 +1006,27 @@ export class EBNFParser extends antlr.Parser {
             let alternative: number;
             this.enterOuterAlt(localContext, 1);
             {
-            this.state = 214;
+            this.state = 217;
             this.match(EBNFParser.START_GROUP_SYMBOL);
-            this.state = 218;
+            this.state = 221;
             this.errorHandler.sync(this);
             alternative = this.interpreter.adaptivePredict(this.tokenStream, 24, this.context);
             while (alternative !== 2 && alternative !== antlr.ATN.INVALID_ALT_NUMBER) {
                 if (alternative === 1) {
                     {
                     {
-                    this.state = 215;
+                    this.state = 218;
                     this.comment();
                     }
                     }
                 }
-                this.state = 220;
+                this.state = 223;
                 this.errorHandler.sync(this);
                 alternative = this.interpreter.adaptivePredict(this.tokenStream, 24, this.context);
             }
-            this.state = 221;
+            this.state = 224;
             this.definitionsList();
-            this.state = 222;
+            this.state = 225;
             this.match(EBNFParser.END_GROUP_SYMBOL);
             }
         }
@@ -1048,85 +1067,87 @@ export class EBNFParser extends antlr.Parser {
     }
 
     public static readonly _serializedATN: number[] = [
-        4,1,21,227,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
+        4,1,21,230,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,
         6,2,7,7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,
         2,14,7,14,2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,1,0,
-        1,0,5,0,43,8,0,10,0,12,0,46,9,0,1,0,1,0,1,1,1,1,3,1,52,8,1,1,2,4,
-        2,55,8,2,11,2,12,2,56,1,2,5,2,60,8,2,10,2,12,2,63,9,2,1,2,1,2,1,
-        3,5,3,68,8,3,10,3,12,3,71,9,3,1,3,1,3,1,3,1,3,1,3,1,4,1,4,5,4,80,
-        8,4,10,4,12,4,83,9,4,1,5,1,5,5,5,87,8,5,10,5,12,5,90,9,5,1,6,1,6,
-        1,6,5,6,95,8,6,10,6,12,6,98,9,6,1,6,5,6,101,8,6,10,6,12,6,104,9,
-        6,1,7,1,7,1,7,5,7,109,8,7,10,7,12,7,112,9,7,1,7,5,7,115,8,7,10,7,
-        12,7,118,9,7,1,8,1,8,1,8,5,8,123,8,8,10,8,12,8,126,9,8,1,8,3,8,129,
-        8,8,1,9,1,9,5,9,133,8,9,10,9,12,9,136,9,9,1,10,1,10,1,10,3,10,141,
-        8,10,1,10,1,10,1,11,1,11,5,11,147,8,11,10,11,12,11,150,9,11,1,12,
-        1,12,5,12,154,8,12,10,12,12,12,157,9,12,1,13,1,13,1,13,1,13,1,13,
-        1,13,3,13,165,8,13,1,13,5,13,168,8,13,10,13,12,13,171,9,13,1,14,
-        1,14,1,14,3,14,176,8,14,1,14,1,14,1,15,1,15,1,15,1,15,1,15,1,15,
-        1,15,3,15,187,8,15,1,15,5,15,190,8,15,10,15,12,15,193,9,15,1,16,
-        1,16,5,16,197,8,16,10,16,12,16,200,9,16,1,16,1,16,1,16,1,17,1,17,
-        5,17,207,8,17,10,17,12,17,210,9,17,1,17,1,17,1,17,1,18,1,18,5,18,
-        217,8,18,10,18,12,18,220,9,18,1,18,1,18,1,18,1,19,1,19,1,19,0,0,
-        20,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,0,1,2,
-        0,7,7,20,20,240,0,40,1,0,0,0,2,51,1,0,0,0,4,54,1,0,0,0,6,69,1,0,
-        0,0,8,77,1,0,0,0,10,84,1,0,0,0,12,91,1,0,0,0,14,105,1,0,0,0,16,119,
-        1,0,0,0,18,130,1,0,0,0,20,140,1,0,0,0,22,144,1,0,0,0,24,151,1,0,
-        0,0,26,164,1,0,0,0,28,175,1,0,0,0,30,186,1,0,0,0,32,194,1,0,0,0,
-        34,204,1,0,0,0,36,214,1,0,0,0,38,224,1,0,0,0,40,44,7,0,0,0,41,43,
-        3,2,1,0,42,41,1,0,0,0,43,46,1,0,0,0,44,42,1,0,0,0,44,45,1,0,0,0,
-        45,47,1,0,0,0,46,44,1,0,0,0,47,48,5,19,0,0,48,1,1,0,0,0,49,52,3,
-        0,0,0,50,52,5,21,0,0,51,49,1,0,0,0,51,50,1,0,0,0,52,3,1,0,0,0,53,
-        55,3,6,3,0,54,53,1,0,0,0,55,56,1,0,0,0,56,54,1,0,0,0,56,57,1,0,0,
-        0,57,61,1,0,0,0,58,60,3,0,0,0,59,58,1,0,0,0,60,63,1,0,0,0,61,59,
-        1,0,0,0,61,62,1,0,0,0,62,64,1,0,0,0,63,61,1,0,0,0,64,65,5,0,0,1,
-        65,5,1,0,0,0,66,68,3,0,0,0,67,66,1,0,0,0,68,71,1,0,0,0,69,67,1,0,
-        0,0,69,70,1,0,0,0,70,72,1,0,0,0,71,69,1,0,0,0,72,73,3,8,4,0,73,74,
-        3,10,5,0,74,75,3,12,6,0,75,76,5,13,0,0,76,7,1,0,0,0,77,81,5,15,0,
-        0,78,80,3,0,0,0,79,78,1,0,0,0,80,83,1,0,0,0,81,79,1,0,0,0,81,82,
-        1,0,0,0,82,9,1,0,0,0,83,81,1,0,0,0,84,88,5,2,0,0,85,87,3,0,0,0,86,
-        85,1,0,0,0,87,90,1,0,0,0,88,86,1,0,0,0,88,89,1,0,0,0,89,11,1,0,0,
-        0,90,88,1,0,0,0,91,102,3,14,7,0,92,96,5,12,0,0,93,95,3,0,0,0,94,
-        93,1,0,0,0,95,98,1,0,0,0,96,94,1,0,0,0,96,97,1,0,0,0,97,99,1,0,0,
-        0,98,96,1,0,0,0,99,101,3,14,7,0,100,92,1,0,0,0,101,104,1,0,0,0,102,
-        100,1,0,0,0,102,103,1,0,0,0,103,13,1,0,0,0,104,102,1,0,0,0,105,116,
-        3,16,8,0,106,110,5,1,0,0,107,109,3,0,0,0,108,107,1,0,0,0,109,112,
-        1,0,0,0,110,108,1,0,0,0,110,111,1,0,0,0,111,113,1,0,0,0,112,110,
-        1,0,0,0,113,115,3,16,8,0,114,106,1,0,0,0,115,118,1,0,0,0,116,114,
-        1,0,0,0,116,117,1,0,0,0,117,15,1,0,0,0,118,116,1,0,0,0,119,128,3,
-        28,14,0,120,124,5,3,0,0,121,123,3,0,0,0,122,121,1,0,0,0,123,126,
-        1,0,0,0,124,122,1,0,0,0,124,125,1,0,0,0,125,127,1,0,0,0,126,124,
-        1,0,0,0,127,129,3,18,9,0,128,120,1,0,0,0,128,129,1,0,0,0,129,17,
-        1,0,0,0,130,134,3,20,10,0,131,133,3,0,0,0,132,131,1,0,0,0,133,136,
-        1,0,0,0,134,132,1,0,0,0,134,135,1,0,0,0,135,19,1,0,0,0,136,134,1,
-        0,0,0,137,138,3,22,11,0,138,139,3,24,12,0,139,141,1,0,0,0,140,137,
-        1,0,0,0,140,141,1,0,0,0,141,142,1,0,0,0,142,143,3,26,13,0,143,21,
-        1,0,0,0,144,148,5,14,0,0,145,147,3,0,0,0,146,145,1,0,0,0,147,150,
-        1,0,0,0,148,146,1,0,0,0,148,149,1,0,0,0,149,23,1,0,0,0,150,148,1,
-        0,0,0,151,155,5,4,0,0,152,154,3,0,0,0,153,152,1,0,0,0,154,157,1,
-        0,0,0,155,153,1,0,0,0,155,156,1,0,0,0,156,25,1,0,0,0,157,155,1,0,
-        0,0,158,165,3,32,16,0,159,165,3,34,17,0,160,165,3,36,18,0,161,165,
-        5,17,0,0,162,165,5,18,0,0,163,165,3,38,19,0,164,158,1,0,0,0,164,
-        159,1,0,0,0,164,160,1,0,0,0,164,161,1,0,0,0,164,162,1,0,0,0,164,
-        163,1,0,0,0,165,169,1,0,0,0,166,168,3,0,0,0,167,166,1,0,0,0,168,
-        171,1,0,0,0,169,167,1,0,0,0,169,170,1,0,0,0,170,27,1,0,0,0,171,169,
-        1,0,0,0,172,173,3,22,11,0,173,174,3,24,12,0,174,176,1,0,0,0,175,
-        172,1,0,0,0,175,176,1,0,0,0,176,177,1,0,0,0,177,178,3,30,15,0,178,
-        29,1,0,0,0,179,187,3,32,16,0,180,187,3,34,17,0,181,187,3,36,18,0,
-        182,187,5,15,0,0,183,187,5,17,0,0,184,187,5,18,0,0,185,187,3,38,
-        19,0,186,179,1,0,0,0,186,180,1,0,0,0,186,181,1,0,0,0,186,182,1,0,
-        0,0,186,183,1,0,0,0,186,184,1,0,0,0,186,185,1,0,0,0,187,191,1,0,
-        0,0,188,190,3,0,0,0,189,188,1,0,0,0,190,193,1,0,0,0,191,189,1,0,
-        0,0,191,192,1,0,0,0,192,31,1,0,0,0,193,191,1,0,0,0,194,198,5,10,
-        0,0,195,197,3,0,0,0,196,195,1,0,0,0,197,200,1,0,0,0,198,196,1,0,
-        0,0,198,199,1,0,0,0,199,201,1,0,0,0,200,198,1,0,0,0,201,202,3,12,
-        6,0,202,203,5,8,0,0,203,33,1,0,0,0,204,208,5,11,0,0,205,207,3,0,
-        0,0,206,205,1,0,0,0,207,210,1,0,0,0,208,206,1,0,0,0,208,209,1,0,
-        0,0,209,211,1,0,0,0,210,208,1,0,0,0,211,212,3,12,6,0,212,213,5,9,
-        0,0,213,35,1,0,0,0,214,218,5,6,0,0,215,217,3,0,0,0,216,215,1,0,0,
-        0,217,220,1,0,0,0,218,216,1,0,0,0,218,219,1,0,0,0,219,221,1,0,0,
-        0,220,218,1,0,0,0,221,222,3,12,6,0,222,223,5,5,0,0,223,37,1,0,0,
-        0,224,225,1,0,0,0,225,39,1,0,0,0,25,44,51,56,61,69,81,88,96,102,
-        110,116,124,128,134,140,148,155,164,169,175,186,191,198,208,218
+        1,0,5,0,43,8,0,10,0,12,0,46,9,0,1,0,1,0,1,1,1,1,1,1,1,1,3,1,54,8,
+        1,1,2,4,2,57,8,2,11,2,12,2,58,1,2,5,2,62,8,2,10,2,12,2,65,9,2,1,
+        2,1,2,1,3,5,3,70,8,3,10,3,12,3,73,9,3,1,3,1,3,1,3,1,3,1,3,1,4,1,
+        4,5,4,82,8,4,10,4,12,4,85,9,4,1,5,1,5,5,5,89,8,5,10,5,12,5,92,9,
+        5,1,6,1,6,1,6,5,6,97,8,6,10,6,12,6,100,9,6,1,6,5,6,103,8,6,10,6,
+        12,6,106,9,6,1,7,1,7,1,7,5,7,111,8,7,10,7,12,7,114,9,7,1,7,5,7,117,
+        8,7,10,7,12,7,120,9,7,1,8,1,8,1,8,5,8,125,8,8,10,8,12,8,128,9,8,
+        1,8,3,8,131,8,8,1,9,1,9,5,9,135,8,9,10,9,12,9,138,9,9,1,10,1,10,
+        1,10,3,10,143,8,10,1,10,1,10,1,11,1,11,5,11,149,8,11,10,11,12,11,
+        152,9,11,1,12,1,12,5,12,156,8,12,10,12,12,12,159,9,12,1,13,1,13,
+        1,13,1,13,1,13,1,13,1,13,3,13,168,8,13,1,13,5,13,171,8,13,10,13,
+        12,13,174,9,13,1,14,1,14,1,14,3,14,179,8,14,1,14,1,14,1,15,1,15,
+        1,15,1,15,1,15,1,15,1,15,3,15,190,8,15,1,15,5,15,193,8,15,10,15,
+        12,15,196,9,15,1,16,1,16,5,16,200,8,16,10,16,12,16,203,9,16,1,16,
+        1,16,1,16,1,17,1,17,5,17,210,8,17,10,17,12,17,213,9,17,1,17,1,17,
+        1,17,1,18,1,18,5,18,220,8,18,10,18,12,18,223,9,18,1,18,1,18,1,18,
+        1,19,1,19,1,19,0,0,20,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,
+        32,34,36,38,0,1,2,0,7,7,20,20,246,0,40,1,0,0,0,2,53,1,0,0,0,4,56,
+        1,0,0,0,6,71,1,0,0,0,8,79,1,0,0,0,10,86,1,0,0,0,12,93,1,0,0,0,14,
+        107,1,0,0,0,16,121,1,0,0,0,18,132,1,0,0,0,20,142,1,0,0,0,22,146,
+        1,0,0,0,24,153,1,0,0,0,26,167,1,0,0,0,28,178,1,0,0,0,30,189,1,0,
+        0,0,32,197,1,0,0,0,34,207,1,0,0,0,36,217,1,0,0,0,38,227,1,0,0,0,
+        40,44,7,0,0,0,41,43,3,2,1,0,42,41,1,0,0,0,43,46,1,0,0,0,44,42,1,
+        0,0,0,44,45,1,0,0,0,45,47,1,0,0,0,46,44,1,0,0,0,47,48,5,19,0,0,48,
+        1,1,0,0,0,49,54,3,0,0,0,50,54,5,17,0,0,51,54,5,18,0,0,52,54,5,21,
+        0,0,53,49,1,0,0,0,53,50,1,0,0,0,53,51,1,0,0,0,53,52,1,0,0,0,54,3,
+        1,0,0,0,55,57,3,6,3,0,56,55,1,0,0,0,57,58,1,0,0,0,58,56,1,0,0,0,
+        58,59,1,0,0,0,59,63,1,0,0,0,60,62,3,0,0,0,61,60,1,0,0,0,62,65,1,
+        0,0,0,63,61,1,0,0,0,63,64,1,0,0,0,64,66,1,0,0,0,65,63,1,0,0,0,66,
+        67,5,0,0,1,67,5,1,0,0,0,68,70,3,0,0,0,69,68,1,0,0,0,70,73,1,0,0,
+        0,71,69,1,0,0,0,71,72,1,0,0,0,72,74,1,0,0,0,73,71,1,0,0,0,74,75,
+        3,8,4,0,75,76,3,10,5,0,76,77,3,12,6,0,77,78,5,13,0,0,78,7,1,0,0,
+        0,79,83,5,15,0,0,80,82,3,0,0,0,81,80,1,0,0,0,82,85,1,0,0,0,83,81,
+        1,0,0,0,83,84,1,0,0,0,84,9,1,0,0,0,85,83,1,0,0,0,86,90,5,2,0,0,87,
+        89,3,0,0,0,88,87,1,0,0,0,89,92,1,0,0,0,90,88,1,0,0,0,90,91,1,0,0,
+        0,91,11,1,0,0,0,92,90,1,0,0,0,93,104,3,14,7,0,94,98,5,12,0,0,95,
+        97,3,0,0,0,96,95,1,0,0,0,97,100,1,0,0,0,98,96,1,0,0,0,98,99,1,0,
+        0,0,99,101,1,0,0,0,100,98,1,0,0,0,101,103,3,14,7,0,102,94,1,0,0,
+        0,103,106,1,0,0,0,104,102,1,0,0,0,104,105,1,0,0,0,105,13,1,0,0,0,
+        106,104,1,0,0,0,107,118,3,16,8,0,108,112,5,1,0,0,109,111,3,0,0,0,
+        110,109,1,0,0,0,111,114,1,0,0,0,112,110,1,0,0,0,112,113,1,0,0,0,
+        113,115,1,0,0,0,114,112,1,0,0,0,115,117,3,16,8,0,116,108,1,0,0,0,
+        117,120,1,0,0,0,118,116,1,0,0,0,118,119,1,0,0,0,119,15,1,0,0,0,120,
+        118,1,0,0,0,121,130,3,28,14,0,122,126,5,3,0,0,123,125,3,0,0,0,124,
+        123,1,0,0,0,125,128,1,0,0,0,126,124,1,0,0,0,126,127,1,0,0,0,127,
+        129,1,0,0,0,128,126,1,0,0,0,129,131,3,18,9,0,130,122,1,0,0,0,130,
+        131,1,0,0,0,131,17,1,0,0,0,132,136,3,20,10,0,133,135,3,0,0,0,134,
+        133,1,0,0,0,135,138,1,0,0,0,136,134,1,0,0,0,136,137,1,0,0,0,137,
+        19,1,0,0,0,138,136,1,0,0,0,139,140,3,22,11,0,140,141,3,24,12,0,141,
+        143,1,0,0,0,142,139,1,0,0,0,142,143,1,0,0,0,143,144,1,0,0,0,144,
+        145,3,26,13,0,145,21,1,0,0,0,146,150,5,14,0,0,147,149,3,0,0,0,148,
+        147,1,0,0,0,149,152,1,0,0,0,150,148,1,0,0,0,150,151,1,0,0,0,151,
+        23,1,0,0,0,152,150,1,0,0,0,153,157,5,4,0,0,154,156,3,0,0,0,155,154,
+        1,0,0,0,156,159,1,0,0,0,157,155,1,0,0,0,157,158,1,0,0,0,158,25,1,
+        0,0,0,159,157,1,0,0,0,160,168,3,32,16,0,161,168,3,34,17,0,162,168,
+        3,36,18,0,163,168,5,15,0,0,164,168,5,17,0,0,165,168,5,18,0,0,166,
+        168,3,38,19,0,167,160,1,0,0,0,167,161,1,0,0,0,167,162,1,0,0,0,167,
+        163,1,0,0,0,167,164,1,0,0,0,167,165,1,0,0,0,167,166,1,0,0,0,168,
+        172,1,0,0,0,169,171,3,0,0,0,170,169,1,0,0,0,171,174,1,0,0,0,172,
+        170,1,0,0,0,172,173,1,0,0,0,173,27,1,0,0,0,174,172,1,0,0,0,175,176,
+        3,22,11,0,176,177,3,24,12,0,177,179,1,0,0,0,178,175,1,0,0,0,178,
+        179,1,0,0,0,179,180,1,0,0,0,180,181,3,30,15,0,181,29,1,0,0,0,182,
+        190,3,32,16,0,183,190,3,34,17,0,184,190,3,36,18,0,185,190,5,15,0,
+        0,186,190,5,17,0,0,187,190,5,18,0,0,188,190,3,38,19,0,189,182,1,
+        0,0,0,189,183,1,0,0,0,189,184,1,0,0,0,189,185,1,0,0,0,189,186,1,
+        0,0,0,189,187,1,0,0,0,189,188,1,0,0,0,190,194,1,0,0,0,191,193,3,
+        0,0,0,192,191,1,0,0,0,193,196,1,0,0,0,194,192,1,0,0,0,194,195,1,
+        0,0,0,195,31,1,0,0,0,196,194,1,0,0,0,197,201,5,10,0,0,198,200,3,
+        0,0,0,199,198,1,0,0,0,200,203,1,0,0,0,201,199,1,0,0,0,201,202,1,
+        0,0,0,202,204,1,0,0,0,203,201,1,0,0,0,204,205,3,12,6,0,205,206,5,
+        8,0,0,206,33,1,0,0,0,207,211,5,11,0,0,208,210,3,0,0,0,209,208,1,
+        0,0,0,210,213,1,0,0,0,211,209,1,0,0,0,211,212,1,0,0,0,212,214,1,
+        0,0,0,213,211,1,0,0,0,214,215,3,12,6,0,215,216,5,9,0,0,216,35,1,
+        0,0,0,217,221,5,6,0,0,218,220,3,0,0,0,219,218,1,0,0,0,220,223,1,
+        0,0,0,221,219,1,0,0,0,221,222,1,0,0,0,222,224,1,0,0,0,223,221,1,
+        0,0,0,224,225,3,12,6,0,225,226,5,5,0,0,226,37,1,0,0,0,227,228,1,
+        0,0,0,228,39,1,0,0,0,25,44,53,58,63,71,83,90,98,104,112,118,126,
+        130,136,142,150,157,167,172,178,189,194,201,211,221
     ];
 
     private static __ATN: antlr.ATN;
@@ -1199,6 +1220,12 @@ export class CommentSymbolContext extends antlr.ParserRuleContext {
     }
     public comment(): CommentContext | null {
         return this.getRuleContext(0, CommentContext);
+    }
+    public TERMINAL_STRING(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.TERMINAL_STRING, 0);
+    }
+    public SPECIAL_SEQUENCE(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.SPECIAL_SEQUENCE, 0);
     }
     public OTHER_CHARACTER(): antlr.TerminalNode | null {
         return this.getToken(EBNFParser.OTHER_CHARACTER, 0);
@@ -1718,6 +1745,9 @@ export class SyntacticExceptionPrimaryContext extends antlr.ParserRuleContext {
     }
     public groupedSequence(): GroupedSequenceContext | null {
         return this.getRuleContext(0, GroupedSequenceContext);
+    }
+    public META_IDENTIFIER(): antlr.TerminalNode | null {
+        return this.getToken(EBNFParser.META_IDENTIFIER, 0);
     }
     public TERMINAL_STRING(): antlr.TerminalNode | null {
         return this.getToken(EBNFParser.TERMINAL_STRING, 0);

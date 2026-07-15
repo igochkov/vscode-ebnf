@@ -1,5 +1,6 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 export class EBNFReferenceProvider implements vscode.ReferenceProvider {
     public provideReferences(document: vscode.TextDocument, position: vscode.Position, context: vscode.ReferenceContext, token: vscode.CancellationToken): vscode.ProviderResult<vscode.Location[]> {
@@ -19,8 +20,9 @@ export class EBNFReferenceProvider implements vscode.ReferenceProvider {
             return;
         }
 
+        const target = normalizeMetaIdentifier(text);
         const result: vscode.Location[]
-            = listener.symbols.filter(symbol => symbol.text === text)
+            = listener.symbols.filter(symbol => normalizeMetaIdentifier(symbol.text) === target)
                 .map(ref => new vscode.Location(document.uri,
                     new vscode.Range(
                         ref.line - 1,

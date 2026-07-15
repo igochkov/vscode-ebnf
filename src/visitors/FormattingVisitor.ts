@@ -31,10 +31,18 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         var result: string = "";
 
         const cmt = ctx.comment();
+        const ts = ctx.TERMINAL_STRING();
+        const ss = ctx.SPECIAL_SEQUENCE();
         const os = ctx.OTHER_CHARACTER();
-        
+
         if (cmt) {
             result += this.visit(cmt);
+        }
+        else if (ts) {
+            result += ts.symbol.text;
+        }
+        else if (ss) {
+            result += ss.symbol.text;
         }
         else if (os) {
             result += os.symbol.text;
@@ -263,6 +271,7 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         const os = ctx.optionalSequence();
         const rs = ctx.repeatedSequence();
         const gs = ctx.groupedSequence();
+        const mi = ctx.META_IDENTIFIER();
         const ts = ctx.TERMINAL_STRING();
         const ss = ctx.SPECIAL_SEQUENCE();
         const es = ctx.emptySequence();
@@ -275,6 +284,9 @@ export class FormattingVisitor extends AbstractParseTreeVisitor<string> implemen
         }
         else if (gs) {
             result += this.visit(gs);
+        }
+        else if (mi) {
+            result += mi.symbol.text;
         }
         else if (ts) {
             result += ts.symbol.text;

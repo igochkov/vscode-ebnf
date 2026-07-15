@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { HYPHEN_DIAGNOSTIC_CODE, convertIdentifier } from "../migration/IdentifierMigration";
+import { IDENTIFIER_MIGRATION_CODE } from "../migration/IdentifierMigration";
 import { CONVERT_IDENTIFIERS_COMMAND } from "../commands/ConvertIdentifiers";
 import { DiagnosticCode } from "../analysis/GrammarAnalyzer";
 import { ParserContext } from "../ParserContext";
@@ -7,7 +7,7 @@ import { ruleRange } from "./ProviderUtils";
 
 /**
  * Quick Fixes for EBNF diagnostics:
- *  - hyphen-in-identifier deprecation (#36): per-identifier "-"→"_" and a whole-file convert;
+ *  - non-standard identifier "-"/"_" (#36): a whole-file convert (to spaces or "_");
  *  - undefined rule (G1): create a stub for the missing rule;
  *  - unused rule (G3): delete the offending rule.
  * Edits are in-memory and undoable — nothing is written to disk until the user saves.
@@ -25,39 +25,27 @@ export class EBNFCodeActionsProvider implements vscode.CodeActionProvider {
         }
 
         return [
-            ...this.hyphenActions(document, context),
+            ...this.migrationActions(document, context),
             ...this.semanticActions(document, context)
         ];
     }
 
-    private hyphenActions(document: vscode.TextDocument, context: vscode.CodeActionContext): vscode.CodeAction[] {
-        const hyphenDiagnostics = context.diagnostics.filter(EBNFCodeActionsProvider.isHyphenDiagnostic);
-        if (hyphenDiagnostics.length === 0) {
+    private migrationActions(document: vscode.TextDocument, context: vscode.CodeActionContext): vscode.CodeAction[] {
+        const migrationDiagnostics = context.diagnostics.filter(EBNFCodeActionsProvider.isMigrationDiagnostic);
+        if (migrationDiagnostics.length === 0) {
             return [];
         }
 
-        const actions: vscode.CodeAction[] = [];
-
-        for (const diagnostic of hyphenDiagnostics) {
-            const current = document.getText(diagnostic.range);
-            const replacement = convertIdentifier(current, "_");
-
-            const fix = new vscode.CodeAction(`Convert "${current}" → "${replacement}"`, vscode.CodeActionKind.QuickFix);
-            fix.diagnostics = [diagnostic];
-            fix.isPreferred = true;
-            fix.edit = new vscode.WorkspaceEdit();
-            fix.edit.replace(document.uri, diagnostic.range, replacement);
-            actions.push(fix);
-        }
-
-        // Whole-file option routes through the command so the user gets the target
-        // choice and the Refactor Preview.
+        // Whole-file conversion, routed through the command so the user picks the target
+        // (spaces or "_") and gets the Refactor Preview. Converting the whole file keeps a
+        // rule's definition and its references in sync — a per-identifier edit could desync them.
         const convertAll = new vscode.CodeAction(
-            "Convert all hyphenated identifiers in file…", vscode.CodeActionKind.QuickFix);
+            "Convert all identifiers in file…", vscode.CodeActionKind.QuickFix);
+        convertAll.diagnostics = migrationDiagnostics;
+        convertAll.isPreferred = true;
         convertAll.command = { command: CONVERT_IDENTIFIERS_COMMAND, title: "EBNF: Convert identifiers…" };
-        actions.push(convertAll);
 
-        return actions;
+        return [convertAll];
     }
 
     private semanticActions(document: vscode.TextDocument, context: vscode.CodeActionContext): vscode.CodeAction[] {
@@ -124,8 +112,8 @@ export class EBNFCodeActionsProvider implements vscode.CodeActionProvider {
         return fix;
     }
 
-    private static isHyphenDiagnostic(diagnostic: vscode.Diagnostic): boolean {
+    private static isMigrationDiagnostic(diagnostic: vscode.Diagnostic): boolean {
         const code = diagnostic.code;
-        return typeof code === "object" && code !== null && (code as { value?: unknown }).value === HYPHEN_DIAGNOSTIC_CODE;
+        return typeof code === "object" && code !== null && (code as { value?: unknown }).value === IDENTIFIER_MIGRATION_CODE;
     }
 }

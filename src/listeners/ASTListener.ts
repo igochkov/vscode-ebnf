@@ -1,5 +1,5 @@
 import { ErrorNode, ParserRuleContext, TerminalNode, Token } from 'antlr4ng';
-import { SyntacticPrimaryContext, SyntaxRuleContext } from '../parser/EBNFParser';
+import { SyntacticExceptionPrimaryContext, SyntacticPrimaryContext, SyntaxRuleContext } from '../parser/EBNFParser';
 import { EBNFParserListener } from '../parser/EBNFParserListener';
 
 /**
@@ -58,6 +58,16 @@ export class ASTListener implements EBNFParserListener {
     }
 
     exitSyntacticPrimary(ctx: SyntacticPrimaryContext) {
+        const terminalNode = ctx.META_IDENTIFIER();
+
+        if (terminalNode) {
+            this.symbols.push(terminalNode.symbol);
+            this.usages.push(terminalNode.symbol);
+        }
+    }
+
+    exitSyntacticExceptionPrimary(ctx: SyntacticExceptionPrimaryContext) {
+        // A meta-identifier used inside an exception (e.g. "a - b") is a reference too.
         const terminalNode = ctx.META_IDENTIFIER();
 
         if (terminalNode) {

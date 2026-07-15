@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { ParserContext } from "../ParserContext";
 import { tokenRange } from "./ProviderUtils";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
 
 /**
  * Semantic-token legend. We only colour meta-identifiers that are *used but never defined*
@@ -25,12 +26,15 @@ export class EBNFSemanticTokensProvider implements vscode.DocumentSemanticTokens
 
         const definedNames = new Set(
             listener.definitions
-                .map(d => d.text)
-                .filter((name): name is string => name !== undefined && name.length > 0));
+                .map(d => normalizeMetaIdentifier(d.text))
+                .filter(name => name.length > 0));
 
         // Only undefined usages, in ascending (line, column) order as the builder requires.
         const undefinedUsages = listener.usages
-            .filter(usage => usage.text !== undefined && !definedNames.has(usage.text))
+            .filter(usage => {
+                const name = normalizeMetaIdentifier(usage.text);
+                return name.length > 0 && !definedNames.has(name);
+            })
             .sort((a, b) => a.line - b.line || a.column - b.column);
 
         const builder = new vscode.SemanticTokensBuilder(EBNF_SEMANTIC_TOKENS_LEGEND);

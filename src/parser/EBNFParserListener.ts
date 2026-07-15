@@ -1,4 +1,3 @@
-// Generated from d:/projects/Private/vscode-ebnf/grammar/EBNFParser.g4 by ANTLR 4.13.1
 
 import { ErrorNode, ParseTreeListener, ParserRuleContext, TerminalNode } from "antlr4ng";
 

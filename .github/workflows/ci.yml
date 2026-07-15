@@ -20,6 +20,12 @@ jobs:
       - name: Install
         run: npm ci
 
+      - name: Verify generated parser matches the grammar (drift guard)
+        run: |
+          npm run generate
+          git diff --exit-code -- src/parser \
+            || (echo "::error::src/parser is out of date with grammar/*.g4 — run 'npm run generate' and commit the result." && exit 1)
+
       - name: Type-check (strict)
         run: npm run typecheck
 
