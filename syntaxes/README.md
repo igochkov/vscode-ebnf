@@ -1,6 +1,6 @@
 The file [ebnf.tmLanguage.json](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/ebnf.tmLanguage.json) is generated from [ebnf.tmLanguage.yaml](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/ebnf.tmLanguage.yaml).
 
-To contribute to the langauge colorization:
+To contribute to the language colorization:
 
 - Install `Visual Studio Code` extension [TextMate Languages](https://marketplace.visualstudio.com/items?itemName=pedro-w.tmlanguage). This extension will give you syntax highlighting for the SublimeText JSON/YAML tmlanguage and a command to converts YAML to JSON.
 - Apply changes to the `ebnf.tmLanguage.yaml` file

@@ -12,12 +12,19 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 - [x] **Bracket matching**: Aids in matching brackets in your EBNF code.
 - [x] **Rename symbol**: Allows renaming of symbols throughout your EBNF code.
 - [x] **Go to Definition / Peek Definition**: Quickly navigate to the definition of a symbol in your EBNF code.
-- [x] **Code folding (by markers)**: Hide sections of your EBNF code for easier reading and navigation.
+- [x] **Code folding (by markers and rules)**: Hide sections of your EBNF code for easier reading and navigation.
 - [x] **Find All References / Peek References**: Find every reference to a specific symbol in your EBNF code.
-- [x] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
+- [x] **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard (whole document, range, and on-type).
+- [x] **Completion suggestions**: Suggest previously defined symbols as you type.
 - [x] **Hover**: Show information about the symbol/object that's below the mouse cursor.
 - [x] **Diagnostic**: Indicate issues with the grammar.
+- [x] **Semantic linter**: Report undefined, duplicate, and unused rules.
 - [x] **Actions on Errors or Warnings**: Possible corrective actions right next to an error or warning.
+- [x] **Outline & breadcrumbs**: Browse and navigate rules via the Outline view and breadcrumbs.
+- [x] **Document highlights**: Highlight every occurrence of the identifier under the cursor.
+- [x] **Semantic tokens**: Color used-but-undefined meta-identifiers distinctly.
+- [x] **CodeLens**: Show a reference count above each rule.
+- [x] **ISO/IEC 14977 conformance**: Space-separated meta-identifiers and §6.6 / §7.8 diagnostics.
 - [ ] **Commands (Transpile to tmLanguage)**: A command for compiling EBNF code to tmLanguage.
 - [ ] **Railroad diagram generation**: Generate railroad diagrams from your EBNF code for visualization and documentation purposes.
 
