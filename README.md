@@ -1,52 +1,147 @@
 # EBNF Tools for Visual Studio Code
 
-EBNF Tools is a Visual Studio Code extension that adds robust language support for the Extended Backus-Naur Form (EBNF) syntax notation. This tool is designed to enhance your EBNF development workflow, offering features such as syntax highlighting, bracket matching, symbol renaming, and more.
+Rich language support for **Extended Backus–Naur Form (EBNF)** grammars in Visual Studio Code — syntax highlighting, code navigation, a semantic linter, and a configurable formatter, with a focus on [ISO/IEC 14977](https://www.iso.org/standard/26153.html) conformance.
 
-For updates and future improvements, see the [changelog](https://github.com/igochkov/vscode-ebnf/blob/main/CHANGELOG.md).
+![EBNF syntax highlighting in VS Code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/syntax-highlighting.png)
+
+> **New in 1.6** — a full semantic linter (undefined / duplicate / unused rules), Outline, Hover, CodeLens, Quick Fixes, structural folding, range & on-type formatting, and improved ISO/IEC 14977 conformance. See the [changelog](https://github.com/igochkov/vscode-ebnf/blob/main/CHANGELOG.md).
+
+## Installation
+
+Open the Extensions view (`Ctrl+Shift+X`), search for **EBNF Tools**, and click **Install** — or grab it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=igochkov.vscode-ebnf). Files with the `.ebnf` extension are recognized automatically, and EBNF fenced code blocks in Markdown are highlighted too.
+
+**Requires** VS Code 1.101.0 or newer.
 
 ## Features
 
-The EBNF Tools extension currently offers the following features:
+### Writing & highlighting
 
-- **Syntax highlighting (colorization)**: Adds color to your EBNF syntax, making it easier to read and understand your code.
+| Feature | What it does |
+| --- | --- |
+| **Syntax highlighting** | Colorizes terminals, non-terminals, operators, and comments in `.ebnf` files. |
+| **Markdown code blocks** | The same highlighting inside <code>```ebnf</code> fenced blocks in your `.md` files. |
+| **Semantic tokens** | Meta-identifiers that are *used but never defined* are colored distinctly. |
+| **Comment toggling** | Comment/uncomment blocks with the standard shortcut, using EBNF `(* … *)` comments. |
+| **Bracket matching** | Matches `( )`, `[ ]`, and `{ }` pairs as you edit. |
 
-![Syntax highlighting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/syntax-highlighting.png)
+### Navigating & understanding
 
-- **Syntax highlighting in Markdown fenced code blocks**: Allows you to include EBNF code in your Markdown files with the same colorization as in your .ebnf files.
+| Feature | What it does |
+| --- | --- |
+| **Go to / Peek Definition** | Jump to a rule's definition — returns *all* definition sites when a rule is split. |
+| **Find All References** | Locate every use of a rule across the grammar. |
+| **Hover** | Shows a rule's definition and its leading comment. |
+| **Outline & breadcrumbs** | Browse and navigate rules via the Outline view and breadcrumbs. |
+| **Document highlights** | Highlights every occurrence of the identifier under the cursor. |
+| **CodeLens** | A "*N* references" lens above each rule. |
+| **Completion** | Suggests previously defined rule names as you type. |
+| **Structural folding** | Fold by rule, plus marker-based `(* region *)` folding. |
+| **Status bar** | Shows the number of rules defined in the active grammar. |
+
+### Linting & diagnostics (ISO/IEC 14977)
+
+| Feature | What it does |
+| --- | --- |
+| **Undefined rule** | Flags a meta-identifier that is used but never defined. |
+| **Duplicate definition** | Flags a rule defined by more than one syntax-rule (permitted by §5.1 note 2). |
+| **Unused rule** | Flags a defined rule that is never referenced (the first rule is treated as the start symbol). |
+| **Invalid sequences** | Flags the illegal sequences `(*)`, `(:)`, `(/)` (§7.8). |
+| **Quick Fixes** | One-click *create a missing rule* and *remove an unused rule*. |
+
+### Formatting
+
+| Feature | What it does |
+| --- | --- |
+| **Whole-document, range & on-type** | Format the file, a selection, or automatically as you finish a rule (`;` / `.`). |
+| **Configurable style** | Control symbol placement, separators, option/repeat notation, terminator, and spacing — see [Settings](#settings). |
+
+### Standards & migration
+
+| Feature | What it does |
+| --- | --- |
+| **Space-separated identifiers** | `syntax rule` parses as a single meta-identifier, so the standard's own §8.1 self-defining grammar parses. |
+| **`identifierStyle`** | Choose `modern` (allow `_`, deprecate `-`) or `standard` (strict ISO/IEC 14977) — diagnostics only, parsing is unchanged. |
+| **Convert identifiers…** | The **EBNF: Convert identifiers…** command migrates a whole document to spaces or `_`. |
+| **Standards-correct comments** | A comment may contain terminal-strings / special-sequences, so a quoted `*)` no longer ends a comment early (§6.6). |
+
+## See it in action
+
+<sub>Click a feature to expand its demo.</sub>
+
+<details>
+<summary><b>Syntax highlighting in Markdown fenced code blocks</b></summary>
 
 ![Syntax highlighting in Markdown fenced code blocks](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/fenced-code-blocks.gif)
 
-- **Commenting blocks of code**: Quickly comment out blocks of EBNF code.
+</details>
+
+<details>
+<summary><b>Commenting blocks of code</b></summary>
 
 ![Commenting blocks of code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/commenting-block.gif)
 
-- **Bracket matching**: Easily match brackets and braces in your EBNF code.
+</details>
+
+<details>
+<summary><b>Bracket matching</b></summary>
 
 ![Bracket matching](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/brace-matching.gif)
 
-- **Rename symbol**: Rename symbols throughout your EBNF code.
+</details>
+
+<details>
+<summary><b>Rename symbol</b></summary>
 
 ![Rename symbol](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/rename-symbol.gif)
 
-- **Go to Definition and Peek Definition**: Quickly navigate to the definition of a symbol in your EBNF.
+</details>
+
+<details>
+<summary><b>Go to Definition &amp; Peek Definition</b></summary>
 
 ![Go to Definition](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/go-to-definition.gif)
 
-- **Code folding (by markers)**: Hide sections of your EBNF code for easier reading and navigation.
+</details>
 
-![Code folding (by markers)](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/folding.gif)
+<details>
+<summary><b>Code folding</b></summary>
 
-- **Find All References**: Find every reference to a specific symbol in your EBNF code.
+![Code folding](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/folding.gif)
+
+</details>
+
+<details>
+<summary><b>Find All References</b></summary>
 
 ![Find All References](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/references.gif)
 
-- **Formatting**: Automatically format your EBNF code to adhere to a specific style or standard.
+</details>
+
+<details>
+<summary><b>Formatting</b></summary>
 
 ![Formatting](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/formatting.gif)
 
-- **Completion Suggestions**: Get completion suggestions to previously defined symbols.
+</details>
 
-![Completion Suggestions](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/completion-suggestions.gif)
+<details>
+<summary><b>Completion suggestions</b></summary>
+
+![Completion suggestions](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/completion-suggestions.gif)
+
+</details>
+
+## Settings
+
+Configure everything under **Settings → Extensions → EBNF**.
+
+| Setting | Default | Description |
+| --- | --- | --- |
+| `EBNF.format.enable` | `true` | Enable the EBNF formatter. |
+| `EBNF.identifierStyle` | `modern` | `modern` allows `_` (hyphens deprecated, since `-` is the except-symbol); `standard` flags both `-` and `_` as non-standard per ISO/IEC 14977. |
+| `EBNF.telemetry.enable` | `true` | Anonymous, opt-in usage telemetry (see [below](#telemetry)). |
+
+The formatting **style** is fully configurable via the `EBNF.format.*` options — defining-symbol placement and indentation, definition-separator / option / repeat / terminator symbols, and spacing around sequence symbols.
 
 ## Telemetry
 
@@ -54,14 +149,14 @@ EBNF Tools collects **anonymous** usage telemetry (via the [Aptabase](https://ap
 
 **What is collected** — at most **one event per day**, recording only *whether* (true/false) you used hyphen, underscore, or space-separated identifiers that day, plus the extension version. That's it.
 
-**What is _never_ collected:** no device or machine ID, no grammar text, no identifier names, no file names, no paths, no file contents. Because no stable identifier is sent, individual users cannot be tracked across days.
+**What is _never_ collected** — no device or machine ID, no grammar text, no identifier names, no file names, no paths, no file contents. Because no stable identifier is sent, individual users cannot be tracked across days.
 
-**How to opt out:** telemetry is only sent when VS Code's global telemetry is enabled (`telemetry.telemetryLevel`). You can additionally disable it for this extension alone with the `EBNF.telemetry.enable` setting.
+**How to opt out** — telemetry is only sent when VS Code's global telemetry is enabled (`telemetry.telemetryLevel`). You can additionally disable it for this extension alone with the `EBNF.telemetry.enable` setting.
 
 ## Contributing
 
-We welcome contributions to the EBNF Tools project. If you want to contribute, please first read our [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md).
+Contributions are welcome. Please read the [contribution guidelines](https://github.com/igochkov/vscode-ebnf/blob/main/CONTRIBUTING.md) first. For grammar/colorization changes, see the [syntaxes README](https://github.com/igochkov/vscode-ebnf/blob/main/syntaxes/README.md).
 
 ## License
 
-This project is licensed under the terms of the [MIT](LICENSE) license.
+Licensed under the terms of the [MIT](https://github.com/igochkov/vscode-ebnf/blob/main/LICENSE) license.

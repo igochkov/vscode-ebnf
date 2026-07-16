@@ -124,7 +124,7 @@ included in the project:
    or your code is unlikely be merged into the main project. Use Git's
    [interactive rebase](https://help.github.com/articles/interactive-rebase)
    feature to tidy up your commits before making them public. Also, prepend name of the feature
-   to the commit message. For instance: "SCSS: Fixes compiler results for IFileListener.\nFixes `#123`"
+   to the commit message. For instance: "Formatter: Fix comment duplication in alternation lists.\nFixes `#123`"
 
 5. Locally merge (or rebase) the upstream development branch into your topic branch:
 
