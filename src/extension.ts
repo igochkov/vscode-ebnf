@@ -79,6 +79,10 @@ function handleSettingChange(event: vscode.ConfigurationChangeEvent) {
             formattingRegistrations.dispose();
             formattingRegistrations = undefined;
         }
+
+        // Refresh diagnostics for any EBNF setting change (e.g. identifierStyle,
+        // diagnostics.parserAmbiguity) — otherwise stale diagnostics linger until the next edit.
+        ParserContext.reparseOpenDocuments();
     }
 }
 

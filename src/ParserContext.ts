@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { CharStream, CommonTokenStream, ParseTreeListener, Token } from 'antlr4ng';
+import { CharStream, CommonTokenStream, ParseTreeListener, PredictionMode, Token } from 'antlr4ng';
 
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
@@ -51,6 +51,23 @@ export class ParserContext {
         }
     }
 
+    /**
+     * Re-parse every open EBNF document so diagnostics reflect changed settings (e.g.
+     * `identifierStyle`, `diagnostics.parserAmbiguity`). The active editor's document is parsed
+     * last so the shared listener reflects it. Called from the configuration-change handler.
+     */
+    public static reparseOpenDocuments() {
+        for (const document of vscode.workspace.textDocuments) {
+            if (ParserContext.isEBNFFile(document)) {
+                ParserContext.parse(document);
+            }
+        }
+        const active = vscode.window.activeTextEditor?.document;
+        if (active && ParserContext.isEBNFFile(active)) {
+            ParserContext.parse(active);
+        }
+    }
+
     private static isEBNFFile(document: vscode.TextDocument): boolean {
         if (!document) {
             return false;
@@ -71,9 +88,15 @@ export class ParserContext {
         parser.removeParseListeners();
         parser.addParseListener(ParserContext.listener as ParseTreeListener);
         
-        const errorListener = new EBNFErrorListener(document);
+        // G20: parser-ambiguity reporting is opt-in. Exact-ambiguity detection is only enabled
+        // when the setting is on, since it makes prediction more expensive.
+        const reportAmbiguities = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<boolean>("diagnostics.parserAmbiguity", false);
+        const errorListener = new EBNFErrorListener(document, reportAmbiguities);
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener)
+        if (reportAmbiguities) {
+            parser.interpreter.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION;
+        }
 
         parser.syntax();
 

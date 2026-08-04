@@ -1,12 +1,15 @@
 import { Token } from 'antlr4ng';
 import { ASTListener, RuleInfo } from '../listeners/ASTListener';
 import { normalizeMetaIdentifier } from './metaIdentifier';
+import { isSpecialSequencePrimitive, referenceTokens, exceptionReferenceTokens, leftmostReferences, nodesOnCycle, nodesReachingCycle } from './ruleGraph';
 
 /** Diagnostic codes emitted by the semantic analyzer (stable identifiers). */
 export const DiagnosticCode = {
     UndefinedRule: "ebnf.undefinedRule",
     DuplicateDefinition: "ebnf.duplicateDefinition",
-    UnusedRule: "ebnf.unusedRule"
+    UnusedRule: "ebnf.unusedRule",
+    NonRegularException: "ebnf.nonRegularException",
+    LeftRecursion: "ebnf.leftRecursion"
 } as const;
 
 export type AnalysisSeverity = "warning" | "information" | "hint";
@@ -40,7 +43,8 @@ function rangeOfToken(token: Token): Pick<AnalysisFinding, "startLine" | "startC
  * - G2 duplicate-definition: a rule name defined by more than one syntax-rule
  *   (legal per ISO/IEC 14977 §5.1 note 2, surfaced as information, not an error).
  * - G3 unused-rule: a defined rule never referenced anywhere. The first-defined rule
- *   is treated as the grammar's start symbol and is never flagged (ISO §3.5).
+ *   is treated as the grammar's start symbol and is never flagged (ISO §3.5). Rules that are
+ *   intentional primitives (defined only via special-sequence, G4) are also never flagged.
  */
 export function analyze(listener: ASTListener): AnalysisFinding[] {
     const findings: AnalysisFinding[] = [];
@@ -86,12 +90,68 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
         }
     }
 
+    // G6 — an exception must be reducible to a meta-identifier-free (regular) factor (ISO §4.7).
+    // A meta-identifier used in an exception is fine if its rule is non-recursive (finite/regular,
+    // like ISO §8.1's "first quote symbol"); it violates §4.7 if the referenced rule is recursive.
+    const graph = new Map<string, Set<string>>();
+    for (const rule of rules) {
+        const from = normalizeMetaIdentifier(rule.name);
+        const targets = graph.get(from) ?? new Set<string>();
+        for (const ref of referenceTokens(rule.ctx)) {
+            targets.add(normalizeMetaIdentifier(ref.text));
+        }
+        graph.set(from, targets);
+    }
+    const recursiveNames = nodesReachingCycle(graph);
+    for (const rule of rules) {
+        for (const ref of exceptionReferenceTokens(rule.ctx)) {
+            const name = normalizeMetaIdentifier(ref.text);
+            if (definedNames.has(name) && recursiveNames.has(name)) {
+                findings.push({
+                    code: DiagnosticCode.NonRegularException,
+                    message: `Exception references "${name}", which is recursively defined and cannot be reduced to a meta-identifier-free factor (ISO/IEC 14977 §4.7).`,
+                    severity: "warning",
+                    ...rangeOfToken(ref)
+                });
+            }
+        }
+    }
+
+    // G5 — left-recursion hint. A rule that is leftmost-reachable from itself is left-recursive;
+    // valid EBNF, but some top-down parser generators cannot handle it, so surface it as a hint.
+    const leftmostGraph = new Map<string, Set<string>>();
+    for (const rule of rules) {
+        const from = normalizeMetaIdentifier(rule.name);
+        const targets = leftmostGraph.get(from) ?? new Set<string>();
+        for (const ref of leftmostReferences(rule.ctx)) {
+            targets.add(normalizeMetaIdentifier(ref));
+        }
+        leftmostGraph.set(from, targets);
+    }
+    const leftRecursive = nodesOnCycle(leftmostGraph);
+    const reportedLeftRecursion = new Set<string>();
+    for (const rule of rules) {
+        const name = normalizeMetaIdentifier(rule.name);
+        if (leftRecursive.has(name) && !reportedLeftRecursion.has(name)) {
+            reportedLeftRecursion.add(name);
+            findings.push({
+                code: DiagnosticCode.LeftRecursion,
+                message: `Rule "${name}" is left-recursive; some top-down parser generators cannot handle it.`,
+                severity: "information",
+                ...rangeOfToken(rule.nameToken)
+            });
+        }
+    }
+
     // G3 — unused rules (the first-defined rule is the start symbol).
+    // G4 — intentional primitives (special-sequence-only rules) are exempt.
+    const primitiveNames = new Set(
+        rules.filter(rule => isSpecialSequencePrimitive(rule.ctx)).map(rule => normalizeMetaIdentifier(rule.name)));
     const startSymbol: RuleInfo | undefined = rules[0];
     const startName = startSymbol ? normalizeMetaIdentifier(startSymbol.name) : undefined;
     for (const rule of rules) {
         const name = normalizeMetaIdentifier(rule.name);
-        if (name === startName) {
+        if (name === startName || primitiveNames.has(name)) {
             continue;
         }
         if (!usedNames.has(name)) {

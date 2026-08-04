@@ -80,3 +80,78 @@ test('SC1 - "foo   bar" (usage) resolves to "foo bar" (definition); no undefined
     const findings = findingsFor(`start = foo   bar; foo bar = "x";`);
     expect(findings).toHaveLength(0);
 });
+
+// G4 — an unreferenced rule defined only via special-sequence is an intentional primitive.
+test('G4 - a special-sequence-only rule is not flagged as unused', () => {
+    // "character" is defined via ? ... ? and never referenced — but it is a primitive, not a typo.
+    const findings = findingsFor(`start = "x"; character = ? any character ?;`);
+    expect(codes(findings)).not.toContain(DiagnosticCode.UnusedRule);
+});
+
+test('G4 - a normal unused rule is still flagged (not a special-sequence primitive)', () => {
+    const findings = findingsFor(`start = "x"; orphan = "y";`);
+    expect(codes(findings)).toContain(DiagnosticCode.UnusedRule);
+});
+
+test('G4 - a rule mixing a special-sequence with a rule reference is not treated as primitive', () => {
+    // "mixed" references "other", so it is not a leaf primitive; when unused it is still flagged.
+    const findings = findingsFor(`start = "x"; mixed = ? sq ?, other; other = "y";`);
+    const unused = findings.filter(f => f.code === DiagnosticCode.UnusedRule).map(f => f.message);
+    expect(unused.some(m => m.includes('"mixed"'))).toBe(true);
+});
+
+// G6 — exceptions must be reducible to a meta-identifier-free factor (ISO §4.7).
+test('G6 - an exception referencing a non-recursive rule is allowed (ISO §8.1 style)', () => {
+    // "terminal char - quote" where both reduce to terminals — compliant, no warning.
+    const findings = findingsFor(`start = terminal char - quote; terminal char = "a" | "b"; quote = "'";`);
+    expect(codes(findings)).not.toContain(DiagnosticCode.NonRegularException);
+});
+
+test('G6 - an exception referencing a recursively-defined rule is flagged', () => {
+    // "list" is recursive (list -> list), so it is not reducible to a terminal-only factor.
+    const findings = findingsFor(`start = item - list; item = "x"; list = item, list | item;`);
+    const nonRegular = findings.filter(f => f.code === DiagnosticCode.NonRegularException);
+    expect(nonRegular).toHaveLength(1);
+    expect(nonRegular[0].message).toContain('"list"');
+    expect(nonRegular[0].severity).toBe('warning');
+});
+
+test('G6 - a directly self-recursive rule used in an exception is flagged', () => {
+    const findings = findingsFor(`start = a - b; a = "x"; b = b, "y" | "z";`);
+    expect(codes(findings)).toContain(DiagnosticCode.NonRegularException);
+});
+
+// G5 — left-recursion hints.
+function leftRecursive(input: string): string[] {
+    return findingsFor(input)
+        .filter(f => f.code === DiagnosticCode.LeftRecursion)
+        .map(f => f.message);
+}
+
+test('G5 - direct left recursion is flagged', () => {
+    const messages = leftRecursive(`expr = expr, "+", term | term; term = "n";`);
+    expect(messages).toHaveLength(1);
+    expect(messages[0]).toContain('"expr"');
+});
+
+test('G5 - right recursion is NOT left recursion', () => {
+    // "list" starts with "item", not itself → not left-recursive.
+    expect(leftRecursive(`start = list; list = item, list | item; item = "x";`)).toHaveLength(0);
+});
+
+test('G5 - indirect (mutual) left recursion flags both rules', () => {
+    const messages = leftRecursive(`start = a; a = b, "x"; b = a, "y" | "z";`);
+    expect(messages.some(m => m.includes('"a"'))).toBe(true);
+    expect(messages.some(m => m.includes('"b"'))).toBe(true);
+});
+
+test('G5 - left recursion through a grouped sequence is detected', () => {
+    const messages = leftRecursive(`expr = (expr | term), "*"; term = "n";`);
+    expect(messages.some(m => m.includes('"expr"'))).toBe(true);
+});
+
+test('G5 - severity is information (a hint, not an error)', () => {
+    const findings = findingsFor(`expr = expr, "x" | "y";`);
+    const lr = findings.filter(f => f.code === DiagnosticCode.LeftRecursion);
+    expect(lr[0].severity).toBe('information');
+});

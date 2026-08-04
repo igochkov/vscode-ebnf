@@ -3,7 +3,9 @@ import { IDENTIFIER_MIGRATION_CODE } from "../migration/IdentifierMigration";
 import { CONVERT_IDENTIFIERS_COMMAND } from "../commands/ConvertIdentifiers";
 import { DiagnosticCode } from "../analysis/GrammarAnalyzer";
 import { ParserContext } from "../ParserContext";
-import { ruleRange } from "./ProviderUtils";
+import { ruleRange, tokenRange } from "./ProviderUtils";
+import { normalizeMetaIdentifier } from "../analysis/metaIdentifier";
+import { nearestNames } from "../analysis/editDistance";
 
 /**
  * Quick Fixes for EBNF diagnostics:
@@ -53,6 +55,8 @@ export class EBNFCodeActionsProvider implements vscode.CodeActionProvider {
 
         for (const diagnostic of context.diagnostics) {
             if (diagnostic.code === DiagnosticCode.UndefinedRule) {
+                // G16: suggest the nearest defined rule name(s) first, then the create-stub fallback.
+                actions.push(...this.didYouMeanActions(document, diagnostic));
                 const action = this.createRuleAction(document, diagnostic);
                 if (action) {
                     actions.push(action);
@@ -67,6 +71,45 @@ export class EBNFCodeActionsProvider implements vscode.CodeActionProvider {
         }
 
         return actions;
+    }
+
+    /** G16: "Did you mean …?" — replace an undefined rule with the nearest defined name(s). */
+    private didYouMeanActions(document: vscode.TextDocument, diagnostic: vscode.Diagnostic): vscode.CodeAction[] {
+        const listener = ParserContext.getListener(document);
+        if (!listener) {
+            return [];
+        }
+
+        const target = normalizeMetaIdentifier(document.getText(diagnostic.range));
+        if (!target) {
+            return [];
+        }
+
+        const definedNames = new Set(
+            listener.rules.map(rule => normalizeMetaIdentifier(rule.name)).filter(name => name.length > 0));
+
+        // Tolerate more typos in longer names, but never suggest wildly different rules.
+        const maxDistance = Math.min(3, Math.max(1, Math.floor(target.length / 3)));
+        const suggestions = nearestNames(target, definedNames, maxDistance, 3);
+        if (suggestions.length === 0) {
+            return [];
+        }
+
+        // Replace every occurrence of the misspelled name so one fix corrects the whole file.
+        const ranges = listener.usages
+            .filter(usage => normalizeMetaIdentifier(usage.text) === target)
+            .map(usage => tokenRange(usage));
+
+        return suggestions.map((name, index) => {
+            const fix = new vscode.CodeAction(`Change "${target}" to "${name}"`, vscode.CodeActionKind.QuickFix);
+            fix.diagnostics = [diagnostic];
+            fix.isPreferred = index === 0;
+            fix.edit = new vscode.WorkspaceEdit();
+            for (const range of ranges) {
+                fix.edit.replace(document.uri, range, name);
+            }
+            return fix;
+        });
     }
 
     /** G1: append a stub definition for a rule that is used but never defined. */
