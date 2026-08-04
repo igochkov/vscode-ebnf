@@ -34,7 +34,7 @@ Our development roadmap outlines the planned features for EBNF Tools. Features m
 The change log lists the updates for each version that has been released on the official Visual Studio Code extension gallery.
 
 ### Version 1.7
-**Released on 2026-07-16**
+**Released on 2026-08-04**
 
 Deepens the semantic linter so it stays trustworthy on real-world grammars, and hardens the extension internals.
 
