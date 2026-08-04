@@ -7,11 +7,7 @@ export class EBNFCompletionItemProvider implements vscode.CompletionItemProvider
         const range = document.getWordRangeAtPosition(position);
         const text = range ? document.getText(range) : "";
 
-        if (!ParserContext.listener) {
-            ParserContext.parse(document);
-        }
-
-        const listener = ParserContext.listener;
+        const listener = ParserContext.getListener(document);
         if (!listener) {
             return;
         }

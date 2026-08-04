@@ -13,11 +13,7 @@ export class EBNFRenameProvider implements vscode.RenameProvider {
     private static readonly identifierPattern = /^[A-Za-z][A-Za-z0-9_-]*([ \t]+[A-Za-z][A-Za-z0-9_-]*)*$/;
 
     private symbols(document: vscode.TextDocument): ISymbolInfo[] {
-        if (!ParserContext.listener) {
-            ParserContext.parse(document);
-        }
-
-        const listener = ParserContext.listener;
+        const listener = ParserContext.getListener(document);
         if (!listener) {
             return [];
         }

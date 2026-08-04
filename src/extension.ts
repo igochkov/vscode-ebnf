@@ -61,7 +61,7 @@ export async function deactivate() {
         formattingRegistrations = undefined;
     }
 
-    ParserContext.listener = undefined;
+    ParserContext.clear();
     ParserContext.diagnosticsCollection.clear();
     ParserContext.diagnosticsCollection.dispose();
     ParserContext.ebnfStatusBarItem.dispose();
