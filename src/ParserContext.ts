@@ -51,6 +51,23 @@ export class ParserContext {
         }
     }
 
+    /**
+     * Re-parse every open EBNF document so diagnostics reflect changed settings (e.g.
+     * `identifierStyle`, `diagnostics.parserAmbiguity`). The active editor's document is parsed
+     * last so the shared listener reflects it. Called from the configuration-change handler.
+     */
+    public static reparseOpenDocuments() {
+        for (const document of vscode.workspace.textDocuments) {
+            if (ParserContext.isEBNFFile(document)) {
+                ParserContext.parse(document);
+            }
+        }
+        const active = vscode.window.activeTextEditor?.document;
+        if (active && ParserContext.isEBNFFile(active)) {
+            ParserContext.parse(active);
+        }
+    }
+
     private static isEBNFFile(document: vscode.TextDocument): boolean {
         if (!document) {
             return false;
