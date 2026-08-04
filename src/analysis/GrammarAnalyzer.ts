@@ -1,6 +1,7 @@
 import { Token } from 'antlr4ng';
 import { ASTListener, RuleInfo } from '../listeners/ASTListener';
 import { normalizeMetaIdentifier } from './metaIdentifier';
+import { isSpecialSequencePrimitive } from './ruleGraph';
 
 /** Diagnostic codes emitted by the semantic analyzer (stable identifiers). */
 export const DiagnosticCode = {
@@ -40,7 +41,8 @@ function rangeOfToken(token: Token): Pick<AnalysisFinding, "startLine" | "startC
  * - G2 duplicate-definition: a rule name defined by more than one syntax-rule
  *   (legal per ISO/IEC 14977 §5.1 note 2, surfaced as information, not an error).
  * - G3 unused-rule: a defined rule never referenced anywhere. The first-defined rule
- *   is treated as the grammar's start symbol and is never flagged (ISO §3.5).
+ *   is treated as the grammar's start symbol and is never flagged (ISO §3.5). Rules that are
+ *   intentional primitives (defined only via special-sequence, G4) are also never flagged.
  */
 export function analyze(listener: ASTListener): AnalysisFinding[] {
     const findings: AnalysisFinding[] = [];
@@ -87,11 +89,14 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
     }
 
     // G3 — unused rules (the first-defined rule is the start symbol).
+    // G4 — intentional primitives (special-sequence-only rules) are exempt.
+    const primitiveNames = new Set(
+        rules.filter(rule => isSpecialSequencePrimitive(rule.ctx)).map(rule => normalizeMetaIdentifier(rule.name)));
     const startSymbol: RuleInfo | undefined = rules[0];
     const startName = startSymbol ? normalizeMetaIdentifier(startSymbol.name) : undefined;
     for (const rule of rules) {
         const name = normalizeMetaIdentifier(rule.name);
-        if (name === startName) {
+        if (name === startName || primitiveNames.has(name)) {
             continue;
         }
         if (!usedNames.has(name)) {

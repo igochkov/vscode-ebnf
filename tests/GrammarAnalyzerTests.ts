@@ -80,3 +80,22 @@ test('SC1 - "foo   bar" (usage) resolves to "foo bar" (definition); no undefined
     const findings = findingsFor(`start = foo   bar; foo bar = "x";`);
     expect(findings).toHaveLength(0);
 });
+
+// G4 — an unreferenced rule defined only via special-sequence is an intentional primitive.
+test('G4 - a special-sequence-only rule is not flagged as unused', () => {
+    // "character" is defined via ? ... ? and never referenced — but it is a primitive, not a typo.
+    const findings = findingsFor(`start = "x"; character = ? any character ?;`);
+    expect(codes(findings)).not.toContain(DiagnosticCode.UnusedRule);
+});
+
+test('G4 - a normal unused rule is still flagged (not a special-sequence primitive)', () => {
+    const findings = findingsFor(`start = "x"; orphan = "y";`);
+    expect(codes(findings)).toContain(DiagnosticCode.UnusedRule);
+});
+
+test('G4 - a rule mixing a special-sequence with a rule reference is not treated as primitive', () => {
+    // "mixed" references "other", so it is not a leaf primitive; when unused it is still flagged.
+    const findings = findingsFor(`start = "x"; mixed = ? sq ?, other; other = "y";`);
+    const unused = findings.filter(f => f.code === DiagnosticCode.UnusedRule).map(f => f.message);
+    expect(unused.some(m => m.includes('"mixed"'))).toBe(true);
+});
