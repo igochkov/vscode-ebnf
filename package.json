@@ -191,6 +191,12 @@
                     "markdownDescription": "Which meta-identifier characters are considered valid.\n\n- **modern** (default): underscores are allowed; hyphens (`-`) are **deprecated** because `-` is the EBNF *except-symbol*.\n- **standard**: strict ISO/IEC 14977 — both `-` and `_` are flagged as non-standard; use space-separated words (e.g. `syntax rule`, now supported) or letters and digits only.\n\nThis affects diagnostics only — parsing is unchanged and remains backward-compatible. Run **EBNF: Convert identifiers…** to migrate to spaces or `_`. See [issue #36](https://github.com/igochkov/vscode-ebnf/issues/36).",
                     "order": 14
                 },
+                "EBNF.diagnostics.parserAmbiguity": {
+                    "type": "boolean",
+                    "default": false,
+                    "markdownDescription": "Report parser **ambiguities** as Information diagnostics (G20). This surfaces places where the grammar can be parsed in more than one way. It is an advanced, potentially noisy signal — it reflects ambiguity in *this extension's* EBNF parser, not necessarily in your grammar — so it is off by default.",
+                    "order": 15
+                },
                 "EBNF.telemetry.enable": {
                     "type": "boolean",
                     "default": true,

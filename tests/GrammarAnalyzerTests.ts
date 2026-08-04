@@ -120,3 +120,38 @@ test('G6 - a directly self-recursive rule used in an exception is flagged', () =
     const findings = findingsFor(`start = a - b; a = "x"; b = b, "y" | "z";`);
     expect(codes(findings)).toContain(DiagnosticCode.NonRegularException);
 });
+
+// G5 — left-recursion hints.
+function leftRecursive(input: string): string[] {
+    return findingsFor(input)
+        .filter(f => f.code === DiagnosticCode.LeftRecursion)
+        .map(f => f.message);
+}
+
+test('G5 - direct left recursion is flagged', () => {
+    const messages = leftRecursive(`expr = expr, "+", term | term; term = "n";`);
+    expect(messages).toHaveLength(1);
+    expect(messages[0]).toContain('"expr"');
+});
+
+test('G5 - right recursion is NOT left recursion', () => {
+    // "list" starts with "item", not itself → not left-recursive.
+    expect(leftRecursive(`start = list; list = item, list | item; item = "x";`)).toHaveLength(0);
+});
+
+test('G5 - indirect (mutual) left recursion flags both rules', () => {
+    const messages = leftRecursive(`start = a; a = b, "x"; b = a, "y" | "z";`);
+    expect(messages.some(m => m.includes('"a"'))).toBe(true);
+    expect(messages.some(m => m.includes('"b"'))).toBe(true);
+});
+
+test('G5 - left recursion through a grouped sequence is detected', () => {
+    const messages = leftRecursive(`expr = (expr | term), "*"; term = "n";`);
+    expect(messages.some(m => m.includes('"expr"'))).toBe(true);
+});
+
+test('G5 - severity is information (a hint, not an error)', () => {
+    const findings = findingsFor(`expr = expr, "x" | "y";`);
+    const lr = findings.filter(f => f.code === DiagnosticCode.LeftRecursion);
+    expect(lr[0].severity).toBe('information');
+});

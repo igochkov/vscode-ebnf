@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { CharStream, CommonTokenStream, ParseTreeListener, Token } from 'antlr4ng';
+import { CharStream, CommonTokenStream, ParseTreeListener, PredictionMode, Token } from 'antlr4ng';
 
 import { EBNFLexer } from './parser/EBNFLexer';
 import { EBNFParser } from './parser/EBNFParser';
@@ -71,9 +71,15 @@ export class ParserContext {
         parser.removeParseListeners();
         parser.addParseListener(ParserContext.listener as ParseTreeListener);
         
-        const errorListener = new EBNFErrorListener(document);
+        // G20: parser-ambiguity reporting is opt-in. Exact-ambiguity detection is only enabled
+        // when the setting is on, since it makes prediction more expensive.
+        const reportAmbiguities = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<boolean>("diagnostics.parserAmbiguity", false);
+        const errorListener = new EBNFErrorListener(document, reportAmbiguities);
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener)
+        if (reportAmbiguities) {
+            parser.interpreter.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION;
+        }
 
         parser.syntax();
 

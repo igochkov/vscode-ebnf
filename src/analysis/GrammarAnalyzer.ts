@@ -1,14 +1,15 @@
 import { Token } from 'antlr4ng';
 import { ASTListener, RuleInfo } from '../listeners/ASTListener';
 import { normalizeMetaIdentifier } from './metaIdentifier';
-import { isSpecialSequencePrimitive, referenceTokens, exceptionReferenceTokens, nodesReachingCycle } from './ruleGraph';
+import { isSpecialSequencePrimitive, referenceTokens, exceptionReferenceTokens, leftmostReferences, nodesOnCycle, nodesReachingCycle } from './ruleGraph';
 
 /** Diagnostic codes emitted by the semantic analyzer (stable identifiers). */
 export const DiagnosticCode = {
     UndefinedRule: "ebnf.undefinedRule",
     DuplicateDefinition: "ebnf.duplicateDefinition",
     UnusedRule: "ebnf.unusedRule",
-    NonRegularException: "ebnf.nonRegularException"
+    NonRegularException: "ebnf.nonRegularException",
+    LeftRecursion: "ebnf.leftRecursion"
 } as const;
 
 export type AnalysisSeverity = "warning" | "information" | "hint";
@@ -113,6 +114,32 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
                     ...rangeOfToken(ref)
                 });
             }
+        }
+    }
+
+    // G5 — left-recursion hint. A rule that is leftmost-reachable from itself is left-recursive;
+    // valid EBNF, but some top-down parser generators cannot handle it, so surface it as a hint.
+    const leftmostGraph = new Map<string, Set<string>>();
+    for (const rule of rules) {
+        const from = normalizeMetaIdentifier(rule.name);
+        const targets = leftmostGraph.get(from) ?? new Set<string>();
+        for (const ref of leftmostReferences(rule.ctx)) {
+            targets.add(normalizeMetaIdentifier(ref));
+        }
+        leftmostGraph.set(from, targets);
+    }
+    const leftRecursive = nodesOnCycle(leftmostGraph);
+    const reportedLeftRecursion = new Set<string>();
+    for (const rule of rules) {
+        const name = normalizeMetaIdentifier(rule.name);
+        if (leftRecursive.has(name) && !reportedLeftRecursion.has(name)) {
+            reportedLeftRecursion.add(name);
+            findings.push({
+                code: DiagnosticCode.LeftRecursion,
+                message: `Rule "${name}" is left-recursive; some top-down parser generators cannot handle it.`,
+                severity: "information",
+                ...rangeOfToken(rule.nameToken)
+            });
         }
     }
 

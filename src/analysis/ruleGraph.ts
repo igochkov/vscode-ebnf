@@ -1,5 +1,5 @@
 import { ParseTree, TerminalNode, Token } from 'antlr4ng';
-import { EBNFParser, SyntaxRuleContext, SyntacticExceptionContext } from '../parser/EBNFParser';
+import { EBNFParser, SyntaxRuleContext, SyntacticExceptionContext, DefinitionsListContext, SyntacticPrimaryContext } from '../parser/EBNFParser';
 
 /**
  * Structural helpers over a parsed syntax-rule, used by the semantic analyzer (G4/G5/G6).
@@ -87,10 +87,80 @@ export function exceptionReferenceTokens(ctx: SyntaxRuleContext): Token[] {
 }
 
 /**
+ * G5 — the meta-identifiers that can appear *leftmost* in the rule (the first symbol of some
+ * alternative). Descends into optional/repeated/grouped sequences that start an alternative.
+ * Used to detect left recursion (a rule that is leftmost-reachable from itself). Nullable
+ * prefixes are not propagated, so this under-approximates — it never reports false recursion.
+ */
+export function leftmostReferences(ctx: SyntaxRuleContext): string[] {
+    const out: string[] = [];
+    collectLeftmost(ctx.definitionsList(), out);
+    return out;
+}
+
+function collectLeftmost(definitions: DefinitionsListContext | null, out: string[]): void {
+    if (!definitions) {
+        return;
+    }
+    for (const single of definitions.singleDefinition()) {
+        const terms = single.syntacticTerm();
+        if (terms.length === 0) {
+            continue;
+        }
+        collectLeftmostFromPrimary(terms[0].syntacticFactor()?.syntacticPrimary() ?? null, out);
+    }
+}
+
+function collectLeftmostFromPrimary(primary: SyntacticPrimaryContext | null, out: string[]): void {
+    if (!primary) {
+        return;
+    }
+    const metaIdentifier = primary.META_IDENTIFIER();
+    if (metaIdentifier) {
+        out.push(metaIdentifier.symbol.text ?? "");
+        return;
+    }
+    const inner = primary.optionalSequence()?.definitionsList()
+        ?? primary.repeatedSequence()?.definitionsList()
+        ?? primary.groupedSequence()?.definitionsList()
+        ?? null;
+    collectLeftmost(inner, out);
+}
+
+/**
+ * Returns the nodes that lie *on* a cycle (can return to themselves). With a leftmost-reference
+ * graph this is exactly the set of left-recursive rules (G5).
+ */
+export function nodesOnCycle(graph: Map<string, Set<string>>): Set<string> {
+    const onCycle = new Set<string>();
+
+    for (const start of graph.keys()) {
+        const seen = new Set<string>();
+        const stack = [...(graph.get(start) ?? [])];
+        while (stack.length > 0) {
+            const node = stack.pop() as string;
+            if (node === start) {
+                onCycle.add(start);
+                break;
+            }
+            if (seen.has(node)) {
+                continue;
+            }
+            seen.add(node);
+            for (const next of graph.get(node) ?? []) {
+                stack.push(next);
+            }
+        }
+    }
+
+    return onCycle;
+}
+
+/**
  * Given a rule-reference graph (rule name → names it references), returns the set of nodes
  * from which a cycle is reachable — i.e. the recursively-defined (non-regular) rules. Used by
  * G6 (an exception must be reducible to a meta-identifier-free factor, ISO §4.7, which a
- * recursive rule is not) and available to G5 (recursion hints).
+ * recursive rule is not).
  */
 export function nodesReachingCycle(graph: Map<string, Set<string>>): Set<string> {
     const reaches = new Set<string>();
