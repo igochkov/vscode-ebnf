@@ -38,7 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(ParserContext.ebnfStatusBarItem);
 
     if (vscode.window.activeTextEditor) {
-        ParserContext.parse(vscode.window.activeTextEditor.document);
+        ParserContext.publishDiagnostics(vscode.window.activeTextEditor.document);
 	}
 
     context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(ParserContext.OnDocumentOpen));

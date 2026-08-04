@@ -13,6 +13,9 @@ import { findInvalidSequences } from "./analysis/invalidSequences";
 interface ParsedDocument {
     listener: ASTListener;
     version: number;
+    tokens: Token[];
+    /** Syntax-error (and opt-in ambiguity) diagnostics captured during the parse. */
+    syntaxDiagnostics: vscode.Diagnostic[];
 }
 
 export class ParserContext {
@@ -30,14 +33,51 @@ export class ParserContext {
 
     /**
      * Returns the symbol listener for `document`, parsing it if the cache is missing or stale
-     * (the document was edited since it was last parsed). Always reflects the document passed in.
+     * (edited since last parsed). Always reflects the document passed in. Does NOT publish
+     * diagnostics — providers call this on every change, so publishing here would defeat the
+     * A2 debounce. Diagnostics are published separately via publishDiagnostics().
      */
     public static getListener(document: vscode.TextDocument): ASTListener | undefined {
-        const cached = ParserContext.cache.get(document.uri.toString());
+        return ParserContext.ensureParsed(document).listener;
+    }
+
+    /** Parse `document` if the cache is missing or stale; cache and return the result. No side effects. */
+    private static ensureParsed(document: vscode.TextDocument): ParsedDocument {
+        const key = document.uri.toString();
+        const cached = ParserContext.cache.get(key);
         if (cached && cached.version === document.version) {
-            return cached.listener;
+            return cached;
         }
-        return ParserContext.parse(document);
+
+        const inputStream = CharStream.fromString(document.getText());
+        const lexer = new EBNFLexer(inputStream);
+        const tokenStream = new CommonTokenStream(lexer);
+        const parser = new EBNFParser(tokenStream);
+
+        const listener = new ASTListener();
+        parser.removeParseListeners();
+        parser.addParseListener(listener as ParseTreeListener);
+
+        // G20: parser-ambiguity reporting is opt-in. Exact-ambiguity detection is only enabled
+        // when the setting is on, since it makes prediction more expensive.
+        const reportAmbiguities = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<boolean>("diagnostics.parserAmbiguity", false);
+        const errorListener = new EBNFErrorListener(document, reportAmbiguities);
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
+        if (reportAmbiguities) {
+            parser.interpreter.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION;
+        }
+
+        parser.syntax();
+
+        const parsed: ParsedDocument = {
+            listener,
+            version: document.version,
+            tokens: tokenStream.getTokens(),
+            syntaxDiagnostics: errorListener.diagnostics
+        };
+        ParserContext.cache.set(key, parsed);
+        return parsed;
     }
 
     /** Drops all cached parse results and cancels pending parses (used on deactivate). */
@@ -50,13 +90,13 @@ export class ParserContext {
     }
 
     /**
-     * A2: schedule a re-parse after a quiet period, coalescing rapid edits into one parse
-     * instead of re-parsing on every keystroke. Interactive requests are unaffected —
-     * getListener() re-parses on demand when the cache is stale, so this only paces the
-     * background diagnostic refresh. Skips the parse if the cache is already current (e.g. a
-     * provider re-parsed in the meantime).
+     * A2: after a quiet period, publish diagnostics for the document, coalescing rapid edits so
+     * the (potentially expensive) semantic analysis and diagnostic refresh run once instead of
+     * on every keystroke. Symbol-table parsing still happens on demand via getListener() so
+     * interactive features (outline, navigation, hover) stay live; only diagnostic publishing
+     * is debounced.
      */
-    private static scheduleParse(document: vscode.TextDocument) {
+    private static schedulePublish(document: vscode.TextDocument) {
         const key = document.uri.toString();
         const existing = ParserContext.debounceTimers.get(key);
         if (existing) {
@@ -64,23 +104,20 @@ export class ParserContext {
         }
         const timer = setTimeout(() => {
             ParserContext.debounceTimers.delete(key);
-            const cached = ParserContext.cache.get(key);
-            if (!cached || cached.version !== document.version) {
-                ParserContext.parse(document);
-            }
+            ParserContext.publishDiagnostics(document);
         }, ParserContext.parseDebounceMs);
         ParserContext.debounceTimers.set(key, timer);
     }
 
     public static OnDocumentOpen(document: vscode.TextDocument) {
         if (document && ParserContext.isEBNFFile(document)) {
-            ParserContext.parse(document);
+            ParserContext.publishDiagnostics(document);
         }
     }
 
     public static OnDocumentChange(event: vscode.TextDocumentChangeEvent) {
         if (event && ParserContext.isEBNFFile(event.document)) {
-            ParserContext.scheduleParse(event.document);
+            ParserContext.schedulePublish(event.document);
         }
     }
 
@@ -100,7 +137,7 @@ export class ParserContext {
 
     public static OnActiveTextEditorChanged(editor: vscode.TextEditor | undefined) {
         if (editor && ParserContext.isEBNFFile(editor.document)) {
-            ParserContext.parse(editor.document);
+            ParserContext.publishDiagnostics(editor.document);
         }
     }
 
@@ -112,7 +149,7 @@ export class ParserContext {
     public static reparseOpenDocuments() {
         for (const document of vscode.workspace.textDocuments) {
             if (ParserContext.isEBNFFile(document)) {
-                ParserContext.parse(document);
+                ParserContext.publishDiagnostics(document);
             }
         }
     }
@@ -126,43 +163,21 @@ export class ParserContext {
              && document.uri.scheme === ParserContext.ebnfSelector.scheme);
     }
 
-    public static parse(document: vscode.TextDocument): ASTListener {
-        const content = document.getText();
-        const inputStream = CharStream.fromString(content);
-        const lexer = new EBNFLexer(inputStream);
-        const tokenStream = new CommonTokenStream(lexer);
-        const parser = new EBNFParser(tokenStream);
+    /**
+     * Parse `document` (via the cache) and publish its diagnostics + status bar + telemetry.
+     * This is the debounced/background path; getListener() is the on-demand symbol path.
+     */
+    public static publishDiagnostics(document: vscode.TextDocument): void {
+        const parsed = ParserContext.ensureParsed(document);
 
-        const listener = new ASTListener();
-        parser.removeParseListeners();
-        parser.addParseListener(listener as ParseTreeListener);
-
-        // G20: parser-ambiguity reporting is opt-in. Exact-ambiguity detection is only enabled
-        // when the setting is on, since it makes prediction more expensive.
-        const reportAmbiguities = vscode.workspace.getConfiguration(ParserContext.ebnfName).get<boolean>("diagnostics.parserAmbiguity", false);
-        const errorListener = new EBNFErrorListener(document, reportAmbiguities);
-        parser.removeErrorListeners();
-        parser.addErrorListener(errorListener)
-        if (reportAmbiguities) {
-            parser.interpreter.predictionMode = PredictionMode.LL_EXACT_AMBIG_DETECTION;
-        }
-
-        parser.syntax();
-
-        ParserContext.cache.set(document.uri.toString(), { listener, version: document.version });
-
-        const tokens = tokenStream.getTokens();
-        const diagnostics = errorListener.diagnostics
-            .concat(ParserContext.identifierDeprecationDiagnostics(tokens))
-            .concat(ParserContext.semanticDiagnostics(listener))
+        const diagnostics = parsed.syntaxDiagnostics
+            .concat(ParserContext.identifierDeprecationDiagnostics(parsed.tokens))
+            .concat(ParserContext.semanticDiagnostics(parsed.listener))
             .concat(ParserContext.invalidSequenceDiagnostics(document));
         ParserContext.diagnosticsCollection.set(document.uri, diagnostics);
         ParserContext.updateStatusBarItem();
 
-        const stats = ParserContext.computeGrammarStats(tokens);
-        Telemetry.reportGrammarAnalyzed(document, stats);
-
-        return listener;
+        Telemetry.reportGrammarAnalyzed(document, ParserContext.computeGrammarStats(parsed.tokens));
     }
 
     /**
