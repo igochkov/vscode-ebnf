@@ -7,7 +7,10 @@ const webpack = require('webpack');
 
 /**@type {import('webpack').Configuration}*/
 const config = {
-  target: 'webworker',
+  // This is a desktop/Node extension (package.json declares only `main`, the document
+  // selector uses scheme:"file", and it runs on the Node extension host), so bundle for
+  // node — not webworker. Node built-ins resolve natively (no assert/util polyfills). D4.
+  target: 'node',
   entry: './src/extension.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),

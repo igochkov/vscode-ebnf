@@ -36,7 +36,7 @@ The change log lists the updates for each version that has been released on the 
 ### Version 1.7
 **Released on 2026-07-16**
 
-Deepens the semantic linter so it stays trustworthy on real-world grammars.
+Deepens the semantic linter so it stays trustworthy on real-world grammars, and hardens the extension internals.
 
 - Feature: _Left-recursion hint_ — a rule that is left-recursive (directly or mutually) is reported as an Information hint, since some top-down parser generators cannot handle it.
 - Feature: _Exception validation (ISO §4.7)_ — warns when a syntactic-exception references a recursively-defined rule that cannot be reduced to a meta-identifier-free factor. Non-recursive exceptions (as in the standard's own §8.1) are unaffected.
@@ -44,6 +44,9 @@ Deepens the semantic linter so it stays trustworthy on real-world grammars.
 - Feature: _Parser-ambiguity diagnostics_ — optional reporting of places the grammar can be parsed more than one way, behind the new `EBNF.diagnostics.parserAmbiguity` setting (off by default).
 - Change: rules defined only via a special-sequence (e.g. `character = ? any ?;`) are recognized as intentional primitives and no longer reported as unused.
 - Bug fix: changing an `EBNF.*` setting now refreshes diagnostics for open documents immediately instead of leaving stale diagnostics until the next edit.
+- Bug fix: navigation (Definition, References, Rename, Completion) could resolve against the wrong document when multiple `.ebnf` files were open — each document now has its own parse cache.
+- Bug fix: _Find All References_ now honours the editor's "include declaration" option.
+- Change: large files stay responsive — edits are debounced so the grammar is re-parsed after you stop typing rather than on every keystroke.
 
 ### Version 1.6
 **Released on 2026-07-16**

@@ -15,11 +15,7 @@ export class EBNFDefinitionProvider implements vscode.DefinitionProvider {
             return;
         }
 
-        if (!ParserContext.listener) {
-            ParserContext.parse(document);
-        }
-
-        const listener = ParserContext.listener;
+        const listener = ParserContext.getListener(document);
         if (!listener) {
             return;
         }
