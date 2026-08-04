@@ -4,7 +4,7 @@ Rich language support for **Extended Backus–Naur Form (EBNF)** grammars in Vis
 
 ![EBNF syntax highlighting in VS Code](https://raw.githubusercontent.com/igochkov/vscode-ebnf/main/docs/syntax-highlighting.png)
 
-> **New in 1.6** — a full semantic linter (undefined / duplicate / unused rules), Outline, Hover, CodeLens, Quick Fixes, structural folding, range & on-type formatting, and improved ISO/IEC 14977 conformance. See the [changelog](https://github.com/igochkov/vscode-ebnf/blob/main/CHANGELOG.md).
+> **New in 1.7** — deeper linting (left-recursion & exception-restriction checks, plus *"Did you mean…?"* fixes for undefined rules), on top of the 1.6 foundation: a full semantic linter (undefined / duplicate / unused rules), Outline, Hover, CodeLens, Quick Fixes, structural folding, range & on-type formatting, and improved ISO/IEC 14977 conformance (space-separated identifiers). See the [changelog](https://github.com/igochkov/vscode-ebnf/blob/main/CHANGELOG.md).
 
 ## Installation
 
@@ -44,9 +44,11 @@ Open the Extensions view (`Ctrl+Shift+X`), search for **EBNF Tools**, and click 
 | --- | --- |
 | **Undefined rule** | Flags a meta-identifier that is used but never defined. |
 | **Duplicate definition** | Flags a rule defined by more than one syntax-rule (permitted by §5.1 note 2). |
-| **Unused rule** | Flags a defined rule that is never referenced (the first rule is treated as the start symbol). |
+| **Unused rule** | Flags a defined rule that is never referenced (the first rule is treated as the start symbol; special-sequence primitives are exempt). |
+| **Left-recursion** | Hints a rule that is left-recursive, directly or mutually. |
+| **Exception restriction** | Warns when an exception references a recursively-defined rule that can't be reduced to a meta-identifier-free factor (§4.7). |
 | **Invalid sequences** | Flags the illegal sequences `(*)`, `(:)`, `(/)` (§7.8). |
-| **Quick Fixes** | One-click *create a missing rule* and *remove an unused rule*. |
+| **Quick Fixes** | One-click *create a missing rule*, *remove an unused rule*, and *"Did you mean…?"* suggestions that fix a misspelled rule name. |
 
 ### Formatting
 
@@ -139,6 +141,7 @@ Configure everything under **Settings → Extensions → EBNF**.
 | --- | --- | --- |
 | `EBNF.format.enable` | `true` | Enable the EBNF formatter. |
 | `EBNF.identifierStyle` | `modern` | `modern` allows `_` (hyphens deprecated, since `-` is the except-symbol); `standard` flags both `-` and `_` as non-standard per ISO/IEC 14977. |
+| `EBNF.diagnostics.parserAmbiguity` | `false` | Report parser ambiguities as Information diagnostics. Advanced and potentially noisy — off by default. |
 | `EBNF.telemetry.enable` | `true` | Anonymous, opt-in usage telemetry (see [below](#telemetry)). |
 
 The formatting **style** is fully configurable via the `EBNF.format.*` options — defining-symbol placement and indentation, definition-separator / option / repeat / terminator symbols, and spacing around sequence symbols.
