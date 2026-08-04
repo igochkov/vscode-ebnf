@@ -1,13 +1,14 @@
 import { Token } from 'antlr4ng';
 import { ASTListener, RuleInfo } from '../listeners/ASTListener';
 import { normalizeMetaIdentifier } from './metaIdentifier';
-import { isSpecialSequencePrimitive } from './ruleGraph';
+import { isSpecialSequencePrimitive, referenceTokens, exceptionReferenceTokens, nodesReachingCycle } from './ruleGraph';
 
 /** Diagnostic codes emitted by the semantic analyzer (stable identifiers). */
 export const DiagnosticCode = {
     UndefinedRule: "ebnf.undefinedRule",
     DuplicateDefinition: "ebnf.duplicateDefinition",
-    UnusedRule: "ebnf.unusedRule"
+    UnusedRule: "ebnf.unusedRule",
+    NonRegularException: "ebnf.nonRegularException"
 } as const;
 
 export type AnalysisSeverity = "warning" | "information" | "hint";
@@ -85,6 +86,33 @@ export function analyze(listener: ASTListener): AnalysisFinding[] {
                 severity: "information",
                 ...rangeOfToken(rule.nameToken)
             });
+        }
+    }
+
+    // G6 — an exception must be reducible to a meta-identifier-free (regular) factor (ISO §4.7).
+    // A meta-identifier used in an exception is fine if its rule is non-recursive (finite/regular,
+    // like ISO §8.1's "first quote symbol"); it violates §4.7 if the referenced rule is recursive.
+    const graph = new Map<string, Set<string>>();
+    for (const rule of rules) {
+        const from = normalizeMetaIdentifier(rule.name);
+        const targets = graph.get(from) ?? new Set<string>();
+        for (const ref of referenceTokens(rule.ctx)) {
+            targets.add(normalizeMetaIdentifier(ref.text));
+        }
+        graph.set(from, targets);
+    }
+    const recursiveNames = nodesReachingCycle(graph);
+    for (const rule of rules) {
+        for (const ref of exceptionReferenceTokens(rule.ctx)) {
+            const name = normalizeMetaIdentifier(ref.text);
+            if (definedNames.has(name) && recursiveNames.has(name)) {
+                findings.push({
+                    code: DiagnosticCode.NonRegularException,
+                    message: `Exception references "${name}", which is recursively defined and cannot be reduced to a meta-identifier-free factor (ISO/IEC 14977 §4.7).`,
+                    severity: "warning",
+                    ...rangeOfToken(ref)
+                });
+            }
         }
     }
 

@@ -99,3 +99,24 @@ test('G4 - a rule mixing a special-sequence with a rule reference is not treated
     const unused = findings.filter(f => f.code === DiagnosticCode.UnusedRule).map(f => f.message);
     expect(unused.some(m => m.includes('"mixed"'))).toBe(true);
 });
+
+// G6 — exceptions must be reducible to a meta-identifier-free factor (ISO §4.7).
+test('G6 - an exception referencing a non-recursive rule is allowed (ISO §8.1 style)', () => {
+    // "terminal char - quote" where both reduce to terminals — compliant, no warning.
+    const findings = findingsFor(`start = terminal char - quote; terminal char = "a" | "b"; quote = "'";`);
+    expect(codes(findings)).not.toContain(DiagnosticCode.NonRegularException);
+});
+
+test('G6 - an exception referencing a recursively-defined rule is flagged', () => {
+    // "list" is recursive (list -> list), so it is not reducible to a terminal-only factor.
+    const findings = findingsFor(`start = item - list; item = "x"; list = item, list | item;`);
+    const nonRegular = findings.filter(f => f.code === DiagnosticCode.NonRegularException);
+    expect(nonRegular).toHaveLength(1);
+    expect(nonRegular[0].message).toContain('"list"');
+    expect(nonRegular[0].severity).toBe('warning');
+});
+
+test('G6 - a directly self-recursive rule used in an exception is flagged', () => {
+    const findings = findingsFor(`start = a - b; a = "x"; b = b, "y" | "z";`);
+    expect(codes(findings)).toContain(DiagnosticCode.NonRegularException);
+});
