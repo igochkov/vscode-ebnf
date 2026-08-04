@@ -22,6 +22,9 @@ export class ParserContext {
     // B4/A3: per-document parse cache keyed by document URI. Replaces the former single global
     // `listener`, which let a provider for one document operate on another document's symbols.
     private static cache = new Map<string, ParsedDocument>();
+    // A2: debounce re-parsing on rapid edits. Pending parses per document URI.
+    private static readonly parseDebounceMs = 300;
+    private static debounceTimers = new Map<string, ReturnType<typeof setTimeout>>();
     public static diagnosticsCollection = vscode.languages.createDiagnosticCollection(ParserContext.ebnfName);
     public static ebnfStatusBarItem =  vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 500);
 
@@ -37,9 +40,36 @@ export class ParserContext {
         return ParserContext.parse(document);
     }
 
-    /** Drops all cached parse results (used on deactivate). */
+    /** Drops all cached parse results and cancels pending parses (used on deactivate). */
     public static clear() {
         ParserContext.cache.clear();
+        for (const timer of ParserContext.debounceTimers.values()) {
+            clearTimeout(timer);
+        }
+        ParserContext.debounceTimers.clear();
+    }
+
+    /**
+     * A2: schedule a re-parse after a quiet period, coalescing rapid edits into one parse
+     * instead of re-parsing on every keystroke. Interactive requests are unaffected —
+     * getListener() re-parses on demand when the cache is stale, so this only paces the
+     * background diagnostic refresh. Skips the parse if the cache is already current (e.g. a
+     * provider re-parsed in the meantime).
+     */
+    private static scheduleParse(document: vscode.TextDocument) {
+        const key = document.uri.toString();
+        const existing = ParserContext.debounceTimers.get(key);
+        if (existing) {
+            clearTimeout(existing);
+        }
+        const timer = setTimeout(() => {
+            ParserContext.debounceTimers.delete(key);
+            const cached = ParserContext.cache.get(key);
+            if (!cached || cached.version !== document.version) {
+                ParserContext.parse(document);
+            }
+        }, ParserContext.parseDebounceMs);
+        ParserContext.debounceTimers.set(key, timer);
     }
 
     public static OnDocumentOpen(document: vscode.TextDocument) {
@@ -50,13 +80,19 @@ export class ParserContext {
 
     public static OnDocumentChange(event: vscode.TextDocumentChangeEvent) {
         if (event && ParserContext.isEBNFFile(event.document)) {
-            ParserContext.parse(event.document);
+            ParserContext.scheduleParse(event.document);
         }
     }
 
     public static OnDocumentClose(document: vscode.TextDocument) {
         if (document && ParserContext.isEBNFFile(document)) {
-            ParserContext.cache.delete(document.uri.toString());
+            const key = document.uri.toString();
+            const timer = ParserContext.debounceTimers.get(key);
+            if (timer) {
+                clearTimeout(timer);
+                ParserContext.debounceTimers.delete(key);
+            }
+            ParserContext.cache.delete(key);
             ParserContext.diagnosticsCollection.delete(document.uri)
             ParserContext.ebnfStatusBarItem.hide();
         }
