@@ -1,7 +1,0 @@
-primary
-    = optional sequence
-    | repeated sequence
-    | special sequence
-    | grouped sequence
-    | meta identifier
-    | terminal string;
